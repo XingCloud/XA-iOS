@@ -1,0 +1,240 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		2DEBC49C14E2783700C9559E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DEBC49B14E2783700C9559E /* Foundation.framework */; };
+		2DEBC4A214E2783700C9559E /* XA.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DEBC4A114E2783700C9559E /* XA.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		2D152A8D14E520E20095AC4B /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		2D152A9014E520E20095AC4B /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		2D152A9214E520E20095AC4B /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
+		2D152A9414E520E20095AC4B /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
+		2DEBC49814E2783700C9559E /* libXA.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libXA.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		2DEBC49B14E2783700C9559E /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		2DEBC49F14E2783700C9559E /* XA-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "XA-Prefix.pch"; sourceTree = "<group>"; };
+		2DEBC4A014E2783700C9559E /* XA.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XA.h; sourceTree = "<group>"; };
+		2DEBC4A114E2783700C9559E /* XA.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = XA.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		2DEBC49514E2783700C9559E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2DEBC49C14E2783700C9559E /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		2DEBC48D14E2783500C9559E = {
+			isa = PBXGroup;
+			children = (
+				2DEBC49D14E2783700C9559E /* XA */,
+				2DEBC49A14E2783700C9559E /* Frameworks */,
+				2DEBC49914E2783700C9559E /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		2DEBC49914E2783700C9559E /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				2DEBC49814E2783700C9559E /* libXA.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		2DEBC49A14E2783700C9559E /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				2DEBC49B14E2783700C9559E /* Foundation.framework */,
+				2D152A8D14E520E20095AC4B /* UIKit.framework */,
+				2D152A9014E520E20095AC4B /* CoreGraphics.framework */,
+				2D152A9214E520E20095AC4B /* GLKit.framework */,
+				2D152A9414E520E20095AC4B /* OpenGLES.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		2DEBC49D14E2783700C9559E /* XA */ = {
+			isa = PBXGroup;
+			children = (
+				2DEBC4A014E2783700C9559E /* XA.h */,
+				2DEBC4A114E2783700C9559E /* XA.m */,
+				2DEBC49E14E2783700C9559E /* Supporting Files */,
+			);
+			path = XA;
+			sourceTree = "<group>";
+		};
+		2DEBC49E14E2783700C9559E /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				2DEBC49F14E2783700C9559E /* XA-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		2DEBC49614E2783700C9559E /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		2DEBC49714E2783700C9559E /* XA */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2DEBC4A514E2783700C9559E /* Build configuration list for PBXNativeTarget "XA" */;
+			buildPhases = (
+				2DEBC49414E2783700C9559E /* Sources */,
+				2DEBC49514E2783700C9559E /* Frameworks */,
+				2DEBC49614E2783700C9559E /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = XA;
+			productName = XA;
+			productReference = 2DEBC49814E2783700C9559E /* libXA.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		2DEBC48F14E2783500C9559E /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0420;
+			};
+			buildConfigurationList = 2DEBC49214E2783500C9559E /* Build configuration list for PBXProject "XA" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 2DEBC48D14E2783500C9559E;
+			productRefGroup = 2DEBC49914E2783700C9559E /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				2DEBC49714E2783700C9559E /* XA */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		2DEBC49414E2783700C9559E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2DEBC4A214E2783700C9559E /* XA.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		2DEBC4A314E2783700C9559E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		2DEBC4A414E2783700C9559E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				COPY_PHASE_STRIP = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		2DEBC4A614E2783700C9559E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DSTROOT = /tmp/XA.dst;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "XA/XA-Prefix.pch";
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		2DEBC4A714E2783700C9559E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DSTROOT = /tmp/XA.dst;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "XA/XA-Prefix.pch";
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		2DEBC49214E2783500C9559E /* Build configuration list for PBXProject "XA" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2DEBC4A314E2783700C9559E /* Debug */,
+				2DEBC4A414E2783700C9559E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		2DEBC4A514E2783700C9559E /* Build configuration list for PBXNativeTarget "XA" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2DEBC4A614E2783700C9559E /* Debug */,
+				2DEBC4A714E2783700C9559E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 2DEBC48F14E2783500C9559E /* Project object */;
+}
