@@ -8,7 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		2DEBC49C14E2783700C9559E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DEBC49B14E2783700C9559E /* Foundation.framework */; };
-		2DEBC4A214E2783700C9559E /* XA.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DEBC4A114E2783700C9559E /* XA.m */; };
+		2DEBC4A214E2783700C9559E /* XA.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2DEBC4A114E2783700C9559E /* XA.mm */; };
+		9039C3C314E91C4B009E8809 /* XASystemInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = 9039C3C114E91C4B009E8809 /* XASystemInfo.h */; };
+		9039C3C414E91C4B009E8809 /* XASystemInfo.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9039C3C214E91C4B009E8809 /* XASystemInfo.mm */; };
+		9039C3C714E91C5D009E8809 /* XADataManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 9039C3C614E91C5D009E8809 /* XADataManager.h */; };
+		9039C3C914E91C73009E8809 /* XADataManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9039C3C814E91C73009E8809 /* XADataManager.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -20,7 +24,11 @@
 		2DEBC49B14E2783700C9559E /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		2DEBC49F14E2783700C9559E /* XA-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "XA-Prefix.pch"; sourceTree = "<group>"; };
 		2DEBC4A014E2783700C9559E /* XA.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XA.h; sourceTree = "<group>"; };
-		2DEBC4A114E2783700C9559E /* XA.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = XA.m; sourceTree = "<group>"; };
+		2DEBC4A114E2783700C9559E /* XA.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = XA.mm; sourceTree = "<group>"; };
+		9039C3C114E91C4B009E8809 /* XASystemInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XASystemInfo.h; sourceTree = "<group>"; };
+		9039C3C214E91C4B009E8809 /* XASystemInfo.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = XASystemInfo.mm; sourceTree = "<group>"; };
+		9039C3C614E91C5D009E8809 /* XADataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XADataManager.h; sourceTree = "<group>"; };
+		9039C3C814E91C73009E8809 /* XADataManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = XADataManager.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -68,8 +76,12 @@
 			isa = PBXGroup;
 			children = (
 				2DEBC4A014E2783700C9559E /* XA.h */,
-				2DEBC4A114E2783700C9559E /* XA.m */,
+				2DEBC4A114E2783700C9559E /* XA.mm */,
 				2DEBC49E14E2783700C9559E /* Supporting Files */,
+				9039C3C114E91C4B009E8809 /* XASystemInfo.h */,
+				9039C3C214E91C4B009E8809 /* XASystemInfo.mm */,
+				9039C3C614E91C5D009E8809 /* XADataManager.h */,
+				9039C3C814E91C73009E8809 /* XADataManager.cpp */,
 			);
 			path = XA;
 			sourceTree = "<group>";
@@ -89,6 +101,8 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9039C3C314E91C4B009E8809 /* XASystemInfo.h in Headers */,
+				9039C3C714E91C5D009E8809 /* XADataManager.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -142,7 +156,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2DEBC4A214E2783700C9559E /* XA.m in Sources */,
+				2DEBC4A214E2783700C9559E /* XA.mm in Sources */,
+				9039C3C414E91C4B009E8809 /* XASystemInfo.mm in Sources */,
+				9039C3C914E91C73009E8809 /* XADataManager.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -32,7 +32,7 @@ typedef enum {
 @protocol XADelegate;
 
 @interface XA : NSObject {
-    id __internal;
+    void* __internal;
 }
 
 #pragma mark XA basics
@@ -82,11 +82,19 @@ typedef enum {
 /**
  请在app启动后调用该API
  */
-+ (void)appDidLaunched;
++ (void)applicationDidLaunched;
 /**
  请在app退出时调用该API
  */
-+ (void)appWillTerminate;
++ (void)applicationWillTerminate;
+/**
+  请在app唤醒时调用该API
+ */
++ (void)applicationDidBecomeActive;
+/**
+  请在app切换时调用该API
+ */
++ (void)applicationDidEnterBackground;
 /**
  设置是否持续向行云数据分析平台发送心跳事件。该事件有助于获取PCU（峰值在线用户）数据
  @param value 是否开启
