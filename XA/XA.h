@@ -23,8 +23,8 @@ typedef enum {
     USER_QUIT,
     PAY_COMPLETE,
     BUY_ITEM,
-    COUNT,
-    MILESTONE,
+    COUNT,//累计事件数量
+    MILESTONE,//定义一个目标
     TUTORIAL,
     PAGE_VIEW
 } XAEventType;
@@ -94,7 +94,7 @@ typedef enum {
 /**
   请在app切换时调用该API
  */
-+ (void)applicationDidEnterBackground;
++ (void)applicationWillResignActive;
 /**
  设置是否持续向行云数据分析平台发送心跳事件。该事件有助于获取PCU（峰值在线用户）数据
  @param value 是否开启
@@ -103,8 +103,10 @@ typedef enum {
 
 #pragma mark XA events
 + (void)trackEvent:(NSString*)function action:(NSString*)action level1:(NSString*)level1 level2:(NSString*)level2 level3:(NSString*)level3 level4:(NSString*)level4 level5:(NSString*)level5 count:(NSInteger)count;
-
-+ (void)trackTransaction;//TODO add api params&comment
+/**
+ 
+ */
++ (void)trackTransaction:(int)event:(NSString*)orderId;//TODO add api params&comment
 + (void)trackPageview;//TODO add api params&comment
 + (void)trackTutorialService;//TODO add api params&comment
 + (void)trackBuyService;//TODO add api params&comment

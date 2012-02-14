@@ -3,16 +3,17 @@
 //  XA
 //
 //  Created by mini xingcloud on 12-2-13.
-//  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
+//  Copyright (c) 2012 XingCloud.com All rights reserved.
 //
 
 #ifndef XA_XADataManager_h
 #define XA_XADataManager_h
+#include "XAStreamBuffer.h"
 namespace XingCloud
 {
     namespace XA
     {
-        typedef unsigned char uint8_t;
+        //
         typedef struct serviceEnable
         {
             bool crashReportEnable;
@@ -35,12 +36,17 @@ namespace XingCloud
             TUTORIAL,
             PAGE_VIEW
         } XAEventType;
-
+        typedef void CURL;
         class XADataManager
         {
         public:
             XADataManager();
-            bool    sendDataBuffer(const char buffer);
+            void    applicationLaunch();
+            void    applicationTerminate();
+            void    applicationPause();
+            void    applicationResume();
+            
+            bool    sendDataBuffer(const char *buffer);
             void    sendCacheBuffer();
             void    sendErrorBuffer();
             
@@ -48,16 +54,19 @@ namespace XingCloud
             void    setCrashReportEnabled(bool value);
             void    setHeartbeatEnabled(bool value);
             void    setReportPolicy(short reportPolice);
+            void    setChannelID(const char *value);
+            void    setAppID(const char *value);
         private:
-            uint8_t *sendBuffer;
-            uint8_t *errorBuffer;
-            uint8_t *cacheBuffer;
+            XAStreamBuffer *sendBuffer;
+            XAStreamBuffer *errorBuffer;
+            XAStreamBuffer *cacheBuffer;
             ServicesEnable servicesEnable;
+            char *channelID;
+            char *appID;
             short reportPolice;
             uint8_t* realloc();
         };
     }
 }
-
 
 #endif

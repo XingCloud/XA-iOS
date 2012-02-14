@@ -67,45 +67,47 @@ static NSString* VERSION = @"1.0";
 
 + (void)setCrashReportEnabled:(BOOL)value
 {
-    //[[XA sharedXA]->__internal setValue:[NSNumber numberWithBool:value] forKey:@"crashReportEnabled"];
     ((XingCloud::XA::XADataManager*)([XA sharedXA]->__internal))->setCrashReportEnabled(value);
 }
 + (void)setLogEnabled:(BOOL)value
 {
     ((XingCloud::XA::XADataManager*)([XA sharedXA]->__internal))->setLogEnabled(value);
-   // [[XA sharedXA]->__internal setValue:[NSNumber numberWithBool:value] forKey:@"logEnabled"];
 }
 + (void)setDelegate:(id <XADelegate>)delegate
 {
-    
-    //[[XA sharedXA]->__internal setValue:delegate forKey:@"delegate"];
+    ((XingCloud::XA::XADataManager*)([XA sharedXA]->__internal))->setAppID([[delegate appId] cStringUsingEncoding:NSUTF8StringEncoding]);
+    ((XingCloud::XA::XADataManager*)([XA sharedXA]->__internal))->setChannelID([[delegate channelId] cStringUsingEncoding:NSUTF8StringEncoding]);
 }
 + (void)setReportPolicy:(XAReportPolicy)rp
 {
     ((XingCloud::XA::XADataManager*)([XA sharedXA]->__internal))->setReportPolicy(rp);
-   // [[XA sharedXA]->__internal setValue:[NSNumber numberWithInt:rp] forKey:@"reportPolicy"];
 }
 
 #pragma mark XA life circle
 + (void)applicationDidLaunched
 {
-    
+    //发送update,view,error事件
+    ((XingCloud::XA::XADataManager*)([XA sharedXA]->__internal))->applicationLaunch();
 }
 + (void)applicationWillTerminate
 {
-    
+    //发送quit事件
+    ((XingCloud::XA::XADataManager*)([XA sharedXA]->__internal))->applicationTerminate();
 }
 + (void)setHeartbeatEnabled:(BOOL)value
 {
-    
+    //定时发送事件
+   ((XingCloud::XA::XADataManager*)([XA sharedXA]->__internal))->setHeartbeatEnabled(value);
 }
 + (void)applicationDidBecomeActive
 {
-    
+    //重启定时器
+    ((XingCloud::XA::XADataManager*)([XA sharedXA]->__internal))->applicationResume();
 }
-+ (void)applicationDidEnterBackground
++ (void)applicationWillResignActive
 {
-    
+    //暂停定时器
+    ((XingCloud::XA::XADataManager*)([XA sharedXA]->__internal))->applicationPause();
 }
 #pragma mark XA events
 + (void)event:(XAEventType)eventType appId:(NSString*)appId userId:(NSString*)uid timestamp:(NSInteger)timestamp params:(NSString*)params;
@@ -117,7 +119,7 @@ static NSString* VERSION = @"1.0";
 {
     
 }
-+ (void)trackTransaction
++ (void)trackTransaction:(int)function :(NSString*)values
 {
     
 }
