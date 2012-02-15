@@ -24,7 +24,7 @@ typedef enum {
     PAY_COMPLETE,
     BUY_ITEM,
     COUNT,//累计事件数量
-    MILESTONE,//定义一个目标
+    MILESTONE,//定义一个目标,目标名
     TUTORIAL,
     PAGE_VIEW
 } XAEventType;
@@ -102,15 +102,54 @@ typedef enum {
 + (void)setHeartbeatEnabled:(BOOL)value;
 
 #pragma mark XA events
-+ (void)trackEvent:(NSString*)function action:(NSString*)action level1:(NSString*)level1 level2:(NSString*)level2 level3:(NSString*)level3 level4:(NSString*)level4 level5:(NSString*)level5 count:(NSInteger)count;
 /**
- 
+ 统计游戏开发者需要定制的一些游戏中的计数点。
+ @param action  自定义的游戏中的action名称，如buy,sell等
+ @param level1  分类1
+ @param level2  分类2
+ @param level3  分类3
+ @param level4  分类4
+ @param level5  分类5
+ @param count   影响的数值
  */
-+ (void)trackTransaction:(int)event:(NSString*)orderId;//TODO add api params&comment
-+ (void)trackPageview;//TODO add api params&comment
-+ (void)trackTutorialService;//TODO add api params&comment
-+ (void)trackBuyService;//TODO add api params&comment
++ (void)trackCount:(NSString*)action level1:(NSString*)level1 level2:(NSString*)level2 level3:(NSString*)level3 level4:(NSString*)level4 level5:(NSString*)level5 count:(NSInteger)count;
+/**
+ 记录在某段时间注册的用户，完成指定任务数量的百分比
+ @param milestoneName 
+ */
++ (void)trackMilestone:(NSString*)milestoneName;
+/**
+ 游戏中的交易行为接口
+ @param event 交易过程中的事件类型，可以通过XAEventType::XXX指定
+ @param orderId     表示是哪个订单的，不能重复
+ @param cost        金币价格
+ @param money       虚拟货币价格
+ @param category    物品的类别
+ @param name        物品的名字
+ */
++ (void)trackTransaction:(int)event orderId:(NSString*)orderId cost:(NSString*)cost money:(NSString*)money category:(NSString*)category name:(NSString*)name;
 
++ (void)trackPageview;//TODO add api params&comment
+/**
+ 记录新手引导步骤中，每步完成的数量，从而查看新手引导过程中的用户流失率
+ @param event       事件的名称，XAEventType::TUTORIAL
+ @parma index       教程步骤
+ @param name        教程名称
+ @param tutorial    值固定为tutorial
+ */
++ (void)trackTutorialService:(NSString*)index name:(NSString*)name tutorial:(NSString*)tutorial;
+/**
+ 记录某类币种结合用户所定义资源结构的收入和支出情况。分别统计出人数，次数和总和。
+ @param currency    币种
+ @param payType     收入或支出（只能取值为income/payout)
+ @param level1      属性1
+ @param level2      属性2
+ @param level3      属性3
+ @param level4      属性4
+ @param level5      属性5
+ @param count       交易数量
+ */
++ (void)trackBuyService:(NSString*)currency payType:(NSString*)payType level1:(NSString*)level1 level2:(NSString*)level2 level3:(NSString*)level3 level4:(NSString*)level4 level5:(NSString*)level5 amount:(int)amount;
 /**
  通用的事件发送API
  @param eventType 事件类型

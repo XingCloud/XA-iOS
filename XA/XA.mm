@@ -112,28 +112,53 @@ static NSString* VERSION = @"1.0";
 #pragma mark XA events
 + (void)event:(XAEventType)eventType appId:(NSString*)appId userId:(NSString*)uid timestamp:(NSInteger)timestamp params:(NSString*)params;
 {
-    
+    ((XingCloud::XA::XADataManager*)([XA sharedXA]->__internal))->generalEvent(eventType, 
+                                                                               [appId cStringUsingEncoding:NSUTF8StringEncoding],
+                                                                               [uid cStringUsingEncoding:NSUTF8StringEncoding],timestamp,
+                                                                               [params cStringUsingEncoding:NSUTF8StringEncoding] );
 }
-
-+ (void)trackEvent:(NSString*)function action:(NSString*)action level1:(NSString*)level1 level2:(NSString*)level2 level3:(NSString*)level3 level4:(NSString*)level4 level5:(NSString*)level5 count:(NSInteger)count
++ (void)trackCount:(NSString*)action level1:(NSString*)level1 level2:(NSString*)level2 level3:(NSString*)level3 level4:(NSString*)level4 level5:(NSString*)level5 count:(NSInteger)count
 {
-    
+    ((XingCloud::XA::XADataManager*)([XA sharedXA]->__internal))->trackCount([action cStringUsingEncoding:NSUTF8StringEncoding], 
+                                                                             [level1 cStringUsingEncoding:NSUTF8StringEncoding], 
+                                                                             [level2 cStringUsingEncoding:NSUTF8StringEncoding],
+                                                                             [level3 cStringUsingEncoding:NSUTF8StringEncoding], 
+                                                                             [level4 cStringUsingEncoding:NSUTF8StringEncoding], 
+                                                                             [level5 cStringUsingEncoding:NSUTF8StringEncoding], count);
 }
-+ (void)trackTransaction:(int)function :(NSString*)values
++ (void)trackTransaction:(int)event orderId:(NSString*)orderId cost:(NSString*)cost money:(NSString*)money category:(NSString*)category name:(NSString*)name;
 {
-    
+    ((XingCloud::XA::XADataManager*)([XA sharedXA]->__internal))->trackTransaction(event,  
+                                                                                   [orderId cStringUsingEncoding:NSUTF8StringEncoding],
+                                                                                   [cost cStringUsingEncoding:NSUTF8StringEncoding], 
+                                                                                   [money cStringUsingEncoding:NSUTF8StringEncoding], 
+                                                                                   [category cStringUsingEncoding:NSUTF8StringEncoding],
+                                                                                   [name cStringUsingEncoding:NSUTF8StringEncoding]);
+}
++ (void)trackMilestone:(NSString*)milestoneName
+{
+    ((XingCloud::XA::XADataManager*)([XA sharedXA]->__internal))->trackMilestone(  [milestoneName cStringUsingEncoding:NSUTF8StringEncoding]);
 }
 + (void)trackPageview
 {
-    
+    //((XingCloud::XA::XADataManager*)([XA sharedXA]->__internal))
 }
-+ (void)trackTutorialService
++ (void)trackTutorialService:(NSString*)index name:(NSString*)name tutorial:(NSString*)tutorial
 {
-    
+    ((XingCloud::XA::XADataManager*)([XA sharedXA]->__internal))->trackTutorialService([index cStringUsingEncoding:NSUTF8StringEncoding],
+                                                                                       [name cStringUsingEncoding:NSUTF8StringEncoding],
+                                                                                       [tutorial cStringUsingEncoding:NSUTF8StringEncoding]);
 }
-+ (void)trackBuyService
+//@param event       XAEventType::BUY_ITEM
++ (void)trackBuyService:(NSString*)currency payType:(NSString*)payType level1:(NSString*)level1 level2:(NSString*)level2 level3:(NSString*)level3 level4:(NSString*)level4 level5:(NSString*)level5 amount:(int)amount
 {
-    
+    ((XingCloud::XA::XADataManager*)([XA sharedXA]->__internal))->trackBuyService([currency cStringUsingEncoding:NSUTF8StringEncoding], 
+                                                                                  [payType cStringUsingEncoding:NSUTF8StringEncoding],
+                                                                                  [level1 cStringUsingEncoding:NSUTF8StringEncoding],
+                                                                                  [level2 cStringUsingEncoding:NSUTF8StringEncoding],
+                                                                                  [level3 cStringUsingEncoding:NSUTF8StringEncoding],
+                                                                                  [level4 cStringUsingEncoding:NSUTF8StringEncoding],
+                                                                                  [level5 cStringUsingEncoding:NSUTF8StringEncoding],amount);
 }
 
 @end

@@ -21,41 +21,50 @@ namespace XingCloud
             bool heartbeatEnable;
         }ServicesEnable;
         
-        typedef enum {
-            USER_UPDATE,
-            USER_INCREMENT,
-            USER_VISIT,
-            USER_HEARTBEAT,
-            USER_LOGIN,
-            USER_ERROR,
-            USER_QUIT,
-            PAY_COMPLETE,
-            BUY_ITEM,
-            COUNT,
-            MILESTONE,
-            TUTORIAL,
-            PAGE_VIEW
-        } XAEventType;
-        typedef void CURL;
+//        typedef enum {
+//            USER_UPDATE,
+//            USER_INCREMENT,
+//            USER_VISIT,
+//            USER_HEARTBEAT,
+//            USER_LOGIN,
+//            USER_ERROR,
+//            USER_QUIT,
+//            PAY_COMPLETE,
+//            BUY_ITEM,
+//            COUNT,
+//            MILESTONE,
+//            TUTORIAL,
+//            PAGE_VIEW
+//        } XAEventType;
+      
         class XADataManager
         {
         public:
             XADataManager();
+            ~XADataManager();
+            //life cicle
             void    applicationLaunch();
             void    applicationTerminate();
             void    applicationPause();
             void    applicationResume();
             
-            bool    sendDataBuffer(const char *buffer);
-            void    sendCacheBuffer();
-            void    sendErrorBuffer();
+                   
+            //XA events
+            void    trackCount(const char *action,const char *level1,const char *level2,const char *level3,const char *level4,const char *level5,int count);
+            void    trackMilestone(const char *milestoneName);
+            void    trackTransaction(int event,const char *orderId,const char *cost,const char*money,const char *category,const char *name);
+            void    trackTutorialService(const char *index,const char *name,const char *tutorial);
+            void    trackBuyService(const char *currency,const char *payType,const char *level1,const char *level2,const char *level3,const char *level4,const char *level5,int                             amount);
+            void    generalEvent(int event,const char *appId,const char *userId,int timestamp,const char *params);
             
+            //set arguments
             void    setLogEnabled(bool value);
             void    setCrashReportEnabled(bool value);
             void    setHeartbeatEnabled(bool value);
             void    setReportPolicy(short reportPolice);
             void    setChannelID(const char *value);
             void    setAppID(const char *value);
+            
         private:
             XAStreamBuffer *sendBuffer;
             XAStreamBuffer *errorBuffer;
@@ -64,7 +73,7 @@ namespace XingCloud
             char *channelID;
             char *appID;
             short reportPolice;
-            uint8_t* realloc();
+            //uint8_t* realloc();
         };
     }
 }

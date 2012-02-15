@@ -7,7 +7,6 @@
 //
 
 #include "XADataManager.h"
-#include "curl.h"
 namespace XingCloud 
 {
     namespace  XA
@@ -17,18 +16,12 @@ namespace XingCloud
             channelID=NULL;
             appID=NULL;
         }
-        bool    XADataManager::sendDataBuffer(const char *buffer)
+        XADataManager::~XADataManager()
         {
-            
-            return true;
-        }
-        void    XADataManager::sendCacheBuffer()
-        {
-            
-        }
-        void    XADataManager::sendErrorBuffer()
-        {
-            
+            if(channelID!=NULL)
+                delete channelID;
+            if(appID!=NULL)
+                delete appID;
         }
         void    XADataManager::setLogEnabled(bool value)
         {
@@ -46,6 +39,17 @@ namespace XingCloud
         {
             this->reportPolice = reportPolice;
         }
+        void    XADataManager::setChannelID(const char *value)
+        {
+            channelID = new char[strlen(value)+1];
+            strcpy(channelID,value);
+        }
+        void    XADataManager::setAppID(const char *value)
+        {
+            appID = new char[strlen(value)+1];
+            strcpy(appID,value);
+        } 
+        //life cicle
         void    XADataManager::applicationLaunch()
         {
             //发送系统信息，user.update,user.view,user.error事件
@@ -59,23 +63,38 @@ namespace XingCloud
         {
             
         }
-        void    XADataManager::setChannelID(const char *value)
-        {
-            channelID = new char[strlen(value)+1];
-            strcpy(channelID,value);
-        }
-        void    XADataManager::setAppID(const char *value)
-        {
-            appID = new char[strlen(value)+1];
-            strcpy(appID,value);
-        }
         void    XADataManager::applicationResume()
         {
             
         }
-        uint8_t* XADataManager::realloc()
+        //track  events
+        void    XADataManager::trackCount(const char *action,const char *level1,const char *level2,const char *level3,const char *level4,const char *level5,int count)
         {
-            return 0;
+            
         }
+        void    XADataManager::trackMilestone(const char *milestoneName)
+        {
+            
+        }
+        void    XADataManager::trackTransaction(int event,const char *orderId,const char *cost,const char*money,const char *category,const char *name)
+        {
+            
+        }
+        void    XADataManager::trackTutorialService(const char *index,const char *name,const char *tutorial)
+        {
+            
+        }
+        void    XADataManager::trackBuyService(const char *currency,const char *payType,const char *level1,const char *level2,const char *level3,const char *level4,const char *level5,int                             amount)
+        {
+            
+        }
+        void    XADataManager::generalEvent(int event,const char *appId,const char *userId,int timestamp,const char *params)
+        {
+            
+        }
+//        uint8_t* XADataManager::realloc()
+//        {
+//            return 0;
+//        }
     }
 }

@@ -26,7 +26,6 @@ static XASystemInfo *instance=nil;
             [[self alloc] init];
         }
     }
-    
     return instance;
 }
 static char *my_strcpy(const char *jsonKey,const char *jsonValue)
