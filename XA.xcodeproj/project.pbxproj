@@ -13,6 +13,43 @@
 		9039C3C414E91C4B009E8809 /* XASystemInfo.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9039C3C214E91C4B009E8809 /* XASystemInfo.mm */; };
 		9039C3C714E91C5D009E8809 /* XADataManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 9039C3C614E91C5D009E8809 /* XADataManager.h */; };
 		9039C3C914E91C73009E8809 /* XADataManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9039C3C814E91C73009E8809 /* XADataManager.cpp */; };
+		9094360F14E9F39000CF071A /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9094360E14E9F39000CF071A /* SenTestingKit.framework */; };
+		9094361014E9F39000CF071A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D152A8D14E520E20095AC4B /* UIKit.framework */; };
+		9094361114E9F39000CF071A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DEBC49B14E2783700C9559E /* Foundation.framework */; };
+		9094361714E9F39000CF071A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 9094361514E9F39000CF071A /* InfoPlist.strings */; };
+		9094361A14E9F39000CF071A /* TestXA.m in Sources */ = {isa = PBXBuildFile; fileRef = 9094361914E9F39000CF071A /* TestXA.m */; };
+		9094363614EA0B9E00CF071A /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9094363514EA0B9E00CF071A /* CoreTelephony.framework */; };
+		9094364F14EA2D0300CF071A /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9094364E14EA2D0300CF071A /* SystemConfiguration.framework */; };
+		9094365314EA2F5400CF071A /* Reachability.h in Headers */ = {isa = PBXBuildFile; fileRef = 9094365114EA2F5400CF071A /* Reachability.h */; };
+		9094365414EA2F5400CF071A /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 9094365214EA2F5400CF071A /* Reachability.m */; };
+		90F09CF214EB58A400DF76C9 /* XASendData.h in Headers */ = {isa = PBXBuildFile; fileRef = 90F09CF114EB58A400DF76C9 /* XASendData.h */; };
+		90F09CF414EB58B500DF76C9 /* XASendData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 90F09CF314EB58B500DF76C9 /* XASendData.cpp */; };
+		90F09D1D14EB8B5200DF76C9 /* XAStreamBuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 90F09D0914EB8B5200DF76C9 /* XAStreamBuffer.cpp */; };
+		90F09D1E14EB8B5200DF76C9 /* XAStreamBuffer.h in Headers */ = {isa = PBXBuildFile; fileRef = 90F09D0A14EB8B5200DF76C9 /* XAStreamBuffer.h */; };
+		90F09D2914EB8B6A00DF76C9 /* config.h in Headers */ = {isa = PBXBuildFile; fileRef = 90F09D2014EB8B6A00DF76C9 /* config.h */; };
+		90F09D2A14EB8B6A00DF76C9 /* Mutex.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 90F09D2114EB8B6A00DF76C9 /* Mutex.cpp */; };
+		90F09D2B14EB8B6A00DF76C9 /* Mutex.h in Headers */ = {isa = PBXBuildFile; fileRef = 90F09D2214EB8B6A00DF76C9 /* Mutex.h */; };
+		90F09D2C14EB8B6A00DF76C9 /* Semaphore.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 90F09D2314EB8B6A00DF76C9 /* Semaphore.cpp */; };
+		90F09D2D14EB8B6A00DF76C9 /* Semaphore.h in Headers */ = {isa = PBXBuildFile; fileRef = 90F09D2414EB8B6A00DF76C9 /* Semaphore.h */; };
+		90F09D2E14EB8B6A00DF76C9 /* Thread.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 90F09D2514EB8B6A00DF76C9 /* Thread.cpp */; };
+		90F09D2F14EB8B6A00DF76C9 /* Thread.h in Headers */ = {isa = PBXBuildFile; fileRef = 90F09D2614EB8B6A00DF76C9 /* Thread.h */; };
+		90F09D3014EB8B6A00DF76C9 /* ThreadPool.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 90F09D2714EB8B6A00DF76C9 /* ThreadPool.cpp */; };
+		90F09D3114EB8B6A00DF76C9 /* ThreadPool.h in Headers */ = {isa = PBXBuildFile; fileRef = 90F09D2814EB8B6A00DF76C9 /* ThreadPool.h */; };
+		90F09D5B14EB905200DF76C9 /* curl 2.h in Headers */ = {isa = PBXBuildFile; fileRef = 90F09D4E14EB905200DF76C9 /* curl 2.h */; };
+		90F09D5C14EB905200DF76C9 /* curl.h in Headers */ = {isa = PBXBuildFile; fileRef = 90F09D4F14EB905200DF76C9 /* curl.h */; };
+		90F09D5D14EB905200DF76C9 /* curlbuild.h in Headers */ = {isa = PBXBuildFile; fileRef = 90F09D5014EB905200DF76C9 /* curlbuild.h */; };
+		90F09D5E14EB905200DF76C9 /* curlrules.h in Headers */ = {isa = PBXBuildFile; fileRef = 90F09D5114EB905200DF76C9 /* curlrules.h */; };
+		90F09D5F14EB905200DF76C9 /* curlver.h in Headers */ = {isa = PBXBuildFile; fileRef = 90F09D5214EB905200DF76C9 /* curlver.h */; };
+		90F09D6014EB905200DF76C9 /* easy.h in Headers */ = {isa = PBXBuildFile; fileRef = 90F09D5314EB905200DF76C9 /* easy.h */; };
+		90F09D6114EB905200DF76C9 /* mprintf.h in Headers */ = {isa = PBXBuildFile; fileRef = 90F09D5414EB905200DF76C9 /* mprintf.h */; };
+		90F09D6214EB905200DF76C9 /* multi.h in Headers */ = {isa = PBXBuildFile; fileRef = 90F09D5514EB905200DF76C9 /* multi.h */; };
+		90F09D6314EB905200DF76C9 /* stdcheaders.h in Headers */ = {isa = PBXBuildFile; fileRef = 90F09D5614EB905200DF76C9 /* stdcheaders.h */; };
+		90F09D6414EB905200DF76C9 /* typecheck-gcc.h in Headers */ = {isa = PBXBuildFile; fileRef = 90F09D5714EB905200DF76C9 /* typecheck-gcc.h */; };
+		90F09D6514EB905200DF76C9 /* types.h in Headers */ = {isa = PBXBuildFile; fileRef = 90F09D5814EB905200DF76C9 /* types.h */; };
+		90F09D6614EB905200DF76C9 /* XAThreadPool.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 90F09D5914EB905200DF76C9 /* XAThreadPool.cpp */; };
+		90F09D6714EB905200DF76C9 /* XAThreadPool.h in Headers */ = {isa = PBXBuildFile; fileRef = 90F09D5A14EB905200DF76C9 /* XAThreadPool.h */; };
+		90F09D8714EBBDE600DF76C9 /* cJSON.c in Sources */ = {isa = PBXBuildFile; fileRef = 90F09D8514EBBDE600DF76C9 /* cJSON.c */; };
+		90F09D8814EBBDE600DF76C9 /* cJSON.h in Headers */ = {isa = PBXBuildFile; fileRef = 90F09D8614EBBDE600DF76C9 /* cJSON.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -20,7 +57,7 @@
 		2D152A9014E520E20095AC4B /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		2D152A9214E520E20095AC4B /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
 		2D152A9414E520E20095AC4B /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
-		2DEBC49814E2783700C9559E /* libXA.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libXA.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		2DEBC49814E2783700C9559E /* lib		.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "lib\t\t.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2DEBC49B14E2783700C9559E /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		2DEBC49F14E2783700C9559E /* XA-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "XA-Prefix.pch"; sourceTree = "<group>"; };
 		2DEBC4A014E2783700C9559E /* XA.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XA.h; sourceTree = "<group>"; };
@@ -29,6 +66,45 @@
 		9039C3C214E91C4B009E8809 /* XASystemInfo.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = XASystemInfo.mm; sourceTree = "<group>"; };
 		9039C3C614E91C5D009E8809 /* XADataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XADataManager.h; sourceTree = "<group>"; };
 		9039C3C814E91C73009E8809 /* XADataManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = XADataManager.cpp; sourceTree = "<group>"; };
+		9094360D14E9F39000CF071A /* TestXA.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TestXA.octest; sourceTree = BUILT_PRODUCTS_DIR; };
+		9094360E14E9F39000CF071A /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
+		9094361414E9F39000CF071A /* TestXA-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "TestXA-Info.plist"; sourceTree = "<group>"; };
+		9094361614E9F39000CF071A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		9094361814E9F39000CF071A /* TestXA.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TestXA.h; sourceTree = "<group>"; };
+		9094361914E9F39000CF071A /* TestXA.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TestXA.m; sourceTree = "<group>"; };
+		9094361B14E9F39000CF071A /* TestXA-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "TestXA-Prefix.pch"; sourceTree = "<group>"; };
+		9094363514EA0B9E00CF071A /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
+		9094364E14EA2D0300CF071A /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		9094365114EA2F5400CF071A /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Reachability.h; path = ../../../Downloads/Reachability/Classes/Reachability.h; sourceTree = "<group>"; };
+		9094365214EA2F5400CF071A /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Reachability.m; path = ../../../Downloads/Reachability/Classes/Reachability.m; sourceTree = "<group>"; };
+		90F09CF114EB58A400DF76C9 /* XASendData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XASendData.h; sourceTree = "<group>"; };
+		90F09CF314EB58B500DF76C9 /* XASendData.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = XASendData.cpp; sourceTree = "<group>"; };
+		90F09D0914EB8B5200DF76C9 /* XAStreamBuffer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = XAStreamBuffer.cpp; sourceTree = SOURCE_ROOT; };
+		90F09D0A14EB8B5200DF76C9 /* XAStreamBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XAStreamBuffer.h; sourceTree = SOURCE_ROOT; };
+		90F09D2014EB8B6A00DF76C9 /* config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = config.h; sourceTree = "<group>"; };
+		90F09D2114EB8B6A00DF76C9 /* Mutex.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Mutex.cpp; sourceTree = "<group>"; };
+		90F09D2214EB8B6A00DF76C9 /* Mutex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Mutex.h; sourceTree = "<group>"; };
+		90F09D2314EB8B6A00DF76C9 /* Semaphore.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Semaphore.cpp; sourceTree = "<group>"; };
+		90F09D2414EB8B6A00DF76C9 /* Semaphore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Semaphore.h; sourceTree = "<group>"; };
+		90F09D2514EB8B6A00DF76C9 /* Thread.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Thread.cpp; sourceTree = "<group>"; };
+		90F09D2614EB8B6A00DF76C9 /* Thread.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Thread.h; sourceTree = "<group>"; };
+		90F09D2714EB8B6A00DF76C9 /* ThreadPool.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ThreadPool.cpp; sourceTree = "<group>"; };
+		90F09D2814EB8B6A00DF76C9 /* ThreadPool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThreadPool.h; sourceTree = "<group>"; };
+		90F09D4E14EB905200DF76C9 /* curl 2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "curl 2.h"; sourceTree = "<group>"; };
+		90F09D4F14EB905200DF76C9 /* curl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = curl.h; sourceTree = "<group>"; };
+		90F09D5014EB905200DF76C9 /* curlbuild.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = curlbuild.h; sourceTree = "<group>"; };
+		90F09D5114EB905200DF76C9 /* curlrules.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = curlrules.h; sourceTree = "<group>"; };
+		90F09D5214EB905200DF76C9 /* curlver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = curlver.h; sourceTree = "<group>"; };
+		90F09D5314EB905200DF76C9 /* easy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = easy.h; sourceTree = "<group>"; };
+		90F09D5414EB905200DF76C9 /* mprintf.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mprintf.h; sourceTree = "<group>"; };
+		90F09D5514EB905200DF76C9 /* multi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = multi.h; sourceTree = "<group>"; };
+		90F09D5614EB905200DF76C9 /* stdcheaders.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stdcheaders.h; sourceTree = "<group>"; };
+		90F09D5714EB905200DF76C9 /* typecheck-gcc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "typecheck-gcc.h"; sourceTree = "<group>"; };
+		90F09D5814EB905200DF76C9 /* types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = types.h; sourceTree = "<group>"; };
+		90F09D5914EB905200DF76C9 /* XAThreadPool.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = XAThreadPool.cpp; sourceTree = "<group>"; };
+		90F09D5A14EB905200DF76C9 /* XAThreadPool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XAThreadPool.h; sourceTree = "<group>"; };
+		90F09D8514EBBDE600DF76C9 /* cJSON.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = cJSON.c; sourceTree = "<group>"; };
+		90F09D8614EBBDE600DF76C9 /* cJSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cJSON.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -36,7 +112,19 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9094364F14EA2D0300CF071A /* SystemConfiguration.framework in Frameworks */,
+				9094363614EA0B9E00CF071A /* CoreTelephony.framework in Frameworks */,
 				2DEBC49C14E2783700C9559E /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9094360914E9F39000CF071A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9094360F14E9F39000CF071A /* SenTestingKit.framework in Frameworks */,
+				9094361014E9F39000CF071A /* UIKit.framework in Frameworks */,
+				9094361114E9F39000CF071A /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -47,6 +135,7 @@
 			isa = PBXGroup;
 			children = (
 				2DEBC49D14E2783700C9559E /* XA */,
+				9094361214E9F39000CF071A /* TestXA */,
 				2DEBC49A14E2783700C9559E /* Frameworks */,
 				2DEBC49914E2783700C9559E /* Products */,
 			);
@@ -55,7 +144,8 @@
 		2DEBC49914E2783700C9559E /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				2DEBC49814E2783700C9559E /* libXA.a */,
+				2DEBC49814E2783700C9559E /* lib		.a */,
+				9094360D14E9F39000CF071A /* TestXA.octest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -63,11 +153,14 @@
 		2DEBC49A14E2783700C9559E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				9094364E14EA2D0300CF071A /* SystemConfiguration.framework */,
+				9094363514EA0B9E00CF071A /* CoreTelephony.framework */,
 				2DEBC49B14E2783700C9559E /* Foundation.framework */,
 				2D152A8D14E520E20095AC4B /* UIKit.framework */,
 				2D152A9014E520E20095AC4B /* CoreGraphics.framework */,
 				2D152A9214E520E20095AC4B /* GLKit.framework */,
 				2D152A9414E520E20095AC4B /* OpenGLES.framework */,
+				9094360E14E9F39000CF071A /* SenTestingKit.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -78,10 +171,6 @@
 				2DEBC4A014E2783700C9559E /* XA.h */,
 				2DEBC4A114E2783700C9559E /* XA.mm */,
 				2DEBC49E14E2783700C9559E /* Supporting Files */,
-				9039C3C114E91C4B009E8809 /* XASystemInfo.h */,
-				9039C3C214E91C4B009E8809 /* XASystemInfo.mm */,
-				9039C3C614E91C5D009E8809 /* XADataManager.h */,
-				9039C3C814E91C73009E8809 /* XADataManager.cpp */,
 			);
 			path = XA;
 			sourceTree = "<group>";
@@ -89,9 +178,79 @@
 		2DEBC49E14E2783700C9559E /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				90F09D4D14EB905100DF76C9 /* curl */,
+				90F09D1F14EB8B6A00DF76C9 /* threadpool */,
+				90F09CF314EB58B500DF76C9 /* XASendData.cpp */,
+				90F09D5914EB905200DF76C9 /* XAThreadPool.cpp */,
+				90F09D5A14EB905200DF76C9 /* XAThreadPool.h */,
+				9039C3C814E91C73009E8809 /* XADataManager.cpp */,
+				90F09D8514EBBDE600DF76C9 /* cJSON.c */,
+				90F09CF114EB58A400DF76C9 /* XASendData.h */,
+				90F09D8614EBBDE600DF76C9 /* cJSON.h */,
+				9039C3C614E91C5D009E8809 /* XADataManager.h */,
+				9039C3C214E91C4B009E8809 /* XASystemInfo.mm */,
+				9094365114EA2F5400CF071A /* Reachability.h */,
+				9094365214EA2F5400CF071A /* Reachability.m */,
+				90F09D0A14EB8B5200DF76C9 /* XAStreamBuffer.h */,
+				90F09D0914EB8B5200DF76C9 /* XAStreamBuffer.cpp */,
+				9039C3C114E91C4B009E8809 /* XASystemInfo.h */,
 				2DEBC49F14E2783700C9559E /* XA-Prefix.pch */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		9094361214E9F39000CF071A /* TestXA */ = {
+			isa = PBXGroup;
+			children = (
+				9094361814E9F39000CF071A /* TestXA.h */,
+				9094361914E9F39000CF071A /* TestXA.m */,
+				9094361314E9F39000CF071A /* Supporting Files */,
+			);
+			path = TestXA;
+			sourceTree = "<group>";
+		};
+		9094361314E9F39000CF071A /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				9094361414E9F39000CF071A /* TestXA-Info.plist */,
+				9094361514E9F39000CF071A /* InfoPlist.strings */,
+				9094361B14E9F39000CF071A /* TestXA-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		90F09D1F14EB8B6A00DF76C9 /* threadpool */ = {
+			isa = PBXGroup;
+			children = (
+				90F09D2014EB8B6A00DF76C9 /* config.h */,
+				90F09D2114EB8B6A00DF76C9 /* Mutex.cpp */,
+				90F09D2214EB8B6A00DF76C9 /* Mutex.h */,
+				90F09D2314EB8B6A00DF76C9 /* Semaphore.cpp */,
+				90F09D2414EB8B6A00DF76C9 /* Semaphore.h */,
+				90F09D2514EB8B6A00DF76C9 /* Thread.cpp */,
+				90F09D2614EB8B6A00DF76C9 /* Thread.h */,
+				90F09D2714EB8B6A00DF76C9 /* ThreadPool.cpp */,
+				90F09D2814EB8B6A00DF76C9 /* ThreadPool.h */,
+			);
+			path = threadpool;
+			sourceTree = "<group>";
+		};
+		90F09D4D14EB905100DF76C9 /* curl */ = {
+			isa = PBXGroup;
+			children = (
+				90F09D4E14EB905200DF76C9 /* curl 2.h */,
+				90F09D4F14EB905200DF76C9 /* curl.h */,
+				90F09D5014EB905200DF76C9 /* curlbuild.h */,
+				90F09D5114EB905200DF76C9 /* curlrules.h */,
+				90F09D5214EB905200DF76C9 /* curlver.h */,
+				90F09D5314EB905200DF76C9 /* easy.h */,
+				90F09D5414EB905200DF76C9 /* mprintf.h */,
+				90F09D5514EB905200DF76C9 /* multi.h */,
+				90F09D5614EB905200DF76C9 /* stdcheaders.h */,
+				90F09D5714EB905200DF76C9 /* typecheck-gcc.h */,
+				90F09D5814EB905200DF76C9 /* types.h */,
+			);
+			path = curl;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -103,15 +262,36 @@
 			files = (
 				9039C3C314E91C4B009E8809 /* XASystemInfo.h in Headers */,
 				9039C3C714E91C5D009E8809 /* XADataManager.h in Headers */,
+				9094365314EA2F5400CF071A /* Reachability.h in Headers */,
+				90F09CF214EB58A400DF76C9 /* XASendData.h in Headers */,
+				90F09D1E14EB8B5200DF76C9 /* XAStreamBuffer.h in Headers */,
+				90F09D2914EB8B6A00DF76C9 /* config.h in Headers */,
+				90F09D2B14EB8B6A00DF76C9 /* Mutex.h in Headers */,
+				90F09D2D14EB8B6A00DF76C9 /* Semaphore.h in Headers */,
+				90F09D2F14EB8B6A00DF76C9 /* Thread.h in Headers */,
+				90F09D3114EB8B6A00DF76C9 /* ThreadPool.h in Headers */,
+				90F09D5B14EB905200DF76C9 /* curl 2.h in Headers */,
+				90F09D5C14EB905200DF76C9 /* curl.h in Headers */,
+				90F09D5D14EB905200DF76C9 /* curlbuild.h in Headers */,
+				90F09D5E14EB905200DF76C9 /* curlrules.h in Headers */,
+				90F09D5F14EB905200DF76C9 /* curlver.h in Headers */,
+				90F09D6014EB905200DF76C9 /* easy.h in Headers */,
+				90F09D6114EB905200DF76C9 /* mprintf.h in Headers */,
+				90F09D6214EB905200DF76C9 /* multi.h in Headers */,
+				90F09D6314EB905200DF76C9 /* stdcheaders.h in Headers */,
+				90F09D6414EB905200DF76C9 /* typecheck-gcc.h in Headers */,
+				90F09D6514EB905200DF76C9 /* types.h in Headers */,
+				90F09D6714EB905200DF76C9 /* XAThreadPool.h in Headers */,
+				90F09D8814EBBDE600DF76C9 /* cJSON.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		2DEBC49714E2783700C9559E /* XA */ = {
+		2DEBC49714E2783700C9559E /* 		 */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 2DEBC4A514E2783700C9559E /* Build configuration list for PBXNativeTarget "XA" */;
+			buildConfigurationList = 2DEBC4A514E2783700C9559E /* Build configuration list for PBXNativeTarget "		" */;
 			buildPhases = (
 				2DEBC49414E2783700C9559E /* Sources */,
 				2DEBC49514E2783700C9559E /* Frameworks */,
@@ -121,10 +301,28 @@
 			);
 			dependencies = (
 			);
-			name = XA;
+			name = "		";
 			productName = XA;
-			productReference = 2DEBC49814E2783700C9559E /* libXA.a */;
+			productReference = 2DEBC49814E2783700C9559E /* lib		.a */;
 			productType = "com.apple.product-type.library.static";
+		};
+		9094360C14E9F39000CF071A /* TestXA */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9094361E14E9F39000CF071A /* Build configuration list for PBXNativeTarget "TestXA" */;
+			buildPhases = (
+				9094360814E9F39000CF071A /* Sources */,
+				9094360914E9F39000CF071A /* Frameworks */,
+				9094360A14E9F39000CF071A /* Resources */,
+				9094360B14E9F39000CF071A /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = TestXA;
+			productName = TestXA;
+			productReference = 9094360D14E9F39000CF071A /* TestXA.octest */;
+			productType = "com.apple.product-type.bundle";
 		};
 /* End PBXNativeTarget section */
 
@@ -146,10 +344,38 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				2DEBC49714E2783700C9559E /* XA */,
+				2DEBC49714E2783700C9559E /* 		 */,
+				9094360C14E9F39000CF071A /* TestXA */,
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		9094360A14E9F39000CF071A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9094361714E9F39000CF071A /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		9094360B14E9F39000CF071A /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		2DEBC49414E2783700C9559E /* Sources */ = {
@@ -159,10 +385,38 @@
 				2DEBC4A214E2783700C9559E /* XA.mm in Sources */,
 				9039C3C414E91C4B009E8809 /* XASystemInfo.mm in Sources */,
 				9039C3C914E91C73009E8809 /* XADataManager.cpp in Sources */,
+				9094365414EA2F5400CF071A /* Reachability.m in Sources */,
+				90F09CF414EB58B500DF76C9 /* XASendData.cpp in Sources */,
+				90F09D1D14EB8B5200DF76C9 /* XAStreamBuffer.cpp in Sources */,
+				90F09D2A14EB8B6A00DF76C9 /* Mutex.cpp in Sources */,
+				90F09D2C14EB8B6A00DF76C9 /* Semaphore.cpp in Sources */,
+				90F09D2E14EB8B6A00DF76C9 /* Thread.cpp in Sources */,
+				90F09D3014EB8B6A00DF76C9 /* ThreadPool.cpp in Sources */,
+				90F09D6614EB905200DF76C9 /* XAThreadPool.cpp in Sources */,
+				90F09D8714EBBDE600DF76C9 /* cJSON.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9094360814E9F39000CF071A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9094361A14E9F39000CF071A /* TestXA.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		9094361514E9F39000CF071A /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				9094361614E9F39000CF071A /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		2DEBC4A314E2783700C9559E /* Debug */ = {
@@ -211,6 +465,11 @@
 				DSTROOT = /tmp/XA.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "XA/XA-Prefix.pch";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/..\"",
+					"\"$(SRCROOT)\"",
+				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -223,9 +482,46 @@
 				DSTROOT = /tmp/XA.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "XA/XA-Prefix.pch";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/..\"",
+					"\"$(SRCROOT)\"",
+				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		9094361C14E9F39000CF071A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_ARC = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "TestXA/TestXA-Prefix.pch";
+				INFOPLIST_FILE = "TestXA/TestXA-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Debug;
+		};
+		9094361D14E9F39000CF071A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_ARC = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "TestXA/TestXA-Prefix.pch";
+				INFOPLIST_FILE = "TestXA/TestXA-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = octest;
 			};
 			name = Release;
 		};
@@ -241,11 +537,20 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		2DEBC4A514E2783700C9559E /* Build configuration list for PBXNativeTarget "XA" */ = {
+		2DEBC4A514E2783700C9559E /* Build configuration list for PBXNativeTarget "		" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				2DEBC4A614E2783700C9559E /* Debug */,
 				2DEBC4A714E2783700C9559E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		9094361E14E9F39000CF071A /* Build configuration list for PBXNativeTarget "TestXA" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9094361C14E9F39000CF071A /* Debug */,
+				9094361D14E9F39000CF071A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

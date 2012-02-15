@@ -60,7 +60,6 @@ namespace XingCloud
         }
         static size_t postWriteData(void *recvBuffer,size_t size,size_t nmemb,void *userParam)
         {
-            
             return size*nmemb;
         }
     }

@@ -51,7 +51,6 @@ static NSString* VERSION = @"1.0";
 
 - (void)dealloc
 {
-    //[__internal release];
     delete (XingCloud::XA::XADataManager*)__internal;
     [super dealloc];
 }

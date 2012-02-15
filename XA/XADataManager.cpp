@@ -7,6 +7,8 @@
 //
 
 #include "XADataManager.h"
+//#include "XASystemInfo.h"
+#include "cJSON.h"
 namespace XingCloud 
 {
     namespace  XA
