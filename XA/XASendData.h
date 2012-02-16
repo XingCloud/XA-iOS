@@ -20,11 +20,11 @@ namespace XingCloud
             //send data
             XASendData();
             ~XASendData();
-            bool    getMethodSend(const char *buffer);
-            bool    postMethodSend(const char *buffer);
+            static bool    getMethodSend(const char *buffer);
+            static bool    postMethodSend(const char *buffer);
         private:
            // CURL *easy_handle;
-            TaskGroup  taskGroup;
+            static TaskGroup  taskGroup;
         };
     }
 }

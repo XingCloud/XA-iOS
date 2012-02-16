@@ -149,7 +149,7 @@ static NSString* VERSION = @"1.0";
                                                                                        [tutorial cStringUsingEncoding:NSUTF8StringEncoding]);
 }
 //@param event       XAEventType::BUY_ITEM
-+ (void)trackBuyService:(NSString*)currency payType:(NSString*)payType level1:(NSString*)level1 level2:(NSString*)level2 level3:(NSString*)level3 level4:(NSString*)level4 level5:(NSString*)level5 amount:(int)amount
++ (void)trackBuyService:(NSString*)currency payType:(NSString*)payType level1:(NSString*)level1 level2:(NSString*)level2 level3:(NSString*)level3 level4:(NSString*)level4 level5:(NSString*)level5 amount:(int)amount number:(int)number
 {
     ((XingCloud::XA::XADataManager*)([XA sharedXA]->__internal))->trackBuyService([currency cStringUsingEncoding:NSUTF8StringEncoding], 
                                                                                   [payType cStringUsingEncoding:NSUTF8StringEncoding],
@@ -157,7 +157,7 @@ static NSString* VERSION = @"1.0";
                                                                                   [level2 cStringUsingEncoding:NSUTF8StringEncoding],
                                                                                   [level3 cStringUsingEncoding:NSUTF8StringEncoding],
                                                                                   [level4 cStringUsingEncoding:NSUTF8StringEncoding],
-                                                                                  [level5 cStringUsingEncoding:NSUTF8StringEncoding],amount);
+                                                                                  [level5 cStringUsingEncoding:NSUTF8StringEncoding],amount,number);
 }
 
 @end

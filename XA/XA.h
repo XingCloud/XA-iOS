@@ -19,6 +19,7 @@ typedef enum {
     USER_VISIT,
     USER_HEARTBEAT,
     USER_LOGIN,
+    
     USER_ERROR,
     USER_QUIT,
     PAY_COMPLETE,
@@ -149,7 +150,7 @@ typedef enum {
  @param level5      属性5
  @param count       交易数量
  */
-+ (void)trackBuyService:(NSString*)currency payType:(NSString*)payType level1:(NSString*)level1 level2:(NSString*)level2 level3:(NSString*)level3 level4:(NSString*)level4 level5:(NSString*)level5 amount:(int)amount;
++ (void)trackBuyService:(NSString*)currency payType:(NSString*)payType level1:(NSString*)level1 level2:(NSString*)level2 level3:(NSString*)level3 level4:(NSString*)level4 level5:(NSString*)level5 amount:(int)amount number:(int)number;
 /**
  通用的事件发送API
  @param eventType 事件类型

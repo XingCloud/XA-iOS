@@ -34,6 +34,7 @@ namespace XingCloud
             curl_easy_setopt(easy_handle,CURLOPT_HTTPHEADER,header);
             CURLcode code=curl_easy_perform(easy_handle);//
             curl_slist_free_all(header);
+            XingCloud::XAThreadPool::ExecuteTask::addTask(new XingCloud::XAThreadPool::XATask(postPerform,easy_handle,&taskGroup));
             curl_easy_cleanup(easy_handle);
             return code==CURLE_OK;
         }

@@ -6,6 +6,7 @@
 //  Copyright (c) 2012 XingCloud.com All rights reserved.
 //
 //
+#include "cJSON.h"
 namespace XingCloud
 {
     namespace XA
@@ -27,7 +28,7 @@ namespace XingCloud
             static void getDeviceID(char *source);
             static bool isJailbroken(char *source);
             
-            static char *getSystemInfo(char *appID,int timesamp);
+            static cJSON *getSystemInfo(unsigned int timesamp);
             
             static int phoneType;
         };

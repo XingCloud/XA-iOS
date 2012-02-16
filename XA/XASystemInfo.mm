@@ -8,26 +8,15 @@
 
 #import "XASystemInfo.h"
 #import "Reachability.h"
-#include "cJSON.h"
+
 #import <UIKit/UIKit.h>
 #import <CoreTelephony/CTCarrier.h>
 #import <CoreTelephony/CTTelephonyNetworkInfo.h>
 #include <sys/utsname.h>
 #include <string.h>
-char* XingCloud::XA::SystemInfo::getSystemInfo(char *appID,int timestamp)
+cJSON* XingCloud::XA::SystemInfo::getSystemInfo(unsigned int timestamp)
 {
     char temp[64]={0};
-    cJSON * root=cJSON_CreateObject();
-    cJSON * signedParamsObject=cJSON_CreateObject();
-    
-    getDeviceID(temp);
-    cJSON_AddItemToObject(signedParamsObject,"appid",cJSON_CreateString(appID));
-    cJSON_AddItemToObject(signedParamsObject,"uid",cJSON_CreateString(temp));
-    memset(temp,0,64);
-    sprintf(temp,"%d",timestamp);
-    cJSON_AddItemToObject(signedParamsObject,"timestamp",cJSON_CreateString(temp));
-    
-    cJSON * statsArray=cJSON_CreateArray();
     
     cJSON * statsObject=cJSON_CreateObject();
     cJSON_AddItemToObject(statsObject,"eventName",cJSON_CreateString("user.update"));
@@ -71,15 +60,11 @@ char* XingCloud::XA::SystemInfo::getSystemInfo(char *appID,int timestamp)
     cJSON_AddItemToObject(statsParams,"XA_tagname",cJSON_CreateString(temp));
     
     
-    cJSON_AddItemToObject(statsObject,"eventName",statsParams);
+    cJSON_AddItemToObject(statsObject,"params",statsParams);
     memset(temp,0,64);
-    sprintf(temp,"%d",timestamp);
+    sprintf(temp,"%u",timestamp);
     cJSON_AddItemToObject(statsObject,"timestamp",cJSON_CreateString(temp));//to confirm
-    
-    cJSON_AddItemReferenceToArray(statsArray,statsObject);
-    cJSON_AddItemToObject(root,"signedParams",signedParamsObject);
-    cJSON_AddItemToObject(root,"stats",statsArray);
-    return cJSON_Print(root);
+    return statsObject;
 }
 bool XingCloud::XA::SystemInfo::isJailbroken(char *source) 
 {
