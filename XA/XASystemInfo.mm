@@ -18,8 +18,8 @@ cJSON* XingCloud::XA::SystemInfo::getSystemInfo(unsigned int timestamp)
 {
     char temp[64]={0};
     
-    cJSON * statsObject=cJSON_CreateObject();
-    cJSON_AddItemToObject(statsObject,"eventName",cJSON_CreateString("user.update"));
+//    cJSON * statsObject=cJSON_CreateObject();
+//    cJSON_AddItemToObject(statsObject,"eventName",cJSON_CreateString("user.update"));
     
     cJSON * statsParams=cJSON_CreateObject();
     
@@ -60,11 +60,20 @@ cJSON* XingCloud::XA::SystemInfo::getSystemInfo(unsigned int timestamp)
     cJSON_AddItemToObject(statsParams,"XA_tagname",cJSON_CreateString(temp));
     
     
-    cJSON_AddItemToObject(statsObject,"params",statsParams);
-    memset(temp,0,64);
-    sprintf(temp,"%u",timestamp);
-    cJSON_AddItemToObject(statsObject,"timestamp",cJSON_CreateString(temp));//to confirm
-    return statsObject;
+//    cJSON_AddItemToObject(statsObject,"params",statsParams);
+//    memset(temp,0,64);
+//    sprintf(temp,"%u",timestamp);
+//    cJSON_AddItemToObject(statsObject,"timestamp",cJSON_CreateString(temp));//to confirm
+    return statsParams;
+}
+void XingCloud::XA::SystemInfo::getAppFileDir(char* result)
+{
+	NSString *urlString = [[NSBundle mainBundle] bundlePath];
+    if(urlString!=nil)
+    {
+        const char* destDir = [urlString UTF8String];
+        strcpy(result, destDir);
+    }
 }
 bool XingCloud::XA::SystemInfo::isJailbroken(char *source) 
 {

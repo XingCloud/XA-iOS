@@ -9,11 +9,12 @@
 #ifndef XA_XALifeCicle_h
 #define XA_XALifeCicle_h
 #include "cJSON.h"
-#include <vector>
+#include <pthread.h>
 namespace XingCloud
 {
     namespace XA
     {
+        void* timerFunc(void *param);
         class XADataProxy
         {
         public:
@@ -29,9 +30,15 @@ namespace XingCloud
             void    handleTrackTransaction(cJSON *transactionEvent);
             void    handleTrackTutorialService(cJSON *tutorialEvent);
             void    handleTrackBuyService(cJSON *buyEvent);       
-            void    handleGeneralEvent(cJSON *generalEvent);
+            void    handleGeneralEvent(int event,const char *appId,const char *userId,int timestamp,const char *params);
+            void    handleInternalEvent(int event,cJSON *params);
+            void    eventString(int event,char *source);
+            cJSON*  encapsulateEvent(int event,cJSON *params);
+            static cJSON*  getGenSignedParamsObject(const char *appId,const char *userId,int timestamp);
+            static void  sendInternalEventData();
+            static void  sendGeneralEventData();
         private:
-            std::vector<char*> eventCounts;
+            pthread_t pTimerId;
         };
     }
 }

@@ -53,18 +53,19 @@ namespace XingCloud
             static  cJSON* getSignedParamsJsonObject();
             static int     getTimer();
             static unsigned int     getTimestamp();
+            static char *channelID;
+            static char *appID;
+            static char *uid;
+            static short reportPolice;
+            FILE   *localCache;
         private:
             XAStreamBuffer *sendBuffer;
             XAStreamBuffer *errorBuffer;
             XAStreamBuffer *cacheBuffer;
             ServicesEnable servicesEnable;
-            static char *channelID;
-            static char *appID;
-            static char *uid;
-            short reportPolice;
+            
             XADataProxy   xaDataProxy;
             bool       firstInitApp;
-            //uint8_t* realloc();
         };
     }
 }

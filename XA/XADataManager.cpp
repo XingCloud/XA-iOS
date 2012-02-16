@@ -100,6 +100,16 @@ namespace XingCloud
             sprintf(temp,"%u",getTimestamp());
             cJSON_AddItemToObject(visitJson,"timestamp",cJSON_CreateString(temp));
             
+            char appDir[512]={0};
+            SystemInfo::getAppFileDir(appDir);
+            char cacheDir[521]={0};
+            sprintf(cacheDir,"%s/appCache.log",appDir);
+            localCache=fopen(cacheDir,"wb+");
+            if(feof(localCache))
+            {//本地文件存在，不发送update事件
+                
+            }
+            
             if(servicesEnable.crashReportEnable)
             {
                 //cJSON * visitJson=cJSON_CreateObject();
@@ -121,11 +131,6 @@ namespace XingCloud
         //track  events
         void    XADataManager::trackCount(const char *action,const char *level1,const char *level2,const char *level3,const char *level4,const char *level5,int count)
         {
-            cJSON *countJson=cJSON_CreateObject();
-            char temp[64]={0};
-            sprintf(temp,"%u",getTimestamp());
-            cJSON_AddItemToObject(countJson,"timestamp",cJSON_CreateString(temp));
-            cJSON_AddItemToObject(countJson,"eventName",cJSON_CreateString("count"));
             
             cJSON * countParams=cJSON_CreateObject();
             cJSON_AddItemToObject(countParams,"type",cJSON_CreateString(action));
@@ -134,72 +139,52 @@ namespace XingCloud
             cJSON_AddItemToObject(countParams,"level_3",cJSON_CreateString(level3));
             cJSON_AddItemToObject(countParams,"level_4",cJSON_CreateString(level4));
             cJSON_AddItemToObject(countParams,"level_5",cJSON_CreateString(level5));
-            memset(temp,0,64);
-            sprintf(temp,"%d",count);
-            cJSON_AddItemToObject(countParams,"amount",cJSON_CreateString(temp));
-            
-            cJSON_AddItemToObject(countJson,"params",countParams);
-            xaDataProxy.handleTrackCount(countJson);
+           
+            xaDataProxy.handleTrackCount(countParams);
         }
         void    XADataManager::trackMilestone(const char *milestoneName)
         {
-            cJSON *milestoneJson=cJSON_CreateObject();
-            char temp[64]={0};
-            sprintf(temp,"%u",getTimestamp());
-            cJSON_AddItemToObject(milestoneJson,"timestamp",cJSON_CreateString(temp));
-            cJSON_AddItemToObject(milestoneJson,"eventName",cJSON_CreateString("milestone"));
             
             cJSON * milestoneParams=cJSON_CreateObject();
             cJSON_AddItemToObject(milestoneParams,"milestone_name",cJSON_CreateString(milestoneName));
             
-            
-            cJSON_AddItemToObject(milestoneJson,"params",milestoneParams);
-            xaDataProxy.handleTrackMilestone(milestoneJson);
+            xaDataProxy.handleTrackMilestone(milestoneParams);
             
         }
         void    XADataManager::trackTransaction(int event,const char *orderId,const char *cost,const char *money,const char *category,const char *name)
         {
-            cJSON *transJson=cJSON_CreateObject();
-            cJSON_AddItemToObject(transJson,"eventName",cJSON_CreateString("pay.complete"));
-            
-            cJSON * transParams=cJSON_CreateObject();
-            cJSON_AddItemToObject(transParams,"trans_id",cJSON_CreateString(orderId));
-            cJSON_AddItemToObject(transParams,"gross",cJSON_CreateString(cost));
-            //cJSON_AddItemToObject(transParams,"",cJSON_CreateString(tutorial));
-            
-            char temp[64]={0};
-            sprintf(temp,"%u",getTimestamp());
-            cJSON_AddItemToObject(transJson,"timestamp",cJSON_CreateString(temp));
-            
-            cJSON_AddItemToObject(transJson,"params",transParams);
-            xaDataProxy.handleTrackTransaction(transJson);
+//            cJSON *transJson=cJSON_CreateObject();
+//            cJSON_AddItemToObject(transJson,"eventName",cJSON_CreateString("pay.complete"));
+//            
+              cJSON * transParams=cJSON_CreateObject();
+//            cJSON_AddItemToObject(transParams,"trans_id",cJSON_CreateString(orderId));
+//            cJSON_AddItemToObject(transParams,"gross",cJSON_CreateString(cost));
+//            //cJSON_AddItemToObject(transParams,"",cJSON_CreateString(tutorial));
+//            
+//            char temp[64]={0};
+//            sprintf(temp,"%u",getTimestamp());
+//            cJSON_AddItemToObject(transJson,"timestamp",cJSON_CreateString(temp));
+//            
+//            cJSON_AddItemToObject(transJson,"params",transParams);
+            xaDataProxy.handleTrackTransaction(transParams);
         }
         void    XADataManager::trackTutorialService(const char *index,const char *name,const char *tutorial)
         {
-            cJSON *tutorialJson=cJSON_CreateObject();
-            char temp[64]={0};
-            sprintf(temp,"%u",getTimestamp());
-            cJSON_AddItemToObject(tutorialJson,"timestamp",cJSON_CreateString(temp));
-            cJSON_AddItemToObject(tutorialJson,"eventName",cJSON_CreateString("tutorial"));
+        
             
             cJSON * tutorialParams=cJSON_CreateObject();
             cJSON_AddItemToObject(tutorialParams,"index",cJSON_CreateString(index));
             cJSON_AddItemToObject(tutorialParams,"step_name",cJSON_CreateString(name));
             cJSON_AddItemToObject(tutorialParams,"tid",cJSON_CreateString(tutorial));
-            
-            cJSON_AddItemToObject(tutorialJson,"data",tutorialParams);
-            xaDataProxy.handleTrackTutorialService(tutorialJson);
+        
+            xaDataProxy.handleTrackTutorialService(tutorialParams);
             
 
         }
         void    XADataManager::trackBuyService(const char *currency,const char *payType,const char *level1,const char *level2,const char *level3,const char *level4,const char *level5,int                             amount,int number)
         {
-            cJSON *buyJson=cJSON_CreateObject();
+
             char temp[64]={0};
-            sprintf(temp,"%u",getTimestamp());
-            cJSON_AddItemToObject(buyJson,"timestamp",cJSON_CreateString(temp));
-            cJSON_AddItemToObject(buyJson,"eventName",cJSON_CreateString("buy.item"));
-            
             cJSON *buyParams=cJSON_CreateObject();
             cJSON_AddItemToObject(buyParams,"resource",cJSON_CreateString(currency));
             cJSON_AddItemToObject(buyParams,"paytype",cJSON_CreateString(payType));
@@ -214,84 +199,13 @@ namespace XingCloud
             memset(temp,0,64);
             sprintf(temp,"%d",number);
             cJSON_AddItemToObject(buyParams,"number",cJSON_CreateString(temp));
-            //number TODO
-            cJSON_AddItemToObject(buyJson,"params",buyParams);
-            xaDataProxy.handleTrackBuyService(buyJson);
             
-            
+            xaDataProxy.handleTrackBuyService(buyParams);
         }
         void    XADataManager::generalEvent(int event,const char *appId,const char *userId,int timestamp,const char *params)
         {
-            cJSON *generalRootJson=cJSON_CreateObject();
-            cJSON *signedJson=cJSON_CreateObject();
-            cJSON_AddItemToObject(signedJson,"appid",cJSON_CreateString(appId));
-            cJSON_AddItemToObject(signedJson,"uid",cJSON_CreateString(userId));
-            char temp[64]={0};
-            sprintf(temp,"%u",getTimestamp());
-            cJSON_AddItemToObject(signedJson,"timestamp",cJSON_CreateString(temp));
-            
-            cJSON *statsJson=cJSON_CreateArray();
-            cJSON *statsObjectJson=cJSON_CreateObject();
-            memset(temp,0,64);
-            switch(event)
-            {
-                case 0:
-                    strcpy(temp,"user.update");
-                    break;
-                case 1:
-                    strcpy(temp,"user.increment");
-                    break;
-                case 2:
-                    strcpy(temp,"user.visit");
-                    break;
-                case 3:
-                    strcpy(temp,"user.heartbeat");
-                    break;
-                case 4:
-                    strcpy(temp,"user.login");
-                    break;
-                case 5:
-                    strcpy(temp,"user.error");
-                    break;
-                case 6:
-                    strcpy(temp,"user.quit");
-                    break;
-                case 7:
-                    strcpy(temp,"pay.complete");
-                    break;
-                case 8:
-                    strcpy(temp,"buy.item");
-                    break;
-                case 9:
-                    strcpy(temp,"count");
-                    break;
-                case 10:
-                    strcpy(temp,"milestone");
-                    break;
-                case 11:
-                    strcpy(temp,"tutorial");
-                    break;
-                case 12:
-                    strcpy(temp,"page.view");//not support 
-                default:
-                    
-                    break;
-            }
-            cJSON_AddItemToObject(statsObjectJson,"eventName",cJSON_CreateString(temp));
-            
-            cJSON *statsParams=cJSON_CreateObject();
-            cJSON_AddItemToObject(statsParams,"params",cJSON_CreateString(params));
-            cJSON_AddItemToObject(statsObjectJson,"params",statsParams);
-            memset(temp,0,64);
-            sprintf(temp,"%d",timestamp);
-            cJSON_AddItemToObject(statsObjectJson,"timestamp",cJSON_CreateString(temp));
-            
-            cJSON_AddItemToArray(statsJson,statsObjectJson);
-            
-            cJSON_AddItemToObject(generalRootJson,"signedParams",signedJson);
-            cJSON_AddItemToObject(generalRootJson,"stats",statsJson);
-            
-            xaDataProxy.handleGeneralEvent(generalRootJson);
+                        
+            xaDataProxy.handleGeneralEvent(event,appId,userId,timestamp,params);
         }
 
     }
