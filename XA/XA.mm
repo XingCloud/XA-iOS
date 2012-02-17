@@ -96,7 +96,7 @@ static NSString* VERSION = @"1.0";
 + (void)setHeartbeatEnabled:(BOOL)value
 {
     //定时发送事件
-   ((XingCloud::XA::XADataManager*)([XA sharedXA]->__internal))->setHeartbeatEnabled(value);
+    ((XingCloud::XA::XADataManager*)([XA sharedXA]->__internal))->setHeartbeatEnabled(value);
 }
 + (void)applicationDidBecomeActive
 {

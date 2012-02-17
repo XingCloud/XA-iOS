@@ -7,6 +7,7 @@
 //
 //
 #include "cJSON.h"
+void    XAPRINT(const char *fmt,...);
 namespace XingCloud
 {
     namespace XA

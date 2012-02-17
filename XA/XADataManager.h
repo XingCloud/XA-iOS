@@ -21,8 +21,7 @@ namespace XingCloud
             bool logPrintEnable;
             bool heartbeatEnable;
         }ServicesEnable;
-        void    XAPRINT(const char *fmt,...);
-        class XADataManager
+               class XADataManager
         {
         public:
             XADataManager();

@@ -13,12 +13,15 @@ namespace XingCloud
 {
     namespace  XA
     {
+        char *XADataManager::channelID=NULL;
+        char *XADataManager::appID=NULL;
+        char *XADataManager::uid=NULL;
+        short XADataManager::reportPolice=3;
         XADataManager::XADataManager()
         {
-            channelID=NULL;
-            appID=NULL;
-            uid=new char[32];
-            SystemInfo::getDeviceID(uid);
+            //channelID=NULL;
+            //appID=NULL;
+            
         }
         XADataManager::~XADataManager()
         {
@@ -104,13 +107,19 @@ namespace XingCloud
             SystemInfo::getAppFileDir(appDir);
             char cacheDir[521]={0};
             sprintf(cacheDir,"%s/appCache.log",appDir);
-            localCache=fopen(cacheDir,"wb+");
-            if(feof(localCache))
+            localCache=fopen(cacheDir,"ab+");
+            if(fgetc(localCache)==EOF)
             {//本地文件不存在，发送update事件
-                xaDataProxy.handleApplicationLaunch(visitJson,SystemInfo::getSystemInfo(getTimestamp()),NULL);
+                uid=new char[128];
+                SystemInfo::getDeviceID(uid);
+                fwrite(uid,127,1,localCache);
+                xaDataProxy.handleApplicationLaunch(visitJson,NULL,NULL);
+                //xaDataProxy.handleApplicationLaunch(visitJson,SystemInfo::getSystemInfo(getTimestamp()),NULL);
             }
             else
             {//本地文件存在，不发送update事件
+                fseek(localCache,0,SEEK_SET);
+                fread(uid,127,1,localCache);
                 xaDataProxy.handleApplicationLaunch(visitJson,NULL,NULL);
             }
             
@@ -206,22 +215,6 @@ namespace XingCloud
                         
             xaDataProxy.handleGeneralEvent(event,appId,userId,timestamp,params);
         }
-        void    XAPRINT(const char *fmt,...)
-        {
-            char sprint_buf[128];
-            
-            va_list args;
-            
-            va_start(args, fmt);
-            
-            vsprintf(sprint_buf, fmt, args);
-            
-            va_end(args);
-#ifdef IOS
-            NSLog(@"%s",sprint_buf);
-#endif
-            
-        }
-
+        
     }
 }

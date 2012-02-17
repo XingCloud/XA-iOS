@@ -58,6 +58,7 @@ namespace  XingCloud
         {
             while(1)
             {
+                long timer=XADataManager::getTimer();
                 if(XADataManager::getTimer()==1 && XADataManager::reportPolice==3)
                 {
                     XADataProxy::sendInternalEventData();
@@ -128,7 +129,7 @@ namespace  XingCloud
         }
         cJSON*    XADataProxy::encapsulateEvent(int event,cJSON *params)
         {
-            char temp[32]={0};
+            char temp[64]={0};
             eventString(event,temp);
             cJSON  *eventJson=cJSON_CreateObject();
             cJSON_AddItemToObject(eventJson,"eventName",cJSON_CreateString(temp));
@@ -140,7 +141,7 @@ namespace  XingCloud
         }
         void    XADataProxy::handleInternalEvent(int event,cJSON *params)
         {
-            
+            XAPRINT(cJSON_PrintUnformatted(params));
             if(XADataManager::reportPolice==0)
             {//实时发送
                 cJSON *root=cJSON_CreateObject();

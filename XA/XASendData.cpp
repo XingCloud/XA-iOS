@@ -12,6 +12,7 @@ namespace XingCloud
 {
     namespace XA
     {
+        TaskGroup   XASendData::taskGroup;
         static size_t postWriteData(void *recvBuffer,size_t size,size_t nmemb,void *userParam);
         unsigned int  postPerform(void *param);
         XASendData::XASendData()

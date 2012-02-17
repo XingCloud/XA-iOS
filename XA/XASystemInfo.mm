@@ -14,6 +14,24 @@
 #import <CoreTelephony/CTTelephonyNetworkInfo.h>
 #include <sys/utsname.h>
 #include <string.h>
+int XingCloud::XA::SystemInfo::phoneType=0;
+void    XAPRINT(const char *fmt,...)
+{
+    char sprint_buf[128];
+    
+    va_list args;
+    
+    va_start(args, fmt);
+    
+    vsprintf(sprint_buf, fmt, args);
+    
+    va_end(args);
+    //#ifdef IOS
+    NSLog(@"%s",sprint_buf);
+    //#endif
+    
+}
+
 cJSON* XingCloud::XA::SystemInfo::getSystemInfo(unsigned int timestamp)
 {
     char temp[64]={0};
@@ -68,10 +86,11 @@ cJSON* XingCloud::XA::SystemInfo::getSystemInfo(unsigned int timestamp)
 }
 void XingCloud::XA::SystemInfo::getAppFileDir(char* result)
 {
-	NSString *urlString = [[NSBundle mainBundle] bundlePath];
-    if(urlString!=nil)
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0];
+    if(documentsDirectory!=nil)
     {
-        const char* destDir = [urlString UTF8String];
+        const char* destDir = [documentsDirectory UTF8String];
         strcpy(result, destDir);
     }
 }
@@ -171,7 +190,7 @@ void XingCloud::XA::SystemInfo::getNetOperator(char *source)
     CTTelephonyNetworkInfo *netInfo = [[CTTelephonyNetworkInfo alloc] init];
     CTCarrier *carrier = [netInfo subscriberCellularProvider];
     strcpy(source,[[carrier carrierName] cStringUsingEncoding:NSUTF8StringEncoding]);
-    //my_strcpy("netOperator", [[carrier 	carrierName] cStringUsingEncoding:NSUTF8StringEncoding]);
+  
     [netInfo release];
 }
 void XingCloud::XA::SystemInfo::getDeviceID(char *source)
@@ -187,24 +206,23 @@ void XingCloud::XA::SystemInfo::getDeviceID(char *source)
 void XingCloud::XA::SystemInfo::getDeviceModel(char *source)
 {
     strcpy(source,[[[UIDevice currentDevice] model] cStringUsingEncoding:NSUTF8StringEncoding]);
-    //my_strcpy("deviceModel",[[[UIDevice currentDevice] model] cStringUsingEncoding:NSUTF8StringEncoding]);
+   
 }
 void XingCloud::XA::SystemInfo::getCountryISO(char *source)
 {
     CTTelephonyNetworkInfo *netInfo = [[CTTelephonyNetworkInfo alloc] init];
     CTCarrier *carrier = [netInfo subscriberCellularProvider];
     strcpy(source,[[carrier isoCountryCode] cStringUsingEncoding:NSUTF8StringEncoding]);
-    //my_strcpy("countryIso", [[carrier isoCountryCode] cStringUsingEncoding:NSUTF8StringEncoding]);
     [netInfo release];
 }
 void XingCloud::XA::SystemInfo::iOSVersion(char *source)
 {
     strcpy(source,[[[UIDevice currentDevice] systemVersion] cStringUsingEncoding:NSUTF8StringEncoding]);
-    //my_strcpy("osVersion",[[[UIDevice currentDevice] systemVersion] cStringUsingEncoding:NSUTF8StringEncoding]);
 }
 void XingCloud::XA::SystemInfo::getXAtagname(char *source)
 {
     //NSString *plistPath = [[NSBundle mainBundle] pathForResource:@"Data" ofType:@"plist"];
     NSDictionary* infoDict = [[NSBundle mainBundle] infoDictionary];
     NSString* version = [infoDict objectForKey:@"CFBundleVersion"];//版本号
+    strcpy(source,[version cStringUsingEncoding:NSUTF8StringEncoding]);
 }
