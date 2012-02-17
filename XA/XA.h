@@ -120,15 +120,15 @@ typedef enum {
  */
 + (void)trackMilestone:(NSString*)milestoneName;
 /**
- 游戏中的交易行为接口
- @param event 交易过程中的事件类型，可以通过XAEventType::XXX指定
- @param orderId     表示是哪个订单的，不能重复
- @param cost        金币价格
- @param money       虚拟货币价格
- @param category    物品的类别
- @param name        物品的名字
+ 游戏中的用户付费情况
+ @param trans_id     交易号
+ @param channel      第三方支付渠道的名称，例如paypal,google
+ @param gross        支付金额
+ @param gcurrency    货币类型，如USD
+ @param vamount      游戏币的数量
+ @param vcurrentcy   游戏币的单位
  */
-+ (void)trackTransaction:(int)event orderId:(NSString*)orderId cost:(NSString*)cost money:(NSString*)money category:(NSString*)category name:(NSString*)name;
++ (void)trackPayService:(NSString*)trans_id channel:(NSString*)channel gross:(NSString*)gross gcurrency:(NSString*)gcurrency vamount:(NSString*)vamount vcurrentcy:(NSString*)vcurrentcy;
 
 + (void)trackPageview;//TODO add api params&comment
 /**

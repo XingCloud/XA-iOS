@@ -125,14 +125,14 @@ static NSString* VERSION = @"1.0";
                                                                              [level4 cStringUsingEncoding:NSUTF8StringEncoding], 
                                                                              [level5 cStringUsingEncoding:NSUTF8StringEncoding], count);
 }
-+ (void)trackTransaction:(int)event orderId:(NSString*)orderId cost:(NSString*)cost money:(NSString*)money category:(NSString*)category name:(NSString*)name;
++ (void)trackPayService:(NSString*)trans_id channel:(NSString*)channel gross:(NSString*)gross gcurrency:(NSString*)gcurrency vamount:(NSString*)vamount vcurrentcy:(NSString*)vcurrentcy
 {
-    ((XingCloud::XA::XADataManager*)([XA sharedXA]->__internal))->trackTransaction(event,  
-                                                                                   [orderId cStringUsingEncoding:NSUTF8StringEncoding],
-                                                                                   [cost cStringUsingEncoding:NSUTF8StringEncoding], 
-                                                                                   [money cStringUsingEncoding:NSUTF8StringEncoding], 
-                                                                                   [category cStringUsingEncoding:NSUTF8StringEncoding],
-                                                                                   [name cStringUsingEncoding:NSUTF8StringEncoding]);
+    ((XingCloud::XA::XADataManager*)([XA sharedXA]->__internal))->trackTransaction([trans_id cStringUsingEncoding:NSUTF8StringEncoding],
+                                                                                   [channel cStringUsingEncoding:NSUTF8StringEncoding], 
+                                                                                   [gross cStringUsingEncoding:NSUTF8StringEncoding], 
+                                                                                   [gcurrency cStringUsingEncoding:NSUTF8StringEncoding],
+                                                                                   [vamount cStringUsingEncoding:NSUTF8StringEncoding],
+                                                                                   [vcurrentcy cStringUsingEncoding:NSUTF8StringEncoding]);
 }
 + (void)trackMilestone:(NSString*)milestoneName
 {

@@ -155,21 +155,16 @@ namespace XingCloud
             xaDataProxy.handleTrackMilestone(milestoneParams);
             
         }
-        void    XADataManager::trackTransaction(int event,const char *orderId,const char *cost,const char *money,const char *category,const char *name)
+        void    XADataManager::trackTransaction(const char *trans_id,const char *channel,const char*gross,const char *gcurrency,const char *vamount,const char *vcurrentcy)
         {
-//            cJSON *transJson=cJSON_CreateObject();
-//            cJSON_AddItemToObject(transJson,"eventName",cJSON_CreateString("pay.complete"));
-//            
-              cJSON * transParams=cJSON_CreateObject();
-//            cJSON_AddItemToObject(transParams,"trans_id",cJSON_CreateString(orderId));
-//            cJSON_AddItemToObject(transParams,"gross",cJSON_CreateString(cost));
-//            //cJSON_AddItemToObject(transParams,"",cJSON_CreateString(tutorial));
-//            
-//            char temp[64]={0};
-//            sprintf(temp,"%u",getTimestamp());
-//            cJSON_AddItemToObject(transJson,"timestamp",cJSON_CreateString(temp));
-//            
-//            cJSON_AddItemToObject(transJson,"params",transParams);
+            cJSON * transParams=cJSON_CreateObject();
+            cJSON_AddItemToObject(transParams,"trans_id",cJSON_CreateString(trans_id));
+            cJSON_AddItemToObject(transParams,"channel",cJSON_CreateString(channel));
+            cJSON_AddItemToObject(transParams,"gross",cJSON_CreateString(gross));
+            cJSON_AddItemToObject(transParams,"gcurrency",cJSON_CreateString(gcurrency));
+            cJSON_AddItemToObject(transParams,"vamount",cJSON_CreateString(vamount));
+            cJSON_AddItemToObject(transParams,"vcurrentcy",cJSON_CreateString(vcurrentcy));
+
             xaDataProxy.handleTrackTransaction(transParams);
         }
         void    XADataManager::trackTutorialService(const char *index,const char *name,const char *tutorial)
