@@ -9,6 +9,7 @@
 #ifndef XA_XASendData_h
 #define XA_XASendData_h
 #include "XAThreadPool.h"
+#include "Mutex.h"
 namespace XingCloud
 {
     namespace XA
@@ -22,9 +23,11 @@ namespace XingCloud
             ~XASendData();
             static bool    getMethodSend(const char *buffer);
             static bool    postMethodSend(const char *buffer);
+            
         private:
            // CURL *easy_handle;
             static TaskGroup  taskGroup;
+            
         };
     }
 }

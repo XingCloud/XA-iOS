@@ -22,7 +22,8 @@ namespace  XingCloud
         }generalEventJSON;
         std::vector<cJSON*> internalEventCache;
         std::vector<generalEventJSON> generalEventCache;
-        
+        Mutex   XADataProxy::internalMutex;
+        Mutex   XADataProxy::generalMutex;
         XADataProxy::XADataProxy()
         {
             
@@ -36,13 +37,17 @@ namespace  XingCloud
             cJSON *root=cJSON_CreateObject();
             cJSON_AddItemToObject(root,"signedParams",XADataManager::getSignedParamsJsonObject());
             cJSON *statArray=cJSON_CreateArray();
+            
+            Lock lock(internalMutex);
             for(int i=0;i<internalEventCache.size();i++)
                 cJSON_AddItemToArray(statArray,internalEventCache[i]);
             cJSON_AddItemToObject(root,"stats",statArray);
             XASendData::postMethodSend(cJSON_PrintUnformatted(root));
+            generalEventCache.clear();
         }
         void  XADataProxy::sendGeneralEventData()
         {
+            Lock  lock(generalMutex);
             for(int i=0;i<generalEventCache.size();i++)
             {
                 cJSON *root=cJSON_CreateObject();
@@ -52,6 +57,7 @@ namespace  XingCloud
                 cJSON_AddItemToObject(root,"stats",statsJson);
                 XASendData::postMethodSend(cJSON_PrintUnformatted(root));
             }
+            generalEventCache.clear();
             
         }
         void* timerFunc(void *param)
@@ -59,12 +65,13 @@ namespace  XingCloud
             while(1)
             {
                 long timer=XADataManager::getTimer();
-                if(XADataManager::getTimer()==1 && XADataManager::reportPolice==3)
+                bool isOneMinuteInterval=(timer==1)||(timer%2!=0);
+                if(isOneMinuteInterval && XADataManager::reportPolice==3)
                 {
                     XADataProxy::sendInternalEventData();
                     XADataProxy::sendGeneralEventData();
                 }
-                else if(XADataManager::getTimer()==5)
+                else if((timer%5==0)&&timer!=0)
                 {
                     cJSON *root=cJSON_CreateObject();
                     cJSON_AddItemToObject(root,"signedParams",XADataManager::getSignedParamsJsonObject());
@@ -157,6 +164,7 @@ namespace  XingCloud
             }
             else if(XADataManager::reportPolice==3)
             {//定时定量发送
+                Lock lock(internalMutex);
                 internalEventCache.push_back(encapsulateEvent(event,params));
                 if(internalEventCache.size()>=10)
                 {
@@ -203,6 +211,7 @@ namespace  XingCloud
             }
             else if(XADataManager::reportPolice==3)
             {//定时定量发送
+                Lock lock(generalMutex);
                 generalEventJSON ge;
                 ge.event=generalEventJSONObject;
                 strcpy(ge.appID,appId);

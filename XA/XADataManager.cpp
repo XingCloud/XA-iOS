@@ -8,6 +8,7 @@
 
 #include "XADataManager.h"
 #include "XASystemInfo.h"
+#include "XAThreadPool.h"
 #include<sys/time.h>
 namespace XingCloud 
 {
@@ -17,16 +18,20 @@ namespace XingCloud
         char *XADataManager::appID=NULL;
         char *XADataManager::uid=NULL;
         short XADataManager::reportPolice=3;
+        unsigned int  XADataManager::startTimer=0;
         XADataManager::XADataManager()
         {
+            XingCloud::XAThreadPool::ExecuteTask::initThreadPool();
         }
         XADataManager::~XADataManager()
         {
+            XingCloud::XAThreadPool::ExecuteTask::deleteThreadPool();
             delete uid;
             if(channelID!=NULL)
                 delete channelID;
             if(appID!=NULL)
                 delete appID;
+              fclose(localCache);
         }
         cJSON* XADataManager::getSignedParamsJsonObject()
         {
@@ -40,17 +45,15 @@ namespace XingCloud
         }
         int     XADataManager::getTimer()//return minute
         {
-            static int sys_time = 0;
-            
             struct timeval tv;
             gettimeofday(&tv, NULL);
-            if(!sys_time)
+            if(!startTimer)
             {
-                sys_time = tv.tv_sec;
-                return  0;
+                startTimer = tv.tv_sec;
+                return  startTimer;
             }
-            int interval=tv.tv_sec-sys_time;
-            sys_time=tv.tv_sec;
+            int interval=tv.tv_sec-startTimer;
+            
             return interval/60;
         }
         unsigned int    XADataManager::getTimestamp()
@@ -90,7 +93,7 @@ namespace XingCloud
         void    XADataManager::applicationLaunch()
         {
             //发送系统信息，user.update,user.visit,user.error事件
-            
+            startTimer=getTimer();
             cJSON *visitJson=cJSON_CreateObject();
             cJSON_AddItemToObject(visitJson,"eventName",cJSON_CreateString("user.visit"));
             cJSON * visitParams=cJSON_CreateObject();
@@ -111,6 +114,7 @@ namespace XingCloud
                 SystemInfo::getDeviceID(uid);
                 fwrite(uid,127,1,localCache);
                 xaDataProxy.handleApplicationLaunch(visitJson,NULL,NULL);
+            
                 //xaDataProxy.handleApplicationLaunch(visitJson,SystemInfo::getSystemInfo(getTimestamp()),NULL);
             }
             else
@@ -119,7 +123,7 @@ namespace XingCloud
                 fread(uid,127,1,localCache);
                 xaDataProxy.handleApplicationLaunch(visitJson,NULL,NULL);
             }
-            
+          
 //          if(servicesEnable.crashReportEnable)
 //          {
 //              //cJSON * visitJson=cJSON_CreateObject();

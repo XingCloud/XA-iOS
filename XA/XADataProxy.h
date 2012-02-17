@@ -9,6 +9,7 @@
 #ifndef XA_XALifeCicle_h
 #define XA_XALifeCicle_h
 #include "cJSON.h"
+#include "Mutex.h"
 #include <pthread.h>
 namespace XingCloud
 {
@@ -37,6 +38,9 @@ namespace XingCloud
             static cJSON*  getGenSignedParamsObject(const char *appId,const char *userId,int timestamp);
             static void  sendInternalEventData();
             static void  sendGeneralEventData();
+            
+            static Mutex   internalMutex;
+            static Mutex   generalMutex;
         private:
             pthread_t pTimerId;
         };

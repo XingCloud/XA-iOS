@@ -64,7 +64,7 @@ namespace XingCloud
             XAStreamBuffer *errorBuffer;
             XAStreamBuffer *cacheBuffer;
             ServicesEnable servicesEnable;
-            
+            static unsigned int  startTimer;
             XADataProxy   xaDataProxy;
             bool       firstInitApp;
         };

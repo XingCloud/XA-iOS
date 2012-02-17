@@ -14,6 +14,7 @@ namespace XingCloud
     {
         TaskGroup   XASendData::taskGroup;
         static size_t postWriteData(void *recvBuffer,size_t size,size_t nmemb,void *userParam);
+        
         unsigned int  postPerform(void *param);
         XASendData::XASendData()
         {
@@ -37,6 +38,7 @@ namespace XingCloud
             curl_slist_free_all(header);
             XingCloud::XAThreadPool::ExecuteTask::addTask(new XingCloud::XAThreadPool::XATask(postPerform,easy_handle,&taskGroup));
             curl_easy_cleanup(easy_handle);
+            
             return code==CURLE_OK;
         }
         
