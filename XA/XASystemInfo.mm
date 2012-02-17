@@ -145,7 +145,6 @@ void XingCloud::XA::SystemInfo::getCPUInfo(char *source)
 {
     struct utsname cpuInfo;
     strcpy(source,cpuInfo.machine);
-    //my_strcpy("cpuInfo",cpuInfo.machine);
 }
 void XingCloud::XA::SystemInfo::getResolution(char *source)
 {
@@ -184,6 +183,7 @@ void XingCloud::XA::SystemInfo::getPhoneType(char *source)
         default:
             break;
     }
+    [netInfo release];
 }
 void XingCloud::XA::SystemInfo::getNetOperator(char *source)
 {

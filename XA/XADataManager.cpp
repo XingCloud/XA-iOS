@@ -19,9 +19,6 @@ namespace XingCloud
         short XADataManager::reportPolice=3;
         XADataManager::XADataManager()
         {
-            //channelID=NULL;
-            //appID=NULL;
-            
         }
         XADataManager::~XADataManager()
         {
