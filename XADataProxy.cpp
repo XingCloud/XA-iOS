@@ -58,7 +58,7 @@ namespace  XingCloud
         {
             while(1)
             {
-                if(XADataManager::getTimer()==1)
+                if(XADataManager::getTimer()==1 && XADataManager::reportPolice==3)
                 {
                     XADataProxy::sendInternalEventData();
                     XADataProxy::sendGeneralEventData();
@@ -83,9 +83,10 @@ namespace  XingCloud
         {
             
             handleInternalEvent(2,(visitEvent));
-            handleInternalEvent(0,(updateEvent));
-            handleInternalEvent(5,(errorEvent));
-            
+            if(updateEvent!=NULL)
+                handleInternalEvent(0,(updateEvent));
+            if(errorEvent!=NULL)
+                handleInternalEvent(5,(errorEvent));
             if(XADataManager::reportPolice==1)
             {
                 XADataProxy::sendInternalEventData();
@@ -105,7 +106,6 @@ namespace  XingCloud
         {
             
         }
-        
         void    XADataProxy::handleTrackCount(cJSON *countEvent)
         {
             handleInternalEvent(9,(countEvent));

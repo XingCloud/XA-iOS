@@ -177,7 +177,12 @@ void XingCloud::XA::SystemInfo::getNetOperator(char *source)
 void XingCloud::XA::SystemInfo::getDeviceID(char *source)
 {
     //UUID/UDID
-    strcpy(source,[[[UIDevice currentDevice] uniqueIdentifier] cStringUsingEncoding:NSUTF8StringEncoding]);//deprecated in iOS 5,TODO
+    CFUUIDRef puuid = CFUUIDCreate( nil );  
+    CFStringRef uuidString = CFUUIDCreateString( nil, puuid );  
+    NSString * result = (NSString *)CFStringCreateCopy( NULL, uuidString);  
+    CFRelease(puuid);  
+    CFRelease(uuidString); 
+    strcpy(source,[result cStringUsingEncoding:NSUTF8StringEncoding]);//deprecated in iOS 5,TODO
 }
 void XingCloud::XA::SystemInfo::getDeviceModel(char *source)
 {
@@ -199,5 +204,7 @@ void XingCloud::XA::SystemInfo::iOSVersion(char *source)
 }
 void XingCloud::XA::SystemInfo::getXAtagname(char *source)
 {
-    
+    //NSString *plistPath = [[NSBundle mainBundle] pathForResource:@"Data" ofType:@"plist"];
+    NSDictionary* infoDict = [[NSBundle mainBundle] infoDictionary];
+    NSString* version = [infoDict objectForKey:@"CFBundleVersion"];//版本号
 }

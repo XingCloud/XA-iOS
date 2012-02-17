@@ -21,7 +21,7 @@ namespace XingCloud
             bool logPrintEnable;
             bool heartbeatEnable;
         }ServicesEnable;
-        
+        void    XAPRINT(const char *fmt,...);
         class XADataManager
         {
         public:
@@ -49,6 +49,7 @@ namespace XingCloud
             void    setReportPolicy(short reportPolice);
             void    setChannelID(const char *value);
             void    setAppID(const char *value);
+            
             
             static  cJSON* getSignedParamsJsonObject();
             static int     getTimer();

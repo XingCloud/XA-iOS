@@ -106,15 +106,19 @@ namespace XingCloud
             sprintf(cacheDir,"%s/appCache.log",appDir);
             localCache=fopen(cacheDir,"wb+");
             if(feof(localCache))
+            {//本地文件不存在，发送update事件
+                xaDataProxy.handleApplicationLaunch(visitJson,SystemInfo::getSystemInfo(getTimestamp()),NULL);
+            }
+            else
             {//本地文件存在，不发送update事件
-                
+                xaDataProxy.handleApplicationLaunch(visitJson,NULL,NULL);
             }
             
-            if(servicesEnable.crashReportEnable)
-            {
-                //cJSON * visitJson=cJSON_CreateObject();
-            }
-            xaDataProxy.handleApplicationLaunch(visitJson,SystemInfo::getSystemInfo(getTimestamp()),NULL);
+//          if(servicesEnable.crashReportEnable)
+//          {
+//              //cJSON * visitJson=cJSON_CreateObject();
+//          }
+            
         }
         void    XADataManager::applicationTerminate()
         {
@@ -206,6 +210,22 @@ namespace XingCloud
         {
                         
             xaDataProxy.handleGeneralEvent(event,appId,userId,timestamp,params);
+        }
+        void    XAPRINT(const char *fmt,...)
+        {
+            char sprint_buf[128];
+            
+            va_list args;
+            
+            va_start(args, fmt);
+            
+            vsprintf(sprint_buf, fmt, args);
+            
+            va_end(args);
+#ifdef IOS
+            NSLog(@"%s",sprint_buf);
+#endif
+            
         }
 
     }
