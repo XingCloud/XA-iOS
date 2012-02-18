@@ -13,6 +13,8 @@
 #pragma mark internal
 static XA* sharedXA;
 static NSString* VERSION = @"1.0";
+static NSTimer *  heartbeatTimer;
+static NSTimer*   eventTimer;
 + (XA*)sharedXA
 {
     @synchronized(self)
@@ -54,6 +56,16 @@ static NSString* VERSION = @"1.0";
     delete (XingCloud::XA::XADataManager*)__internal;
     [super dealloc];
 }
+#pragma mark XA Timer
++ (void)handleEventTimer
+{
+   
+    ((XingCloud::XA::XADataManager*)([XA sharedXA]->__internal))->handleEventTimer();
+}
++ (void)handleHeartbeatTimer
+{
+    ((XingCloud::XA::XADataManager*)([XA sharedXA]->__internal))->handleHeartbeatTimer();
+}
 #pragma mark XA basics
 + (NSString *)getVersion
 {
@@ -80,6 +92,14 @@ static NSString* VERSION = @"1.0";
 + (void)setReportPolicy:(XAReportPolicy)rp
 {
     ((XingCloud::XA::XADataManager*)([XA sharedXA]->__internal))->setReportPolicy(rp);
+    if(rp==DEFAULT)
+    {
+        eventTimer = [NSTimer scheduledTimerWithTimeInterval: 1  
+                                                          target: self  
+                                                        selector: @selector(handleEventTimer)  
+                                                        userInfo: nil  
+                                                         repeats: YES];
+    }
 }
 
 #pragma mark XA life circle
@@ -87,6 +107,12 @@ static NSString* VERSION = @"1.0";
 {
     //发送update,view,error事件
     ((XingCloud::XA::XADataManager*)([XA sharedXA]->__internal))->applicationLaunch();
+    
+    heartbeatTimer = [NSTimer scheduledTimerWithTimeInterval: 5  
+                                                      target: self 
+                                                    selector: @selector(handleHeartbeatTimer)  
+                                                    userInfo: nil  
+                                                     repeats: YES];
 }
 + (void)applicationWillTerminate
 {

@@ -50,7 +50,8 @@ namespace XingCloud
             void    setChannelID(const char *value);
             void    setAppID(const char *value);
             
-            
+            void    handleHeartbeatTimer();
+            void    handleEventTimer();
             static  cJSON* getSignedParamsJsonObject();
             static int     getTimer();
             static unsigned int     getTimestamp();

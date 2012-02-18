@@ -15,6 +15,7 @@
 #include <sys/utsname.h>
 #include <string.h>
 int XingCloud::XA::SystemInfo::phoneType=0;
+
 void    XAPRINT(const char *fmt,...)
 {
     char sprint_buf[128];
@@ -31,7 +32,7 @@ void    XAPRINT(const char *fmt,...)
     //#endif
     
 }
-
+static void setHeartbeatTimer();
 cJSON* XingCloud::XA::SystemInfo::getSystemInfo(unsigned int timestamp)
 {
     char temp[64]={0};

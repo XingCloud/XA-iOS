@@ -33,6 +33,14 @@ namespace XingCloud
                 delete appID;
               fclose(localCache);
         }
+        void    XADataManager::handleHeartbeatTimer()
+        {
+            
+        }
+        void    XADataManager::handleEventTimer()
+        {
+            
+        }
         cJSON* XADataManager::getSignedParamsJsonObject()
         {
             cJSON * signedParamsObject=cJSON_CreateObject();

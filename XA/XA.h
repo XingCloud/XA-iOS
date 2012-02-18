@@ -34,8 +34,8 @@ typedef enum {
 
 @interface XA : NSObject {
     void* __internal;
-}
 
+}
 #pragma mark XA basics
 /**
  获取SDK版本号
