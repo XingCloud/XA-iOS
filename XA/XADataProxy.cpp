@@ -20,17 +20,32 @@ namespace  XingCloud
             char userID[64];
             cJSON *event;
         }generalEventJSON;
+        FILE   *XADataProxy::localCache;
         std::vector<cJSON*> internalEventCache;
         std::vector<generalEventJSON> generalEventCache;
         Mutex   XADataProxy::internalMutex;
         Mutex   XADataProxy::generalMutex;
         XADataProxy::XADataProxy()
         {
-            
+            idle_time = 0;
+            pause_time = 0;
         }
         XADataProxy::~XADataProxy()
         {
-            pthread_join(pTimerId, NULL);
+        }
+        void  XADataProxy::sendHeartbeatEventData()
+        {
+            cJSON *root=cJSON_CreateObject();
+            cJSON_AddItemToObject(root,"signedParams",XADataManager::getSignedParamsJsonObject());
+            cJSON *statArray=cJSON_CreateArray();
+            cJSON *statObject=cJSON_CreateObject();
+            cJSON_AddItemToObject(statObject,"eventName",cJSON_CreateString("user.heartbeat"));
+            cJSON_AddItemToObject(statObject,"params",cJSON_CreateObject());
+            char temp[64]={0};
+            sprintf(temp,"%u",XADataManager::getTimestamp());
+            cJSON_AddItemToObject(statObject,"timestamp",cJSON_CreateString(temp));
+            cJSON_AddItemToObject(root,"stats",statArray);
+            XASendData::getMethodSend(cJSON_PrintUnformatted(root));
         }
         void  XADataProxy::sendInternalEventData()
         {
@@ -60,59 +75,71 @@ namespace  XingCloud
             generalEventCache.clear();
             
         }
-        void* timerFunc(void *param)
-        {
-            while(1)
-            {
-                long timer=XADataManager::getTimer();
-                bool isOneMinuteInterval=(timer==1)||(timer%2!=0);
-                if(isOneMinuteInterval && XADataManager::reportPolice==3)
-                {
-                    XADataProxy::sendInternalEventData();
-                    XADataProxy::sendGeneralEventData();
-                }
-                else if((timer%5==0)&&timer!=0)
-                {
-                    cJSON *root=cJSON_CreateObject();
-                    cJSON_AddItemToObject(root,"signedParams",XADataManager::getSignedParamsJsonObject());
-                    cJSON *statArray=cJSON_CreateArray();
-                    cJSON *statObject=cJSON_CreateObject();
-                    cJSON_AddItemToObject(statObject,"eventName",cJSON_CreateString("user.heartbeat"));
-                    cJSON_AddItemToObject(statObject,"params",cJSON_CreateObject());
-                    char temp[64]={0};
-                    sprintf(temp,"%u",XADataManager::getTimestamp());
-                    cJSON_AddItemToObject(statObject,"timestamp",cJSON_CreateString(temp));
-                    cJSON_AddItemToObject(root,"stats",statArray);
-                    XASendData::getMethodSend(cJSON_PrintUnformatted(root));
-                }
-            }
-        }
         void    XADataProxy::handleApplicationLaunch(cJSON *visitEvent,cJSON *updateEvent,cJSON *errorEvent)
         {
-            
+            if(localCache!=NULL)
+            {
+                int cacheLength=0;
+                fread(&cacheLength,sizeof(int),1,localCache);
+                for(int i=0;i<cacheLength;i++)
+                {
+                    int length=0;
+                    fread(&length,sizeof(int),1,localCache);
+                    char temp[1024]={0};
+                    fread(temp,length,1,localCache);
+                    XASendData::postMethodSend(temp);
+                }
+            }
+
             handleInternalEvent(2,(visitEvent));
             if(updateEvent!=NULL)
                 handleInternalEvent(0,(updateEvent));
             if(errorEvent!=NULL)
                 handleInternalEvent(5,(errorEvent));
+            
             if(XADataManager::reportPolice==1)
             {
                 XADataProxy::sendInternalEventData();
                 XADataProxy::sendGeneralEventData();
             }
-            pthread_create(&pTimerId,NULL,timerFunc,NULL);
         }
         void    XADataProxy::handleApplicationTerminate(cJSON *quitEvent)
         {
-            
+            if(localCache!=NULL)
+            {
+                int cacheLength=XASendData::cache.size();
+                fwrite(&cacheLength,sizeof(int),1,localCache);
+                for(int i=0;i<XASendData::cache.size();i++)
+                {
+                    const char *data = XASendData::cache[i].c_str();
+                    int length=strlen(data);
+                    fwrite(&length,sizeof(int),1,localCache);
+                    fwrite(data,length,1,localCache);
+                }
+            }
+            //send quit event 
+            char temp[64]={0};
+            cJSON *root=cJSON_CreateObject();
+            cJSON_AddItemToObject(root,"signedParams",XADataManager::getSignedParamsJsonObject());
+            cJSON *statArray=cJSON_CreateArray();
+            cJSON *statObject=cJSON_CreateObject();
+            cJSON_AddItemToObject(statObject,"eventName",cJSON_CreateString("user.quit"));
+            unsigned int duration_time=XADataManager::getTimer()- idle_time;
+            sprintf(temp,"%u",duration_time);
+            cJSON_AddItemToObject(statObject,"params",cJSON_CreateString(temp));
+            memset(temp,0,64);
+            sprintf(temp,"%u",XADataManager::getTimestamp());
+            cJSON_AddItemToObject(statObject,"timestamp",cJSON_CreateString(temp));
+            cJSON_AddItemToObject(root,"stats",statArray);
+            XASendData::getMethodSend(cJSON_PrintUnformatted(root));
         }
         void    XADataProxy::handleApplicationPause()
         {
-            
+            pause_time = XADataManager::getTimer();
         }
         void    XADataProxy::handleApplicationResume()
         {
-            
+            idle_time +=( XADataManager::getTimer()- pause_time);
         }
         void    XADataProxy::handleTrackCount(cJSON *countEvent)
         {

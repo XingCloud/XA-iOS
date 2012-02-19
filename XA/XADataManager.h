@@ -59,11 +59,8 @@ namespace XingCloud
             static char *appID;
             static char *uid;
             static short reportPolice;
-            FILE   *localCache;
+            
         private:
-            XAStreamBuffer *sendBuffer;
-            XAStreamBuffer *errorBuffer;
-            XAStreamBuffer *cacheBuffer;
             ServicesEnable servicesEnable;
             static unsigned int  startTimer;
             XADataProxy   xaDataProxy;

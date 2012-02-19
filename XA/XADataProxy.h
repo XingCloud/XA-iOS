@@ -10,12 +10,12 @@
 #define XA_XALifeCicle_h
 #include "cJSON.h"
 #include "Mutex.h"
-#include <pthread.h>
 namespace XingCloud
 {
     namespace XA
     {
         void* timerFunc(void *param);
+        
         class XADataProxy
         {
         public:
@@ -38,11 +38,13 @@ namespace XingCloud
             static cJSON*  getGenSignedParamsObject(const char *appId,const char *userId,int timestamp);
             static void  sendInternalEventData();
             static void  sendGeneralEventData();
-            
+            static void  sendHeartbeatEventData();
             static Mutex   internalMutex;
             static Mutex   generalMutex;
+            static FILE   *localCache;
         private:
-            pthread_t pTimerId;
+            unsigned int pause_time;
+            unsigned int idle_time;
         };
     }
 }

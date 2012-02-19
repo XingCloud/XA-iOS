@@ -18,7 +18,7 @@ int XingCloud::XA::SystemInfo::phoneType=0;
 
 void    XAPRINT(const char *fmt,...)
 {
-    char sprint_buf[128];
+    char sprint_buf[2048];
     
     va_list args;
     
@@ -202,7 +202,8 @@ void XingCloud::XA::SystemInfo::getDeviceID(char *source)
     NSString * result = (NSString *)CFStringCreateCopy( NULL, uuidString);  
     CFRelease(puuid);  
     CFRelease(uuidString); 
-    strcpy(source,[result cStringUsingEncoding:NSUTF8StringEncoding]);//deprecated in iOS 5,TODO
+    strcpy(source,[result cStringUsingEncoding:NSUTF8StringEncoding]);
+    [result release];
 }
 void XingCloud::XA::SystemInfo::getDeviceModel(char *source)
 {

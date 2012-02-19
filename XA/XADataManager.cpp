@@ -21,7 +21,7 @@ namespace XingCloud
         unsigned int  XADataManager::startTimer=0;
         XADataManager::XADataManager()
         {
-            XingCloud::XAThreadPool::ExecuteTask::initThreadPool();
+            XingCloud::XAThreadPool::ExecuteTask::initThreadPool(2);
         }
         XADataManager::~XADataManager()
         {
@@ -31,15 +31,16 @@ namespace XingCloud
                 delete channelID;
             if(appID!=NULL)
                 delete appID;
-              fclose(localCache);
+            fclose(XADataProxy::localCache);
         }
         void    XADataManager::handleHeartbeatTimer()
         {
-            
+            xaDataProxy.sendHeartbeatEventData();
         }
         void    XADataManager::handleEventTimer()
         {
-            
+            xaDataProxy.sendInternalEventData();
+            xaDataProxy.sendGeneralEventData();
         }
         cJSON* XADataManager::getSignedParamsJsonObject()
         {
@@ -51,7 +52,7 @@ namespace XingCloud
             cJSON_AddItemToObject(signedParamsObject,"timestamp",cJSON_CreateString(temp));
             return signedParamsObject;
         }
-        int     XADataManager::getTimer()//return minute
+        int     XADataManager::getTimer()//return second
         {
             struct timeval tv;
             gettimeofday(&tv, NULL);
@@ -62,7 +63,7 @@ namespace XingCloud
             }
             int interval=tv.tv_sec-startTimer;
             
-            return interval/60;
+            return interval;
         }
         unsigned int    XADataManager::getTimestamp()
         {
@@ -115,20 +116,26 @@ namespace XingCloud
             SystemInfo::getAppFileDir(appDir);
             char cacheDir[521]={0};
             sprintf(cacheDir,"%s/appCache.log",appDir);
-            localCache=fopen(cacheDir,"ab+");
-            if(fgetc(localCache)==EOF)
+            XADataProxy::localCache=fopen(cacheDir,"ab+");
+            if(XADataProxy::localCache==NULL)
+            {
+                XAPRINT("error  loacl Cache can not open "); 
+                xaDataProxy.handleApplicationLaunch(visitJson,NULL,NULL);
+                return ;
+            }
+            if(fgetc(XADataProxy::localCache)==EOF)
             {//本地文件不存在，发送update事件
                 uid=new char[128];
                 SystemInfo::getDeviceID(uid);
-                fwrite(uid,127,1,localCache);
+                fwrite(uid,127,1,XADataProxy::localCache);
                 xaDataProxy.handleApplicationLaunch(visitJson,NULL,NULL);
             
                 //xaDataProxy.handleApplicationLaunch(visitJson,SystemInfo::getSystemInfo(getTimestamp()),NULL);
             }
             else
             {//本地文件存在，不发送update事件
-                fseek(localCache,0,SEEK_SET);
-                fread(uid,127,1,localCache);
+                fseek(XADataProxy::localCache,0,SEEK_SET);
+                fread(uid,127,1,XADataProxy::localCache);
                 xaDataProxy.handleApplicationLaunch(visitJson,NULL,NULL);
             }
           

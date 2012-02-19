@@ -10,11 +10,14 @@
 #define XA_XASendData_h
 #include "XAThreadPool.h"
 #include "Mutex.h"
+#include <string>
+#include <vector>
 namespace XingCloud
 {
     namespace XA
     {
         //typedef void CURL;
+        
         class XASendData
         {
         public:
@@ -22,8 +25,8 @@ namespace XingCloud
             XASendData();
             ~XASendData();
             static bool    getMethodSend(const char *buffer);
-            static bool    postMethodSend(const char *buffer);
-            
+            static bool    postMethodSend( char *buffer);
+            static std::vector<std::string> cache;
         private:
            // CURL *easy_handle;
             static TaskGroup  taskGroup;

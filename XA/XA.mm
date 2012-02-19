@@ -94,7 +94,7 @@ static NSTimer*   eventTimer;
     ((XingCloud::XA::XADataManager*)([XA sharedXA]->__internal))->setReportPolicy(rp);
     if(rp==DEFAULT)
     {
-        eventTimer = [NSTimer scheduledTimerWithTimeInterval: 1  
+        eventTimer = [NSTimer scheduledTimerWithTimeInterval: 1*60  
                                                           target: self  
                                                         selector: @selector(handleEventTimer)  
                                                         userInfo: nil  
@@ -108,7 +108,7 @@ static NSTimer*   eventTimer;
     //发送update,view,error事件
     ((XingCloud::XA::XADataManager*)([XA sharedXA]->__internal))->applicationLaunch();
     
-    heartbeatTimer = [NSTimer scheduledTimerWithTimeInterval: 5  
+    heartbeatTimer = [NSTimer scheduledTimerWithTimeInterval: 5*60  
                                                       target: self 
                                                     selector: @selector(handleHeartbeatTimer)  
                                                     userInfo: nil  
