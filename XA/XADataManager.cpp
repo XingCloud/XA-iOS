@@ -18,6 +18,7 @@ namespace XingCloud
         char *XADataManager::appID=NULL;
         char *XADataManager::uid=NULL;
         short XADataManager::reportPolice=3;
+        char* XADataManager::docfilePath=NULL;
         unsigned int  XADataManager::startTimer=0;
         XADataManager::XADataManager()
         {
@@ -31,6 +32,8 @@ namespace XingCloud
                 delete channelID;
             if(appID!=NULL)
                 delete appID;
+            if(docfilePath!=NULL)
+                delete docfilePath;
             fclose(XADataProxy::localCache);
         }
         void    XADataManager::handleHeartbeatTimer()
@@ -114,9 +117,9 @@ namespace XingCloud
             
             char appDir[512]={0};
             SystemInfo::getAppFileDir(appDir);
-            char cacheDir[521]={0};
-            sprintf(cacheDir,"%s/appCache.log",appDir);
-            XADataProxy::localCache=fopen(cacheDir,"ab+");
+            docfilePath=new char[521];
+            sprintf(docfilePath,"%s/appCache.log",appDir);
+            XADataProxy::localCache=fopen(docfilePath,"ab+");
             if(XADataProxy::localCache==NULL)
             {
                 XAPRINT("error  loacl Cache can not open "); 
@@ -147,15 +150,15 @@ namespace XingCloud
         }
         void    XADataManager::applicationTerminate()
         {
-            
+            xaDataProxy.handleApplicationTerminate();
         }
         void    XADataManager::applicationPause()
         {
-            
+            xaDataProxy.handleApplicationPause();
         }
         void    XADataManager::applicationResume()
         {
-            
+            xaDataProxy.handleApplicationResume();
         }
         //track  events
         void    XADataManager::trackCount(const char *action,const char *level1,const char *level2,const char *level3,const char *level4,const char *level5,int count)
@@ -168,6 +171,9 @@ namespace XingCloud
             cJSON_AddItemToObject(countParams,"level_3",cJSON_CreateString(level3));
             cJSON_AddItemToObject(countParams,"level_4",cJSON_CreateString(level4));
             cJSON_AddItemToObject(countParams,"level_5",cJSON_CreateString(level5));
+            char temp[64]={0};
+            sprintf(temp,"%d",count);
+            cJSON_AddItemToObject(countParams,"count",cJSON_CreateString(temp));
            
             xaDataProxy.handleTrackCount(countParams);
         }

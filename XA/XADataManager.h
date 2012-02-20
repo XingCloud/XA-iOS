@@ -59,7 +59,7 @@ namespace XingCloud
             static char *appID;
             static char *uid;
             static short reportPolice;
-            
+            static char* docfilePath;
         private:
             ServicesEnable servicesEnable;
             static unsigned int  startTimer;

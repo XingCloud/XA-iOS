@@ -22,7 +22,7 @@ namespace XingCloud
             XADataProxy();
             ~XADataProxy();
             void    handleApplicationLaunch(cJSON *visitEvent,cJSON *updateEvent,cJSON *errorEvent);
-            void    handleApplicationTerminate(cJSON *quitEvent);
+            void    handleApplicationTerminate();
             void    handleApplicationPause();
             void    handleApplicationResume();
             
@@ -41,6 +41,7 @@ namespace XingCloud
             static void  sendHeartbeatEventData();
             static Mutex   internalMutex;
             static Mutex   generalMutex;
+            static Mutex   fileMutex;
             static FILE   *localCache;
         private:
             unsigned int pause_time;

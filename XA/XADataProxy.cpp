@@ -25,6 +25,7 @@ namespace  XingCloud
         std::vector<generalEventJSON> generalEventCache;
         Mutex   XADataProxy::internalMutex;
         Mutex   XADataProxy::generalMutex;
+        Mutex   XADataProxy::fileMutex;
         XADataProxy::XADataProxy()
         {
             idle_time = 0;
@@ -58,6 +59,7 @@ namespace  XingCloud
                 cJSON_AddItemToArray(statArray,internalEventCache[i]);
             cJSON_AddItemToObject(root,"stats",statArray);
             XASendData::postMethodSend(cJSON_PrintUnformatted(root));
+            
             generalEventCache.clear();
         }
         void  XADataProxy::sendGeneralEventData()
@@ -77,8 +79,11 @@ namespace  XingCloud
         }
         void    XADataProxy::handleApplicationLaunch(cJSON *visitEvent,cJSON *updateEvent,cJSON *errorEvent)
         {
+            Lock lock(fileMutex);
+            
             if(localCache!=NULL)
             {
+                fseek(localCache,0L,127);
                 int cacheLength=0;
                 fread(&cacheLength,sizeof(int),1,localCache);
                 for(int i=0;i<cacheLength;i++)
@@ -90,7 +95,10 @@ namespace  XingCloud
                     XASendData::postMethodSend(temp);
                 }
             }
-
+            remove(XADataManager::docfilePath);
+            localCache = fopen(XADataManager::docfilePath,"ab+");
+            fwrite(XADataManager::uid,127,1,XADataProxy::localCache);
+            
             handleInternalEvent(2,(visitEvent));
             if(updateEvent!=NULL)
                 handleInternalEvent(0,(updateEvent));
@@ -103,8 +111,9 @@ namespace  XingCloud
                 XADataProxy::sendGeneralEventData();
             }
         }
-        void    XADataProxy::handleApplicationTerminate(cJSON *quitEvent)
+        void    XADataProxy::handleApplicationTerminate()
         {
+            Lock lock(fileMutex);
             if(localCache!=NULL)
             {
                 int cacheLength=XASendData::cache.size();
@@ -187,7 +196,8 @@ namespace  XingCloud
             }
             else if(XADataManager::reportPolice==1)
             {//启动时批量发送
-                
+                Lock lock(internalMutex);
+                internalEventCache.push_back(encapsulateEvent(event,params));
             }
             else if(XADataManager::reportPolice==3)
             {//定时定量发送
@@ -234,7 +244,12 @@ namespace  XingCloud
             }
             else if(XADataManager::reportPolice==1)
             {
-                
+                Lock lock(generalMutex);
+                generalEventJSON ge;
+                ge.event=generalEventJSONObject;
+                strcpy(ge.appID,appId);
+                strcpy(ge.userID,userId);
+                generalEventCache.push_back(ge);
             }
             else if(XADataManager::reportPolice==3)
             {//定时定量发送
