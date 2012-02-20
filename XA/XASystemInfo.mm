@@ -14,6 +14,7 @@
 #import <CoreTelephony/CTTelephonyNetworkInfo.h>
 #include <sys/utsname.h>
 #include <string.h>
+#include "XADataManager.h"
 int XingCloud::XA::SystemInfo::phoneType=0;
 
 void    XAPRINT(const char *fmt,...)
@@ -41,7 +42,8 @@ cJSON* XingCloud::XA::SystemInfo::getSystemInfo(unsigned int timestamp)
 //    cJSON_AddItemToObject(statsObject,"eventName",cJSON_CreateString("user.update"));
     
     cJSON * statsParams=cJSON_CreateObject();
-    cJSON_AddItemToObject(statsParams,"is_mobile",cJSON_CreateString("true"));
+    cJSON_AddItemToObject(statsParams,"ref",cJSON_CreateString("noads="));
+    cJSON_AddItemToObject(statsParams,"is_mobile",cJSON_CreateString(XingCloud::XA::XADataManager::channelID));
     memset(temp,0,64);
     getNetType(temp);
     cJSON_AddItemToObject(statsParams,"netType",cJSON_CreateString(temp));

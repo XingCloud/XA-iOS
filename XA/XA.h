@@ -121,6 +121,10 @@ typedef enum {
  @param milestoneName 
  */
 + (void)trackMilestone:(NSString*)milestoneName;
+
++ (void)trackUserUpdate:(NSMutableDictionary*)userInfo;
+
++ (void)trackUserIncrement:(NSMutableDictionary*)userInfo;
 /**
  游戏中的用户付费情况
  @param trans_id     交易号

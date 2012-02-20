@@ -8,6 +8,7 @@
 
 #import "XA.h"
 #include "XADataManager.h"
+#include "cJSON.h"
 @implementation XA
 
 #pragma mark internal
@@ -96,14 +97,7 @@ static NSTimer*   eventTimer;
 + (void)setReportPolicy:(XAReportPolicy)rp
 {
     ((XingCloud::XA::XADataManager*)([XA sharedXA]->__internal))->setReportPolicy(rp);
-    if(rp==DEFAULT)
-    {
-        eventTimer = [NSTimer scheduledTimerWithTimeInterval: 10  
-                                                          target: self  
-                                                        selector: @selector(handleEventTimer)  
-                                                        userInfo: nil  
-                                                         repeats: YES];
-    }
+    
 }
 
 #pragma mark XA life circle
@@ -111,12 +105,62 @@ static NSTimer*   eventTimer;
 {
     //发送update,view,error事件
     ((XingCloud::XA::XADataManager*)([XA sharedXA]->__internal))->applicationLaunch();
+    if(((XingCloud::XA::XADataManager*)([XA sharedXA]->__internal))->getReportPolicy()==DEFAULT)
+    {
+       
+            eventTimer = [NSTimer scheduledTimerWithTimeInterval: 10  
+                                                          target: self  
+                                                        selector: @selector(handleEventTimer)  
+                                                        userInfo: nil  
+                                                         repeats: YES];
+    }
+    if(((XingCloud::XA::XADataManager*)([XA sharedXA]->__internal))->getHeartbeat())
+    {
+        heartbeatTimer = [NSTimer scheduledTimerWithTimeInterval: 30  
+                                                          target: self 
+                                                        selector: @selector(handleHeartbeatTimer)  
+                                                        userInfo: nil  
+                                                         repeats: YES];
+    }
     
-    heartbeatTimer = [NSTimer scheduledTimerWithTimeInterval: 1  
-                                                      target: self 
-                                                    selector: @selector(handleHeartbeatTimer)  
-                                                    userInfo: nil  
-                                                     repeats: YES];
+    
+}
++ (void)trackUserUpdate:(NSMutableDictionary*)userInfo
+{
+    NSEnumerator *enumerator = [userInfo keyEnumerator];
+    
+    NSString* key;
+    cJSON * userUpdateParams=cJSON_CreateObject();
+    cJSON_AddItemToObject(userUpdateParams,"is_mobile",cJSON_CreateString("true"));
+    while ((key = [enumerator nextObject])) 
+    {
+        const char *tempKey =  [key cStringUsingEncoding:NSUTF8StringEncoding];
+        const char *tempValue = [[userInfo  objectForKey:key] cStringUsingEncoding:NSUTF8StringEncoding];
+        if(tempKey !=NULL && tempValue !=NULL)
+        {
+            cJSON_AddItemToObject(userUpdateParams,tempKey,cJSON_CreateString(tempValue));
+        }
+    }
+     ((XingCloud::XA::XADataManager*)([XA sharedXA]->__internal))->trackUserUpdate(userUpdateParams);
+}
++ (void)trackUserIncrement:(NSMutableDictionary*)userInfo;
+{
+    NSEnumerator *enumerator = [userInfo keyEnumerator];
+    
+    NSString* key;
+    cJSON * userIncParams=cJSON_CreateObject();
+    cJSON_AddItemToObject(userIncParams,"is_mobile",cJSON_CreateString("true"));
+    while ((key = [enumerator nextObject])) 
+    {
+        const char *tempKey =  [key cStringUsingEncoding:NSUTF8StringEncoding];
+        const char *tempValue = [[userInfo  objectForKey:key] cStringUsingEncoding:NSUTF8StringEncoding];
+        if(tempKey !=NULL && tempValue !=NULL)
+        {
+            cJSON_AddItemToObject(userIncParams,tempKey,cJSON_CreateString(tempValue));
+        }
+    }
+    
+    ((XingCloud::XA::XADataManager*)([XA sharedXA]->__internal))->trackUserIncrement(userIncParams);
 }
 + (void)applicationWillTerminate
 {

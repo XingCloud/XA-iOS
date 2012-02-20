@@ -105,7 +105,6 @@ namespace XingCloud
            
             cJSON * visitParams=cJSON_CreateObject();
             cJSON_AddItemToObject(visitParams,"is_mobile",cJSON_CreateString("true"));
-            cJSON_AddItemToObject(visitParams,"ref",cJSON_CreateString(channelID));
             
             xaDataProxy.handleApplicationLaunch(visitParams,NULL,NULL);
                       
@@ -144,6 +143,14 @@ namespace XingCloud
             cJSON_AddItemToObject(countParams,"count",cJSON_CreateString(temp));
            
             xaDataProxy.handleTrackCount(countParams);
+        }
+        void    XADataManager::trackUserIncrement(cJSON* userInfo)
+        {
+            xaDataProxy.handleTrackUserIncrement(userInfo);
+        }
+        void    XADataManager::trackUserUpdate(cJSON* userInfo)
+        {
+            xaDataProxy.handleTrackUserUpdate(userInfo);
         }
         void    XADataManager::trackMilestone(const char *milestoneName)
         {

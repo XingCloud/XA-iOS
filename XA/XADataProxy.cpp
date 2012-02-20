@@ -49,6 +49,7 @@ namespace  XingCloud
             char temp[64]={0};
             sprintf(temp,"%u",XADataManager::getTimestamp());
             cJSON_AddItemToObject(statObject,"timestamp",cJSON_CreateString(temp));
+            cJSON_AddItemToArray(statArray,statObject);
             cJSON_AddItemToObject(root,"stats",statArray);
             //XASendData::getMethodSend(cJSON_PrintUnformatted(root));
             XASendData::postMethodSend(cJSON_PrintUnformatted(root));
@@ -90,28 +91,32 @@ namespace  XingCloud
             sprintf(docfilePath,"%s/appCache.log",appDir);
             
             localCache = fopen(docfilePath,"ab+");
-            if(localCache==NULL)
-            {
-                XAPRINT("error  loacl Cache can not open "); 
-                return ;
-            }
-            
-            if(fgetc(localCache)==EOF)
-            {//本地文件不存在，发送update事件
-                uid=new char[64];
-                memset(uid,0,64);
-                SystemInfo::getDeviceID(uid);
-                fwrite(uid,63,1,localCache);
-                localCache=NULL;
-                //xaDataProxy.handleApplicationLaunch(visitJson,SystemInfo::getSystemInfo(getTimestamp()),NULL);
-                handleInternalEvent(0,SystemInfo::getSystemInfo(XADataManager::getTimestamp()));
-            }
-            else
-            {//本地文件存在，不发送update事件
-                fseek(XADataProxy::localCache,0,SEEK_SET);
-                fread(uid,63,1,XADataProxy::localCache);
-                
-            }
+//            if(localCache==NULL)
+//            {
+//                XAPRINT("error  loacl Cache can not open "); 
+//                return ;
+//            }
+//            
+//            if(fgetc(localCache)==EOF)
+//            {//本地文件不存在，发送update事件
+//                uid=new char[64];
+//                memset(uid,0,64);
+//                SystemInfo::getDeviceID(uid);
+//                fwrite(uid,63,1,localCache);
+//                localCache=NULL;
+//                //xaDataProxy.handleApplicationLaunch(visitJson,SystemInfo::getSystemInfo(getTimestamp()),NULL);
+//                handleInternalEvent(0,SystemInfo::getSystemInfo(XADataManager::getTimestamp()));
+//            }
+//            else
+//            {//本地文件存在，不发送update事件
+//                fseek(XADataProxy::localCache,0,SEEK_SET);
+//                fread(uid,63,1,XADataProxy::localCache);
+//                
+//            }
+            uid=new char[64];
+            memset(uid,0,64);
+            SystemInfo::getDeviceID(uid);
+            handleInternalEvent(0,SystemInfo::getSystemInfo(XADataManager::getTimestamp()));
             handleInternalEvent(2,(visitEvent));
             if(localCache!=NULL)
             {
@@ -204,17 +209,24 @@ namespace  XingCloud
             cJSON *statArray=cJSON_CreateArray();
             cJSON *statObject=cJSON_CreateObject();
             cJSON_AddItemToObject(statObject,"eventName",cJSON_CreateString("user.quit"));
+            cJSON *statObjectParams=cJSON_CreateObject();
             unsigned int duration_time=XADataManager::getTimer()- idle_time;
             sprintf(temp,"%u",duration_time);
-            cJSON_AddItemToObject(statObject,"params",cJSON_CreateString(temp));
+            cJSON_AddItemToObject(statObjectParams,"duration_time",cJSON_CreateString(temp));
+            cJSON_AddItemToObject(statObjectParams,"is_mobile",cJSON_CreateString("true"));
+            
+            cJSON_AddItemToObject(statObject,"params",statObjectParams);
             memset(temp,0,64);
             sprintf(temp,"%u",XADataManager::getTimestamp());
             cJSON_AddItemToObject(statObject,"timestamp",cJSON_CreateString(temp));
+            cJSON_AddItemToArray(statArray,statObject);
             cJSON_AddItemToObject(root,"stats",statArray);
-            XASendData::getMethodSend(cJSON_PrintUnformatted(root));
+            //quit 缓存下来
+            XASendData::postMethodSend(cJSON_PrintUnformatted(root));
             
             pause_time = XADataManager::getTimer();
         }
+        
         void    XADataProxy::handleApplicationResume()
         {
             idle_time +=( XADataManager::getTimer()- pause_time);
@@ -222,6 +234,14 @@ namespace  XingCloud
         void    XADataProxy::handleTrackCount(cJSON *countEvent)
         {
             handleInternalEvent(9,(countEvent));
+        }
+        void    XADataProxy::handleTrackUserIncrement(cJSON *userInfo)
+        {
+            handleInternalEvent(1,(userInfo));
+        }
+        void    XADataProxy::handleTrackUserUpdate(cJSON *userInfo)
+        {
+            handleInternalEvent(0,(userInfo));
         }
         void    XADataProxy::handleTrackMilestone(cJSON *milestoneEvent)
         {

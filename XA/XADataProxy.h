@@ -26,6 +26,8 @@ namespace XingCloud
             void    handleApplicationPause();
             void    handleApplicationResume();
             
+            void    handleTrackUserIncrement(cJSON *userInfo);
+            void    handleTrackUserUpdate(cJSON *userInfo);
             void    handleTrackCount(cJSON *countEvent);
             void    handleTrackMilestone(cJSON *milestoneEvent);
             void    handleTrackTransaction(cJSON *transactionEvent);
@@ -33,6 +35,7 @@ namespace XingCloud
             void    handleTrackBuyService(cJSON *buyEvent);       
             void    handleGeneralEvent(int event,const char *appId,const char *userId,int timestamp,const char *params);
             void    handleInternalEvent(int event,cJSON *params);
+        
             void    eventString(int event,char *source);
             cJSON*  encapsulateEvent(int event,cJSON *params);
             static cJSON*  getGenSignedParamsObject(const char *appId,const char *userId,int timestamp);

@@ -36,7 +36,8 @@ namespace XingCloud
             //XA events
             void    trackCount(const char *action,const char *level1,const char *level2,const char *level3,const char *level4,const char *level5,int count);
             void    trackMilestone(const char *milestoneName);
-           
+            void    trackUserIncrement(cJSON *userInfo);
+            void    trackUserUpdate(cJSON *userInfo);
             void    trackTransaction(const char *trans_id,const char *channel,const char*gross,const char *gcurrency,const char *vamount,const char *vcurrentcy);
             void    trackTutorialService(const char *index,const char *name,const char *tutorial);
             void    trackBuyService(const char *currency,const char *payType,const char *level1,const char *level2,const char *level3,const char *level4,const char *level5,int                             amount,int number);
@@ -49,7 +50,8 @@ namespace XingCloud
             void    setReportPolicy(short reportPolice);
             void    setChannelID(const char *value);
             void    setAppID(const char *value);
-            
+            bool    getReportPolicy()const{return servicesEnable.crashReportEnable;}
+            bool    getHeartbeat()const{return servicesEnable.heartbeatEnable;}
             void    handleHeartbeatTimer();
             void    handleEventTimer();
             static  cJSON* getSignedParamsJsonObject();

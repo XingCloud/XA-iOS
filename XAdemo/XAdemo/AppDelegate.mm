@@ -26,14 +26,17 @@
     [self.window makeKeyAndVisible];
     [XA setDelegate:self];
     [XA setLogEnabled:YES];
-    [XA setReportPolicy:DEFAULT];//REALTIME
+    [XA setHeartbeatEnabled:NO];
+    [XA setReportPolicy:REALTIME];//REALTIME DEFAULT
     [XA applicationDidLaunched];
-    [XA trackCount:@"abc" level1:@"level1" level2:@"level2" level3: @"level3" level4:@"level4" level5:@"level5" count: 10];
-    [XA trackMilestone:@"MILE STONE"];
-    [XA trackBuyService:@"currency" payType:@"PAYTYPE" level1:@"level1" level2:@"level2" level3: @"level3" level4:@"level4" level5:@"level5" amount:11 number:12];
-    [XA trackPayService:@"transID" channel:@"noads" gross:@"100" gcurrency:@"USD" vamount:@"10" vcurrentcy:@"ni"];
-    [XA trackTutorialService:@"3"  name:@"go" tutorial:@"to"];
-    [XA event:USER_LOGIN appId:@"chucktest@337_ar_xatest" userId:@"hello" timestamp:222222222 params:@"null"];
+    //[XA trackUserUpdate:@"{update:gaomaoUpdate}"];
+    //[XA trackUserIncrement:@"maoxianInc"];
+//    [XA trackCount:@"abc" level1:@"level1" level2:@"level2" level3: @"level3" level4:@"level4" level5:@"level5" count: 10];
+//    [XA trackMilestone:@"MILE STONE"];
+//    [XA trackBuyService:@"currency" payType:@"PAYTYPE" level1:@"level1" level2:@"level2" level3: @"level3" level4:@"level4" level5:@"level5" amount:11 number:12];
+//    [XA trackPayService:@"transID" channel:@"appStore" gross:@"100" gcurrency:@"USD" vamount:@"10" vcurrentcy:@"ni"];
+//    [XA trackTutorialService:@"3"  name:@"go" tutorial:@"to"];
+//    [XA event:USER_LOGIN appId:@"chucktest@337_ar_xatest" userId:@"hello" timestamp:222222222 params:@"null"];
     return YES;
 }
 
