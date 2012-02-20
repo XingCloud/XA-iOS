@@ -1,5 +1,5 @@
 //
-//  XALifeCicle.cpp
+//  XADataProxy.cpp
 //  XA
 //
 //  Created by mini xingcloud on 12-2-16.
@@ -26,6 +26,8 @@ namespace  XingCloud
         Mutex   XADataProxy::internalMutex;
         Mutex   XADataProxy::generalMutex;
         Mutex   XADataProxy::fileMutex;
+        char* XADataProxy::docfilePath=NULL;
+        char *XADataProxy::uid=NULL;
         XADataProxy::XADataProxy()
         {
             idle_time = 0;
@@ -33,6 +35,8 @@ namespace  XingCloud
         }
         XADataProxy::~XADataProxy()
         {
+            if(docfilePath!=NULL)
+                delete docfilePath;
         }
         void  XADataProxy::sendHeartbeatEventData()
         {
@@ -46,7 +50,8 @@ namespace  XingCloud
             sprintf(temp,"%u",XADataManager::getTimestamp());
             cJSON_AddItemToObject(statObject,"timestamp",cJSON_CreateString(temp));
             cJSON_AddItemToObject(root,"stats",statArray);
-            XASendData::getMethodSend(cJSON_PrintUnformatted(root));
+            //XASendData::getMethodSend(cJSON_PrintUnformatted(root));
+            XASendData::postMethodSend(cJSON_PrintUnformatted(root));
         }
         void  XADataProxy::sendInternalEventData()
         {
@@ -79,8 +84,35 @@ namespace  XingCloud
         }
         void    XADataProxy::handleApplicationLaunch(cJSON *visitEvent,cJSON *updateEvent,cJSON *errorEvent)
         {
-            Lock lock(fileMutex);
+            char appDir[512]={0};
+            SystemInfo::getAppFileDir(appDir);
+            docfilePath = new char[521];
+            sprintf(docfilePath,"%s/appCache.log",appDir);
             
+            localCache = fopen(docfilePath,"ab+");
+            if(localCache==NULL)
+            {
+                XAPRINT("error  loacl Cache can not open "); 
+                return ;
+            }
+            
+            if(fgetc(localCache)==EOF)
+            {//本地文件不存在，发送update事件
+                uid=new char[64];
+                memset(uid,0,64);
+                SystemInfo::getDeviceID(uid);
+                fwrite(uid,63,1,localCache);
+                localCache=NULL;
+                //xaDataProxy.handleApplicationLaunch(visitJson,SystemInfo::getSystemInfo(getTimestamp()),NULL);
+                handleInternalEvent(0,SystemInfo::getSystemInfo(XADataManager::getTimestamp()));
+            }
+            else
+            {//本地文件存在，不发送update事件
+                fseek(XADataProxy::localCache,0,SEEK_SET);
+                fread(uid,63,1,XADataProxy::localCache);
+                
+            }
+            handleInternalEvent(2,(visitEvent));
             if(localCache!=NULL)
             {
                 fseek(localCache,0L,127);
@@ -95,13 +127,10 @@ namespace  XingCloud
                     XASendData::postMethodSend(temp);
                 }
             }
-            remove(XADataManager::docfilePath);
-            localCache = fopen(XADataManager::docfilePath,"ab+");
-            fwrite(XADataManager::uid,127,1,XADataProxy::localCache);
-            
-            handleInternalEvent(2,(visitEvent));
-            if(updateEvent!=NULL)
-                handleInternalEvent(0,(updateEvent));
+            fclose(localCache);
+            localCache=NULL;
+            remove(docfilePath);
+                
             if(errorEvent!=NULL)
                 handleInternalEvent(5,(errorEvent));
             
@@ -113,7 +142,9 @@ namespace  XingCloud
         }
         void    XADataProxy::handleApplicationTerminate()
         {
-            Lock lock(fileMutex);
+            localCache = fopen(docfilePath,"ab+");
+            fwrite(uid,63,1,localCache);
+           
             if(localCache!=NULL)
             {
                 int cacheLength=XASendData::cache.size();
@@ -126,6 +157,46 @@ namespace  XingCloud
                     fwrite(data,length,1,localCache);
                 }
             }
+            fclose(localCache);
+            //send quit event 
+            char temp[64]={0};
+            cJSON *root=cJSON_CreateObject();
+            cJSON_AddItemToObject(root,"signedParams",XADataManager::getSignedParamsJsonObject());
+            cJSON *statArray=cJSON_CreateArray();
+            cJSON *statObject=cJSON_CreateObject();
+            cJSON_AddItemToObject(statObject,"eventName",cJSON_CreateString("user.quit"));
+            
+            cJSON *statObjectParams=cJSON_CreateObject();
+            unsigned int duration_time=XADataManager::getTimer()- idle_time;
+            sprintf(temp,"%u",duration_time);
+            cJSON_AddItemToObject(statObjectParams,"duration_time",cJSON_CreateString(temp));
+            cJSON_AddItemToObject(statObjectParams,"is_mobile",cJSON_CreateString("true"));
+            
+            cJSON_AddItemToObject(statObject,"params",statObjectParams);
+            memset(temp,0,64);
+            sprintf(temp,"%u",XADataManager::getTimestamp());
+            cJSON_AddItemToObject(statObject,"timestamp",cJSON_CreateString(temp));
+            cJSON_AddItemToObject(root,"stats",statArray);
+            XASendData::getMethodSend(cJSON_PrintUnformatted(root));
+        }
+        void    XADataProxy::handleApplicationPause()
+        {
+            localCache = fopen(docfilePath,"ab+");
+           
+            if(localCache!=NULL)
+            {
+                fwrite(uid,63,1,localCache);
+                int cacheLength=XASendData::cache.size();
+                fwrite(&cacheLength,sizeof(int),1,localCache);
+                for(int i=0;i<XASendData::cache.size();i++)
+                {
+                    const char *data = XASendData::cache[i].c_str();
+                    int length=strlen(data);
+                    fwrite(&length,sizeof(int),1,localCache);
+                    fwrite(data,length,1,localCache);
+                }
+            }
+            fclose(localCache);
             //send quit event 
             char temp[64]={0};
             cJSON *root=cJSON_CreateObject();
@@ -141,9 +212,7 @@ namespace  XingCloud
             cJSON_AddItemToObject(statObject,"timestamp",cJSON_CreateString(temp));
             cJSON_AddItemToObject(root,"stats",statArray);
             XASendData::getMethodSend(cJSON_PrintUnformatted(root));
-        }
-        void    XADataProxy::handleApplicationPause()
-        {
+            
             pause_time = XADataManager::getTimer();
         }
         void    XADataProxy::handleApplicationResume()
@@ -184,7 +253,7 @@ namespace  XingCloud
         }
         void    XADataProxy::handleInternalEvent(int event,cJSON *params)
         {
-            XAPRINT(cJSON_PrintUnformatted(params));
+            //XAPRINT(cJSON_PrintUnformatted(params));
             if(XADataManager::reportPolice==0)
             {//实时发送
                 cJSON *root=cJSON_CreateObject();

@@ -80,6 +80,10 @@ static NSTimer*   eventTimer;
 {
     ((XingCloud::XA::XADataManager*)([XA sharedXA]->__internal))->setCrashReportEnabled(value);
 }
++ (void)setAdsChannel:(NSString*)adsChannel
+{
+    
+}
 + (void)setLogEnabled:(BOOL)value
 {
     ((XingCloud::XA::XADataManager*)([XA sharedXA]->__internal))->setLogEnabled(value);
@@ -94,7 +98,7 @@ static NSTimer*   eventTimer;
     ((XingCloud::XA::XADataManager*)([XA sharedXA]->__internal))->setReportPolicy(rp);
     if(rp==DEFAULT)
     {
-        eventTimer = [NSTimer scheduledTimerWithTimeInterval: 1*60  
+        eventTimer = [NSTimer scheduledTimerWithTimeInterval: 10  
                                                           target: self  
                                                         selector: @selector(handleEventTimer)  
                                                         userInfo: nil  
@@ -108,7 +112,7 @@ static NSTimer*   eventTimer;
     //发送update,view,error事件
     ((XingCloud::XA::XADataManager*)([XA sharedXA]->__internal))->applicationLaunch();
     
-    heartbeatTimer = [NSTimer scheduledTimerWithTimeInterval: 5*60  
+    heartbeatTimer = [NSTimer scheduledTimerWithTimeInterval: 1  
                                                       target: self 
                                                     selector: @selector(handleHeartbeatTimer)  
                                                     userInfo: nil  
@@ -124,12 +128,12 @@ static NSTimer*   eventTimer;
     //定时发送事件
     ((XingCloud::XA::XADataManager*)([XA sharedXA]->__internal))->setHeartbeatEnabled(value);
 }
-+ (void)applicationDidBecomeActive
++ (void)applicationWillEnterForeground
 {
     //重启定时器
     ((XingCloud::XA::XADataManager*)([XA sharedXA]->__internal))->applicationResume();
 }
-+ (void)applicationWillResignActive
++ (void)applicationDidEnterBackground
 {
     //暂停定时器
     ((XingCloud::XA::XADataManager*)([XA sharedXA]->__internal))->applicationPause();

@@ -57,9 +57,9 @@ namespace XingCloud
             static unsigned int     getTimestamp();
             static char *channelID;
             static char *appID;
-            static char *uid;
+           
             static short reportPolice;
-            static char* docfilePath;
+            
         private:
             ServicesEnable servicesEnable;
             static unsigned int  startTimer;

@@ -43,6 +43,8 @@ namespace XingCloud
             static Mutex   generalMutex;
             static Mutex   fileMutex;
             static FILE   *localCache;
+            static char* docfilePath;
+            static char *uid;
         private:
             unsigned int pause_time;
             unsigned int idle_time;

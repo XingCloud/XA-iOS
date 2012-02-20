@@ -41,7 +41,7 @@ cJSON* XingCloud::XA::SystemInfo::getSystemInfo(unsigned int timestamp)
 //    cJSON_AddItemToObject(statsObject,"eventName",cJSON_CreateString("user.update"));
     
     cJSON * statsParams=cJSON_CreateObject();
-    
+    cJSON_AddItemToObject(statsParams,"is_mobile",cJSON_CreateString("true"));
     memset(temp,0,64);
     getNetType(temp);
     cJSON_AddItemToObject(statsParams,"netType",cJSON_CreateString(temp));
@@ -189,6 +189,8 @@ void XingCloud::XA::SystemInfo::getPhoneType(char *source)
 void XingCloud::XA::SystemInfo::getNetOperator(char *source)
 {
     CTTelephonyNetworkInfo *netInfo = [[CTTelephonyNetworkInfo alloc] init];
+    if(netInfo == nil)
+        return ;
     CTCarrier *carrier = [netInfo subscriberCellularProvider];
     strcpy(source,[[carrier carrierName] cStringUsingEncoding:NSUTF8StringEncoding]);
   
@@ -213,6 +215,8 @@ void XingCloud::XA::SystemInfo::getDeviceModel(char *source)
 void XingCloud::XA::SystemInfo::getCountryISO(char *source)
 {
     CTTelephonyNetworkInfo *netInfo = [[CTTelephonyNetworkInfo alloc] init];
+    if(netInfo == nil)
+        return ;
     CTCarrier *carrier = [netInfo subscriberCellularProvider];
     strcpy(source,[[carrier isoCountryCode] cStringUsingEncoding:NSUTF8StringEncoding]);
     [netInfo release];

@@ -12,6 +12,7 @@
 #include "Mutex.h"
 #include <string>
 #include <vector>
+#include <map>
 namespace XingCloud
 {
     namespace XA
@@ -27,6 +28,7 @@ namespace XingCloud
             static bool    getMethodSend(const char *buffer);
             static bool    postMethodSend( char *buffer);
             static std::vector<std::string> cache;
+            static Mutex   postMutex;
         private:
            // CURL *easy_handle;
             static TaskGroup  taskGroup;

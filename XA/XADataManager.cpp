@@ -16,9 +16,9 @@ namespace XingCloud
     {
         char *XADataManager::channelID=NULL;
         char *XADataManager::appID=NULL;
-        char *XADataManager::uid=NULL;
+        
         short XADataManager::reportPolice=3;
-        char* XADataManager::docfilePath=NULL;
+        
         unsigned int  XADataManager::startTimer=0;
         XADataManager::XADataManager()
         {
@@ -27,14 +27,10 @@ namespace XingCloud
         XADataManager::~XADataManager()
         {
             XingCloud::XAThreadPool::ExecuteTask::deleteThreadPool();
-            delete uid;
             if(channelID!=NULL)
                 delete channelID;
             if(appID!=NULL)
                 delete appID;
-            if(docfilePath!=NULL)
-                delete docfilePath;
-            fclose(XADataProxy::localCache);
         }
         void    XADataManager::handleHeartbeatTimer()
         {
@@ -49,7 +45,7 @@ namespace XingCloud
         {
             cJSON * signedParamsObject=cJSON_CreateObject();
             cJSON_AddItemToObject(signedParamsObject,"appid",cJSON_CreateString(appID));
-            cJSON_AddItemToObject(signedParamsObject,"uid",cJSON_CreateString(uid));
+            cJSON_AddItemToObject(signedParamsObject,"uid",cJSON_CreateString(XADataProxy::uid));
             char  temp[64]={0};
             sprintf(temp,"%u",getTimestamp());
             cJSON_AddItemToObject(signedParamsObject,"timestamp",cJSON_CreateString(temp));
@@ -106,42 +102,13 @@ namespace XingCloud
         {
             //发送系统信息，user.update,user.visit,user.error事件
             startTimer=getTimer();
-            cJSON *visitJson=cJSON_CreateObject();
-            cJSON_AddItemToObject(visitJson,"eventName",cJSON_CreateString("user.visit"));
+           
             cJSON * visitParams=cJSON_CreateObject();
+            cJSON_AddItemToObject(visitParams,"is_mobile",cJSON_CreateString("true"));
             cJSON_AddItemToObject(visitParams,"ref",cJSON_CreateString(channelID));
-            cJSON_AddItemToObject(visitJson,"params",visitParams);
-            char temp[64]={0};
-            sprintf(temp,"%u",getTimestamp());
-            cJSON_AddItemToObject(visitJson,"timestamp",cJSON_CreateString(temp));
             
-            char appDir[512]={0};
-            SystemInfo::getAppFileDir(appDir);
-            docfilePath=new char[521];
-            sprintf(docfilePath,"%s/appCache.log",appDir);
-            XADataProxy::localCache=fopen(docfilePath,"ab+");
-            if(XADataProxy::localCache==NULL)
-            {
-                XAPRINT("error  loacl Cache can not open "); 
-                xaDataProxy.handleApplicationLaunch(visitJson,NULL,NULL);
-                return ;
-            }
-            if(fgetc(XADataProxy::localCache)==EOF)
-            {//本地文件不存在，发送update事件
-                uid=new char[128];
-                SystemInfo::getDeviceID(uid);
-                fwrite(uid,127,1,XADataProxy::localCache);
-                xaDataProxy.handleApplicationLaunch(visitJson,NULL,NULL);
-            
-                //xaDataProxy.handleApplicationLaunch(visitJson,SystemInfo::getSystemInfo(getTimestamp()),NULL);
-            }
-            else
-            {//本地文件存在，不发送update事件
-                fseek(XADataProxy::localCache,0,SEEK_SET);
-                fread(uid,127,1,XADataProxy::localCache);
-                xaDataProxy.handleApplicationLaunch(visitJson,NULL,NULL);
-            }
-          
+            xaDataProxy.handleApplicationLaunch(visitParams,NULL,NULL);
+                      
 //          if(servicesEnable.crashReportEnable)
 //          {
 //              //cJSON * visitJson=cJSON_CreateObject();
@@ -165,6 +132,7 @@ namespace XingCloud
         {
             
             cJSON * countParams=cJSON_CreateObject();
+            cJSON_AddItemToObject(countParams,"is_mobile",cJSON_CreateString("true"));
             cJSON_AddItemToObject(countParams,"type",cJSON_CreateString(action));
             cJSON_AddItemToObject(countParams,"level_1",cJSON_CreateString(level1));
             cJSON_AddItemToObject(countParams,"level_2",cJSON_CreateString(level2));
@@ -189,6 +157,7 @@ namespace XingCloud
         void    XADataManager::trackTransaction(const char *trans_id,const char *channel,const char*gross,const char *gcurrency,const char *vamount,const char *vcurrentcy)
         {
             cJSON * transParams=cJSON_CreateObject();
+            cJSON_AddItemToObject(transParams,"is_mobile",cJSON_CreateString("true"));
             cJSON_AddItemToObject(transParams,"trans_id",cJSON_CreateString(trans_id));
             cJSON_AddItemToObject(transParams,"channel",cJSON_CreateString(channel));
             cJSON_AddItemToObject(transParams,"gross",cJSON_CreateString(gross));
@@ -203,6 +172,7 @@ namespace XingCloud
         
             
             cJSON * tutorialParams=cJSON_CreateObject();
+            cJSON_AddItemToObject(tutorialParams,"is_mobile",cJSON_CreateString("true"));
             cJSON_AddItemToObject(tutorialParams,"index",cJSON_CreateString(index));
             cJSON_AddItemToObject(tutorialParams,"step_name",cJSON_CreateString(name));
             cJSON_AddItemToObject(tutorialParams,"tid",cJSON_CreateString(tutorial));
@@ -216,6 +186,7 @@ namespace XingCloud
 
             char temp[64]={0};
             cJSON *buyParams=cJSON_CreateObject();
+            cJSON_AddItemToObject(buyParams,"is_mobile",cJSON_CreateString("true"));
             cJSON_AddItemToObject(buyParams,"resource",cJSON_CreateString(currency));
             cJSON_AddItemToObject(buyParams,"paytype",cJSON_CreateString(payType));
             cJSON_AddItemToObject(buyParams,"level_1",cJSON_CreateString(level1));

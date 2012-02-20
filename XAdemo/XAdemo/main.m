@@ -1,8 +1,8 @@
 //
 //  main.m
-//  XAdemo
+//  XADemo
 //
-//  Created by mini xingcloud on 12-2-17.
+//  Created by mini xingcloud on 12-2-20.
 //  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
 //
 

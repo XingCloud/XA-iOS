@@ -55,7 +55,9 @@ typedef enum {
  @return void
  */
 + (void)setCrashReportEnabled:(BOOL)value;
-
+/**
+ */
++ (void)setAdsChannel:(NSString*)adsChannel;
 /**
  方法设置是否打印sdk的log信息
  @param value 默认值为NO。设置为YES，行云数据分析SDK将会输出数据统计请求
@@ -91,11 +93,11 @@ typedef enum {
 /**
  请在app唤醒时调用该API
  */
-+ (void)applicationDidBecomeActive;
++ (void)applicationWillEnterForeground;
 /**
  请在app切换时调用该API
  */
-+ (void)applicationWillResignActive;
++ (void)applicationDidEnterBackground;
 /**
  设置是否持续向行云数据分析平台发送心跳事件。该事件有助于获取PCU（峰值在线用户）数据
  @param value 是否开启
