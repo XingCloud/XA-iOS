@@ -16,7 +16,7 @@ namespace XingCloud
         class SystemInfo
         {
         public:
-            static void getNetType(char *source);
+            static int getNetType(char *source);
             static void getSimOperator(char *source);
             static void getCPUInfo(char *source);
             static void getPhoneType(char *source);

@@ -105,9 +105,11 @@ namespace XingCloud
            
             cJSON * visitParams=cJSON_CreateObject();
             cJSON_AddItemToObject(visitParams,"is_mobile",cJSON_CreateString("true"));
-            
+            char temp[32]={0};
+            sprintf(temp,"nonads=%s",XingCloud::XA::XADataManager::channelID);
+            cJSON_AddItemToObject(visitParams,"ref",cJSON_CreateString(temp));
             xaDataProxy.handleApplicationLaunch(visitParams,NULL,NULL);
-                      
+            
 //          if(servicesEnable.crashReportEnable)
 //          {
 //              //cJSON * visitJson=cJSON_CreateObject();

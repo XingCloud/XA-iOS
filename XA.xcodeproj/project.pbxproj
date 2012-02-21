@@ -38,8 +38,6 @@
 		9096761414EE32C400356F4E /* XADataProxy.h in Headers */ = {isa = PBXBuildFile; fileRef = 909675EF14EE32C400356F4E /* XADataProxy.h */; };
 		9096761514EE32C400356F4E /* XASendData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 909675F014EE32C400356F4E /* XASendData.cpp */; };
 		9096761614EE32C400356F4E /* XASendData.h in Headers */ = {isa = PBXBuildFile; fileRef = 909675F114EE32C400356F4E /* XASendData.h */; };
-		9096761714EE32C400356F4E /* XAStreamBuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 909675F214EE32C400356F4E /* XAStreamBuffer.cpp */; };
-		9096761814EE32C400356F4E /* XAStreamBuffer.h in Headers */ = {isa = PBXBuildFile; fileRef = 909675F314EE32C400356F4E /* XAStreamBuffer.h */; };
 		9096761914EE32C400356F4E /* XASystemInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = 909675F414EE32C400356F4E /* XASystemInfo.h */; };
 		9096761A14EE32C400356F4E /* XASystemInfo.mm in Sources */ = {isa = PBXBuildFile; fileRef = 909675F514EE32C400356F4E /* XASystemInfo.mm */; };
 		9096761B14EE32C400356F4E /* XAThreadPool.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 909675F614EE32C400356F4E /* XAThreadPool.cpp */; };
@@ -87,8 +85,6 @@
 		909675EF14EE32C400356F4E /* XADataProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XADataProxy.h; sourceTree = "<group>"; };
 		909675F014EE32C400356F4E /* XASendData.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = XASendData.cpp; sourceTree = "<group>"; };
 		909675F114EE32C400356F4E /* XASendData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XASendData.h; sourceTree = "<group>"; };
-		909675F214EE32C400356F4E /* XAStreamBuffer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = XAStreamBuffer.cpp; sourceTree = "<group>"; };
-		909675F314EE32C400356F4E /* XAStreamBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XAStreamBuffer.h; sourceTree = "<group>"; };
 		909675F414EE32C400356F4E /* XASystemInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XASystemInfo.h; sourceTree = "<group>"; };
 		909675F514EE32C400356F4E /* XASystemInfo.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = XASystemInfo.mm; sourceTree = "<group>"; };
 		909675F614EE32C400356F4E /* XAThreadPool.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = XAThreadPool.cpp; sourceTree = "<group>"; };
@@ -164,8 +160,6 @@
 				909675EF14EE32C400356F4E /* XADataProxy.h */,
 				909675F014EE32C400356F4E /* XASendData.cpp */,
 				909675F114EE32C400356F4E /* XASendData.h */,
-				909675F214EE32C400356F4E /* XAStreamBuffer.cpp */,
-				909675F314EE32C400356F4E /* XAStreamBuffer.h */,
 				909675F414EE32C400356F4E /* XASystemInfo.h */,
 				909675F514EE32C400356F4E /* XASystemInfo.mm */,
 				909675F614EE32C400356F4E /* XAThreadPool.cpp */,
@@ -246,7 +240,6 @@
 				9096761214EE32C400356F4E /* XADataManager.h in Headers */,
 				9096761414EE32C400356F4E /* XADataProxy.h in Headers */,
 				9096761614EE32C400356F4E /* XASendData.h in Headers */,
-				9096761814EE32C400356F4E /* XAStreamBuffer.h in Headers */,
 				9096761914EE32C400356F4E /* XASystemInfo.h in Headers */,
 				9096761C14EE32C400356F4E /* XAThreadPool.h in Headers */,
 			);
@@ -311,7 +304,6 @@
 				9096761114EE32C400356F4E /* XADataManager.cpp in Sources */,
 				9096761314EE32C400356F4E /* XADataProxy.cpp in Sources */,
 				9096761514EE32C400356F4E /* XASendData.cpp in Sources */,
-				9096761714EE32C400356F4E /* XAStreamBuffer.cpp in Sources */,
 				9096761A14EE32C400356F4E /* XASystemInfo.mm in Sources */,
 				9096761B14EE32C400356F4E /* XAThreadPool.cpp in Sources */,
 				9096766914EE358600356F4E /* XA.mm in Sources */,

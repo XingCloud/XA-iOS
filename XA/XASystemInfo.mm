@@ -42,8 +42,8 @@ cJSON* XingCloud::XA::SystemInfo::getSystemInfo(unsigned int timestamp)
 //    cJSON_AddItemToObject(statsObject,"eventName",cJSON_CreateString("user.update"));
     
     cJSON * statsParams=cJSON_CreateObject();
-    cJSON_AddItemToObject(statsParams,"ref",cJSON_CreateString("noads="));
-    cJSON_AddItemToObject(statsParams,"is_mobile",cJSON_CreateString(XingCloud::XA::XADataManager::channelID));
+   
+    cJSON_AddItemToObject(statsParams,"is_mobile",cJSON_CreateString("true"));
     memset(temp,0,64);
     getNetType(temp);
     cJSON_AddItemToObject(statsParams,"netType",cJSON_CreateString(temp));
@@ -112,12 +112,12 @@ bool XingCloud::XA::SystemInfo::isJailbroken(char *source)
     }
     return jailbroken;
 }
-void XingCloud::XA::SystemInfo::getNetType(char *source)
+int XingCloud::XA::SystemInfo::getNetType(char *source)
 {
     if([[Reachability reachabilityForLocalWiFi] currentReachabilityStatus] != NotReachable)
     {
-        //my_strcpy("netType","WIFI");
         strcpy(source,"WIFI");
+        return 1;
     }
     else if([[Reachability reachabilityForInternetConnection] currentReachabilityStatus] != NotReachable)
     {
@@ -132,12 +132,12 @@ void XingCloud::XA::SystemInfo::getNetType(char *source)
                 strcpy(source,"3G");
                 break;
         }
-        //my_strcpy("netType","3G/GPRS");
+        return 2;
     }
     else 
     {
         strcpy(source,"noconnection");
-       // my_strcpy("netType","noconnection");
+        return 0;
     }
 }
 void XingCloud::XA::SystemInfo::getSimOperator(char *source)

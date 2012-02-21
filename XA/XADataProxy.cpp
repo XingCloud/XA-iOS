@@ -53,6 +53,32 @@ namespace  XingCloud
             cJSON_AddItemToObject(root,"stats",statArray);
             //XASendData::getMethodSend(cJSON_PrintUnformatted(root));
             XASendData::postMethodSend(cJSON_PrintUnformatted(root));
+            
+            
+            
+            
+//              just test using
+            cJSON *rootq=cJSON_CreateObject();
+            cJSON_AddItemToObject(rootq,"signedParams",XADataManager::getSignedParamsJsonObject());
+            cJSON *statArrayq=cJSON_CreateArray();
+            cJSON *statObjectq=cJSON_CreateObject();
+            cJSON_AddItemToObject(statObjectq,"eventName",cJSON_CreateString("user.quit"));
+            cJSON *statObjectParams=cJSON_CreateObject();
+            unsigned int duration_time=XADataManager::getTimer()- 0;
+            sprintf(temp,"%u",duration_time);
+            cJSON_AddItemToObject(statObjectParams,"duration_time",cJSON_CreateString(temp));
+            cJSON_AddItemToObject(statObjectParams,"is_mobile",cJSON_CreateString("true"));
+            
+            cJSON_AddItemToObject(statObjectq,"params",statObjectParams);
+            memset(temp,0,64);
+            sprintf(temp,"%u",XADataManager::getTimestamp());
+            cJSON_AddItemToObject(statObjectq,"timestamp",cJSON_CreateString(temp));
+            cJSON_AddItemToArray(statArrayq  ,statObjectq);
+            cJSON_AddItemToObject(root,"stats",statArrayq);
+            //quit 缓存下来
+            XASendData::postMethodSend(cJSON_PrintUnformatted(root));
+            
+            
         }
         void  XADataProxy::sendInternalEventData()
         {
@@ -81,7 +107,6 @@ namespace  XingCloud
                 XASendData::postMethodSend(cJSON_PrintUnformatted(root));
             }
             generalEventCache.clear();
-            
         }
         void    XADataProxy::handleApplicationLaunch(cJSON *visitEvent,cJSON *updateEvent,cJSON *errorEvent)
         {

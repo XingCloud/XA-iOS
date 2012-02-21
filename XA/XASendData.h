@@ -27,7 +27,8 @@ namespace XingCloud
             ~XASendData();
             static bool    getMethodSend(const char *buffer);
             static bool    postMethodSend( char *buffer);
-            static std::vector<std::string> cache;
+            //static std::vector<std::string> cache;
+            static std::map<int,std::string> cache;
             static Mutex   postMutex;
         private:
            // CURL *easy_handle;
