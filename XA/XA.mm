@@ -114,15 +114,20 @@ static NSTimer*   eventTimer;
                                                         userInfo: nil  
                                                          repeats: YES];
     }
-    if(((XingCloud::XA::XADataManager*)([XA sharedXA]->__internal))->getHeartbeat())
-    {
-        heartbeatTimer = [NSTimer scheduledTimerWithTimeInterval: 45  
-                                                          target: self 
-                                                        selector: @selector(handleHeartbeatTimer)  
-                                                        userInfo: nil  
-                                                         repeats: YES];
-    }
-    
+//    if(((XingCloud::XA::XADataManager*)([XA sharedXA]->__internal))->getHeartbeat())
+//    {
+//        heartbeatTimer = [NSTimer scheduledTimerWithTimeInterval: 45  
+//                                                          target: self 
+//                                                        selector: @selector(handleHeartbeatTimer)  
+//                                                        userInfo: nil  
+//                                                         repeats: YES];
+//    }
+    //always open ,also for cache event
+    heartbeatTimer = [NSTimer scheduledTimerWithTimeInterval: 45  
+                                                      target: self 
+                                                    selector: @selector(handleHeartbeatTimer)  
+                                                    userInfo: nil  
+                                                     repeats: YES];
     
 }
 + (void)trackUserUpdate:(NSMutableDictionary*)userInfo

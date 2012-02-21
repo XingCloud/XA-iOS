@@ -28,6 +28,7 @@ namespace  XingCloud
         Mutex   XADataProxy::fileMutex;
         char* XADataProxy::docfilePath=NULL;
         char *XADataProxy::uid=NULL;
+        unsigned int XADataProxy::idle_time = 0;
         XADataProxy::XADataProxy()
         {
             idle_time = 0;
@@ -40,43 +41,48 @@ namespace  XingCloud
         }
         void  XADataProxy::sendHeartbeatEventData()
         {
-            cJSON *root=cJSON_CreateObject();
-            cJSON_AddItemToObject(root,"signedParams",XADataManager::getSignedParamsJsonObject());
-            cJSON *statArray=cJSON_CreateArray();
-            cJSON *statObject=cJSON_CreateObject();
-            cJSON_AddItemToObject(statObject,"eventName",cJSON_CreateString("user.heartbeat"));
-            cJSON_AddItemToObject(statObject,"params",cJSON_CreateObject());
-            char temp[64]={0};
-            sprintf(temp,"%u",XADataManager::getTimestamp());
-            cJSON_AddItemToObject(statObject,"timestamp",cJSON_CreateString(temp));
-            cJSON_AddItemToArray(statArray,statObject);
-            cJSON_AddItemToObject(root,"stats",statArray);
-            //XASendData::getMethodSend(cJSON_PrintUnformatted(root));
-            XASendData::postMethodSend(cJSON_PrintUnformatted(root));
-            
-            
-            
-            
-//              just test using
-            cJSON *rootq=cJSON_CreateObject();
-            cJSON_AddItemToObject(rootq,"signedParams",XADataManager::getSignedParamsJsonObject());
-            cJSON *statArrayq=cJSON_CreateArray();
-            cJSON *statObjectq=cJSON_CreateObject();
-            cJSON_AddItemToObject(statObjectq,"eventName",cJSON_CreateString("user.quit"));
-            cJSON *statObjectParams=cJSON_CreateObject();
-            unsigned int duration_time=XADataManager::getTimer()- 0;
-            sprintf(temp,"%u",duration_time);
-            cJSON_AddItemToObject(statObjectParams,"duration_time",cJSON_CreateString(temp));
-            cJSON_AddItemToObject(statObjectParams,"is_mobile",cJSON_CreateString("true"));
-            
-            cJSON_AddItemToObject(statObjectq,"params",statObjectParams);
-            memset(temp,0,64);
-            sprintf(temp,"%u",XADataManager::getTimestamp());
-            cJSON_AddItemToObject(statObjectq,"timestamp",cJSON_CreateString(temp));
-            cJSON_AddItemToArray(statArrayq  ,statObjectq);
-            cJSON_AddItemToObject(root,"stats",statArrayq);
-            //quit 缓存下来
-            XASendData::postMethodSend(cJSON_PrintUnformatted(root));
+            if(XADataManager::heartbeat)
+            {
+                cJSON *root=cJSON_CreateObject();
+                cJSON_AddItemToObject(root,"signedParams",XADataManager::getSignedParamsJsonObject());
+                cJSON *statArray=cJSON_CreateArray();
+                cJSON *statObject=cJSON_CreateObject();
+                cJSON_AddItemToObject(statObject,"eventName",cJSON_CreateString("user.heartbeat"));
+                cJSON_AddItemToObject(statObject,"params",cJSON_CreateObject());
+                char temp[64]={0};
+                sprintf(temp,"%u",XADataManager::getTimestamp());
+                cJSON_AddItemToObject(statObject,"timestamp",cJSON_CreateString(temp));
+                cJSON_AddItemToArray(statArray,statObject);
+                cJSON_AddItemToObject(root,"stats",statArray);
+                XASendData::getMethodSend(cJSON_PrintUnformatted(root));
+                 //XASendData::postMethodSend(cJSON_PrintUnformatted(root));
+            }
+            if(SystemInfo::getNetType(NULL)!=0)
+            {
+                Lock lock(XASendData::postMutex);
+                for(std::map<int,std::string>::iterator iter = XASendData::cache.begin();iter !=XASendData::cache.end();iter++)
+                    XASendData::postMethodSend(iter->second.c_str());
+            }
+/**********************************just test usage*****************************************************/
+//            cJSON *rootq=cJSON_CreateObject();
+//            cJSON_AddItemToObject(rootq,"signedParams",XADataManager::getSignedParamsJsonObject());
+//            cJSON *statArrayq=cJSON_CreateArray();
+//            cJSON *statObjectq=cJSON_CreateObject();
+//            cJSON_AddItemToObject(statObjectq,"eventName",cJSON_CreateString("user.quit"));
+//            cJSON *statObjectParams=cJSON_CreateObject();
+//            unsigned int duration_time=XADataManager::getTimer()- 0;
+//            sprintf(temp,"%u",duration_time);
+//            cJSON_AddItemToObject(statObjectParams,"duration_time",cJSON_CreateString(temp));
+//            cJSON_AddItemToObject(statObjectParams,"is_mobile",cJSON_CreateString("true"));
+//            
+//            cJSON_AddItemToObject(statObjectq,"params",statObjectParams);
+//            memset(temp,0,64);
+//            sprintf(temp,"%u",XADataManager::getTimestamp());
+//            cJSON_AddItemToObject(statObjectq,"timestamp",cJSON_CreateString(temp));
+//            cJSON_AddItemToArray(statArrayq  ,statObjectq);
+//            cJSON_AddItemToObject(root,"stats",statArrayq);
+//            //quit 缓存下来
+//            XASendData::postMethodSend(cJSON_PrintUnformatted(root));
             
             
         }
@@ -116,51 +122,67 @@ namespace  XingCloud
             sprintf(docfilePath,"%s/appCache.log",appDir);
             
             localCache = fopen(docfilePath,"ab+");
-//            if(localCache==NULL)
-//            {
-//                XAPRINT("error  loacl Cache can not open "); 
-//                return ;
-//            }
-//            
-//            if(fgetc(localCache)==EOF)
-//            {//本地文件不存在，发送update事件
-//                uid=new char[64];
-//                memset(uid,0,64);
-//                SystemInfo::getDeviceID(uid);
-//                fwrite(uid,63,1,localCache);
-//                localCache=NULL;
-//                //xaDataProxy.handleApplicationLaunch(visitJson,SystemInfo::getSystemInfo(getTimestamp()),NULL);
-//                handleInternalEvent(0,SystemInfo::getSystemInfo(XADataManager::getTimestamp()));
-//            }
-//            else
-//            {//本地文件存在，不发送update事件
-//                fseek(XADataProxy::localCache,0,SEEK_SET);
-//                fread(uid,63,1,XADataProxy::localCache);
-//                
-//            }
-            uid=new char[64];
-            memset(uid,0,64);
-            SystemInfo::getDeviceID(uid);
-            handleInternalEvent(0,SystemInfo::getSystemInfo(XADataManager::getTimestamp()));
-            handleInternalEvent(2,(visitEvent));
-            if(localCache!=NULL)
+            if(localCache==NULL)
             {
-                fseek(localCache,0L,127);
-                int cacheLength=0;
-                fread(&cacheLength,sizeof(int),1,localCache);
-                for(int i=0;i<cacheLength;i++)
-                {
-                    int length=0;
-                    fread(&length,sizeof(int),1,localCache);
-                    char temp[1024]={0};
-                    fread(temp,length,1,localCache);
-                    XASendData::postMethodSend(temp);
-                }
+                XAPRINT("error  loacl Cache can not open "); 
+                return ;
             }
-            fclose(localCache);
-            localCache=NULL;
-            remove(docfilePath);
+//            long fileLength=ftell(localCache);
+//            fseek(localCache,0L,SEEK_END);
+//            ftell(localCache);
+//            if((ftell(localCache) - fileLength)==0)
+            fseek(localCache,0L,SEEK_SET);
+            if(fgetc(localCache)==EOF)
+            {//本地文件不存在，发送update事件
+                uid=new char[64];
+                memset(uid,0,64);
+                SystemInfo::getDeviceID(uid);
+                fclose(localCache);
+                remove(docfilePath);
+                //xaDataProxy.handleApplicationLaunch(visitJson,SystemInfo::getSystemInfo(getTimestamp()),NULL);
+                handleInternalEvent(0,SystemInfo::getSystemInfo(XADataManager::getTimestamp()));
+            }
+            else
+            {//本地文件存在，不发送update事件
+                fseek(XADataProxy::localCache,0,SEEK_SET);
+                uid=new char[64];
+                memset(uid,0,64);
+                 //send quit data
+                fread(uid,63,1,XADataProxy::localCache);
+                if(localCache!=NULL)
+                {//sending  cache  event
+                   
+                    char temp[1024]={0};
+                    int tempLength=0;
+                    fread(&tempLength,sizeof(int),1,localCache);
+                    fread(temp,tempLength,1,localCache);
+                    XASendData::postMethodSend(temp);//send quit event
+                    
+                    tempLength=0;
+                    fread(&tempLength,sizeof(int),1,localCache);
+                    for(int i=0;i<tempLength;i++)
+                    {
+                        int length=0;
+                        fread(&length,sizeof(int),1,localCache);
+                        memset(temp,0,1024);
+                        fread(temp,length,1,localCache);
+                        XASendData::postMethodSend(temp);
+                    }
+                }
                 
+                fclose(localCache);
+                localCache=NULL;
+            
+                remove(docfilePath);
+                
+            }
+/*****************************************just test to usage************************************************/
+//            uid=new char[64];
+//            memset(uid,0,64);
+//            SystemInfo::getDeviceID(uid);
+//            handleInternalEvent(0,SystemInfo::getSystemInfo(XADataManager::getTimestamp()));
+            handleInternalEvent(2,(visitEvent));
+  
             if(errorEvent!=NULL)
                 handleInternalEvent(5,(errorEvent));
             
@@ -172,62 +194,45 @@ namespace  XingCloud
         }
         void    XADataProxy::handleApplicationTerminate()
         {
-            localCache = fopen(docfilePath,"ab+");
-            fwrite(uid,63,1,localCache);
-           
-            if(localCache!=NULL)
-            {
-                int cacheLength=XASendData::cache.size();
-                fwrite(&cacheLength,sizeof(int),1,localCache);
-                for(int i=0;i<XASendData::cache.size();i++)
-                {
-                    const char *data = XASendData::cache[i].c_str();
-                    int length=strlen(data);
-                    fwrite(&length,sizeof(int),1,localCache);
-                    fwrite(data,length,1,localCache);
-                }
-            }
-            fclose(localCache);
-            //send quit event 
-            char temp[64]={0};
-            cJSON *root=cJSON_CreateObject();
-            cJSON_AddItemToObject(root,"signedParams",XADataManager::getSignedParamsJsonObject());
-            cJSON *statArray=cJSON_CreateArray();
-            cJSON *statObject=cJSON_CreateObject();
-            cJSON_AddItemToObject(statObject,"eventName",cJSON_CreateString("user.quit"));
-            
-            cJSON *statObjectParams=cJSON_CreateObject();
-            unsigned int duration_time=XADataManager::getTimer()- idle_time;
-            sprintf(temp,"%u",duration_time);
-            cJSON_AddItemToObject(statObjectParams,"duration_time",cJSON_CreateString(temp));
-            cJSON_AddItemToObject(statObjectParams,"is_mobile",cJSON_CreateString("true"));
-            
-            cJSON_AddItemToObject(statObject,"params",statObjectParams);
-            memset(temp,0,64);
-            sprintf(temp,"%u",XADataManager::getTimestamp());
-            cJSON_AddItemToObject(statObject,"timestamp",cJSON_CreateString(temp));
-            cJSON_AddItemToObject(root,"stats",statArray);
-            XASendData::getMethodSend(cJSON_PrintUnformatted(root));
+//            localCache = fopen(docfilePath,"ab+");
+//            fwrite(uid,63,1,localCache);
+//           
+//            if(localCache!=NULL)
+//            {
+//                int cacheLength=XASendData::cache.size();
+//                fwrite(&cacheLength,sizeof(int),1,localCache);
+//                for(int i=0;i<XASendData::cache.size();i++)
+//                {
+//                    const char *data = XASendData::cache[i].c_str();
+//                    int length=strlen(data);
+//                    fwrite(&length,sizeof(int),1,localCache);
+//                    fwrite(data,length,1,localCache);
+//                }
+//            }
+//            fclose(localCache);
+//            //send quit event 
+//            char temp[64]={0};
+//            cJSON *root=cJSON_CreateObject();
+//            cJSON_AddItemToObject(root,"signedParams",XADataManager::getSignedParamsJsonObject());
+//            cJSON *statArray=cJSON_CreateArray();
+//            cJSON *statObject=cJSON_CreateObject();
+//            cJSON_AddItemToObject(statObject,"eventName",cJSON_CreateString("user.quit"));
+//            
+//            cJSON *statObjectParams=cJSON_CreateObject();
+//            unsigned int duration_time=XADataManager::getTimer()- idle_time;
+//            sprintf(temp,"%u",duration_time);
+//            cJSON_AddItemToObject(statObjectParams,"duration_time",cJSON_CreateString(temp));
+//            cJSON_AddItemToObject(statObjectParams,"is_mobile",cJSON_CreateString("true"));
+//            
+//            cJSON_AddItemToObject(statObject,"params",statObjectParams);
+//            memset(temp,0,64);
+//            sprintf(temp,"%u",XADataManager::getTimestamp());
+//            cJSON_AddItemToObject(statObject,"timestamp",cJSON_CreateString(temp));
+//            cJSON_AddItemToObject(root,"stats",statArray);
+//            XASendData::getMethodSend(cJSON_PrintUnformatted(root));
         }
-        void    XADataProxy::handleApplicationPause()
+        cJSON*  XADataProxy::quitEventData()
         {
-            localCache = fopen(docfilePath,"ab+");
-           
-            if(localCache!=NULL)
-            {
-                fwrite(uid,63,1,localCache);
-                int cacheLength=XASendData::cache.size();
-                fwrite(&cacheLength,sizeof(int),1,localCache);
-                for(int i=0;i<XASendData::cache.size();i++)
-                {
-                    const char *data = XASendData::cache[i].c_str();
-                    int length=strlen(data);
-                    fwrite(&length,sizeof(int),1,localCache);
-                    fwrite(data,length,1,localCache);
-                }
-            }
-            fclose(localCache);
-            //send quit event 
             char temp[64]={0};
             cJSON *root=cJSON_CreateObject();
             cJSON_AddItemToObject(root,"signedParams",XADataManager::getSignedParamsJsonObject());
@@ -246,8 +251,33 @@ namespace  XingCloud
             cJSON_AddItemToObject(statObject,"timestamp",cJSON_CreateString(temp));
             cJSON_AddItemToArray(statArray,statObject);
             cJSON_AddItemToObject(root,"stats",statArray);
-            //quit 缓存下来
-            XASendData::postMethodSend(cJSON_PrintUnformatted(root));
+            return root;
+        }
+        void    XADataProxy::handleApplicationPause()
+        {
+            localCache = fopen(docfilePath,"ab+");
+            char *quitData = cJSON_PrintUnformatted(quitEventData());
+            //XAPRINT(quitData);
+            int quitDataLength= strlen(quitData);
+            if(localCache!=NULL)
+            {
+                fwrite(uid,63,1,localCache);//write uid
+                
+                fwrite(&quitDataLength,sizeof(int),1,localCache);
+                fwrite(quitData,quitDataLength,1,localCache);
+                
+                int cacheLength=XASendData::cache.size();//write cache number
+                fwrite(&cacheLength,sizeof(int),1,localCache);
+                
+                for(int i=0;i<XASendData::cache.size();i++)
+                {
+                    const char *data = XASendData::cache[i].c_str();
+                    int length=strlen(data);
+                    fwrite(&length,sizeof(int),1,localCache);
+                    fwrite(data,length,1,localCache);
+                }
+            }
+            fclose(localCache);
             
             pause_time = XADataManager::getTimer();
         }

@@ -29,7 +29,7 @@ void    XAPRINT(const char *fmt,...)
     
     va_end(args);
     //#ifdef IOS
-    NSLog(@"%s",sprint_buf);
+    NSLog(@"%s\n\n",sprint_buf);
     //#endif
     
 }
@@ -116,7 +116,8 @@ int XingCloud::XA::SystemInfo::getNetType(char *source)
 {
     if([[Reachability reachabilityForLocalWiFi] currentReachabilityStatus] != NotReachable)
     {
-        strcpy(source,"WIFI");
+        if(source!=NULL)
+            strcpy(source,"WIFI");
         return 1;
     }
     else if([[Reachability reachabilityForInternetConnection] currentReachabilityStatus] != NotReachable)
@@ -126,17 +127,20 @@ int XingCloud::XA::SystemInfo::getNetType(char *source)
             case 00:
             case 02:
             case 07:
-                strcpy(source,"GPRS");
+                if(source!=NULL)
+                    strcpy(source,"GPRS");
                 break;
             default:
-                strcpy(source,"3G");
+                if(!source)
+                    strcpy(source,"3G");
                 break;
         }
         return 2;
     }
     else 
     {
-        strcpy(source,"noconnection");
+        if(source!=NULL)
+            strcpy(source,"noconnection");
         return 0;
     }
 }

@@ -16,7 +16,7 @@ namespace XingCloud
     {
         char *XADataManager::channelID=NULL;
         char *XADataManager::appID=NULL;
-        
+        bool  XADataManager::heartbeat;
         short XADataManager::reportPolice=3;
         
         unsigned int  XADataManager::startTimer=0;
@@ -49,6 +49,7 @@ namespace XingCloud
             char  temp[64]={0};
             sprintf(temp,"%u",getTimestamp());
             cJSON_AddItemToObject(signedParamsObject,"timestamp",cJSON_CreateString(temp));
+            
             return signedParamsObject;
         }
         int     XADataManager::getTimer()//return second
@@ -82,6 +83,7 @@ namespace XingCloud
         void    XADataManager::setHeartbeatEnabled(bool value)
         {
             servicesEnable.heartbeatEnable =value;
+            heartbeat=value;
         }
         void    XADataManager::setReportPolicy(short reportPolice)
         {

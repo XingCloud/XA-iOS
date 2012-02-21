@@ -42,6 +42,8 @@ namespace XingCloud
             static void  sendInternalEventData();
             static void  sendGeneralEventData();
             static void  sendHeartbeatEventData();
+            static cJSON*  quitEventData();
+            
             static Mutex   internalMutex;
             static Mutex   generalMutex;
             static Mutex   fileMutex;
@@ -50,7 +52,7 @@ namespace XingCloud
             static char   *uid;
         private:
             unsigned int pause_time;
-            unsigned int idle_time;
+            static unsigned int idle_time;
         };
     }
 }

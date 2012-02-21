@@ -54,16 +54,17 @@ namespace XingCloud
             return code==CURLE_OK;
         }
         
-        bool    XASendData::postMethodSend(char *buffer)
+        bool    XASendData::postMethodSend(const char *buffer)
         {
             XAPRINT(buffer);
            
-            XingCloud::XAThreadPool::ExecuteTask::addTask(new XingCloud::XAThreadPool::XATask(postPerform,buffer,&taskGroup));
+            XingCloud::XAThreadPool::ExecuteTask::addTask(new XingCloud::XAThreadPool::XATask(postPerform,const_cast<char*>(buffer),&taskGroup));
             
             return true;
         }
         unsigned int  postPerform(void *param)
         {
+            
             Lock lock(XASendData::postMutex);
             bool receiveOK=false;
             bool *dataSendSuccess=&receiveOK;
@@ -83,10 +84,10 @@ namespace XingCloud
             curl_easy_setopt(easy_handle,CURLOPT_POST,1);
             curl_easy_setopt(easy_handle,CURLOPT_VERBOSE,1); /* open comment when debug mode.*/
         
+            XASendData::cache[index] = (char*)param;//
             
             CURLcode code=curl_easy_perform(easy_handle);
             
-            XASendData::cache[index] = (char*)param;
             
             if((code==CURLE_OK && receiveOK && dataSendSuccess))
             {//发送成功则删除缓存

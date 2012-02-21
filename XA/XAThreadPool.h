@@ -18,7 +18,7 @@ namespace XingCloud
         class XATask :public Task
         {
         public:
-            XATask(TaskCallback task,void *param,TaskGroup *taskGroup);
+            XATask(TaskCallback task, void *param,TaskGroup *taskGroup);
             void	execute ();
 
         private:
