@@ -1,3 +1,7 @@
 .DS_Store
+DerivedData
 XA.xcodeproj/xcuserdata
 XA.xcodeproj/project.xcworkspace/xcuserdata
+XAdemo/DerivedData
+XAdemo/XAdemo.xcodeproj/xcuserdata
+XAdemo/XAdemo.xcodeproj/project.xcworkspace/xcuserdata
