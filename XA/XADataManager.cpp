@@ -38,8 +38,7 @@ namespace XingCloud
         }
         void    XADataManager::handleEventTimer()
         {
-            xaDataProxy.sendInternalEventData();
-            xaDataProxy.sendGeneralEventData();
+            xaDataProxy.handleEventData();
         }
         cJSON* XADataManager::getSignedParamsJsonObject()
         {
@@ -217,7 +216,7 @@ namespace XingCloud
         void    XADataManager::generalEvent(int event,const char *appId,const char *userId,int timestamp,const char *params)
         {
                         
-            xaDataProxy.handleGeneralEvent(event,appId,userId,timestamp,params);
+            xaDataProxy.handleGeneralEvent(event,appId,userId,timestamp,cJSON_CreateString(params));
         }
         
     }

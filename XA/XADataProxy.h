@@ -10,11 +10,24 @@
 #define XA_XALifeCicle_h
 #include "cJSON.h"
 #include "Mutex.h"
+#include <map>
 namespace XingCloud
 {
     namespace XA
     {
         void* timerFunc(void *param);
+        
+        class localcacheEvent
+        {
+        public:
+            char *appID;
+            char *userID;
+            bool isInternal;
+            cJSON *jsonEvent;
+            localcacheEvent(){appID = userID = NULL;}
+            ~localcacheEvent(){if(appID!=NULL)delete appID;if(userID!=NULL)delete userID;/*cJSON_Delete(jsonEvent);*/}
+        };
+        
         
         class XADataProxy
         {
@@ -33,23 +46,35 @@ namespace XingCloud
             void    handleTrackTransaction(cJSON *transactionEvent);
             void    handleTrackTutorialService(cJSON *tutorialEvent);
             void    handleTrackBuyService(cJSON *buyEvent);       
-            void    handleGeneralEvent(int event,const char *appId,const char *userId,int timestamp,const char *params);
-            void    handleInternalEvent(int event,cJSON *params);
+            void    handleGeneralEvent(int event,const char *appId,const char *userId,unsigned int timestamp,cJSON *params,bool isInternal=false);
+            void    handleEvent(int event,unsigned int timestamp,cJSON *params,int eventIndex);
         
             void    eventString(int event,char *source);
             cJSON*  encapsulateEvent(int event,cJSON *params);
-            static cJSON*  getGenSignedParamsObject(const char *appId,const char *userId,int timestamp);
-            static void  sendInternalEventData();
-            static void  sendGeneralEventData();
-            static void  sendHeartbeatEventData();
-            static cJSON*  quitEventData();
             
-            static Mutex   internalMutex;
-            static Mutex   generalMutex;
-            static Mutex   fileMutex;
-            static FILE   *localCache;
-            static char   *docfilePath;
-            static char   *uid;
+            static cJSON*   getGenSignedParamsObject(const char *appId,const char *userId,int timestamp);
+            static void     readyForSendInternalData();
+            static void     sendInternalEventData(cJSON *internalStatArray);
+            static void     sendGeneralEventData(const char *appID,const char *userID,cJSON *generalStatArray);
+            static void     handleEventData();
+            static void     sendHeartbeatEventData();
+            static void     writeCacheToFile();
+            static cJSON*   quitEventData();
+            
+            static Mutex    internalMutex;
+            static Mutex    generalMutex;
+            static Mutex    fileMutex;
+          
+            static int      currentFilePosition;
+            static int      lastFilePosition;
+            static int      lastEventSize;
+            static int      currentEventSize;
+            
+            static FILE    *localCache;
+            static char    *docfilePath;
+            static char    *uid;
+            
+            static std::map<int,localcacheEvent*> eventCache;
         private:
             unsigned int pause_time;
             static unsigned int idle_time;

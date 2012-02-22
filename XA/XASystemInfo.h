@@ -30,7 +30,7 @@ namespace XingCloud
             static void getDeviceID(char *source);
             static bool isJailbroken(char *source);
             static void getAppFileDir(char* result);
-            static cJSON *getSystemInfo(unsigned int timesamp);
+            static cJSON *getSystemInfo();
             
             static int phoneType;
         };

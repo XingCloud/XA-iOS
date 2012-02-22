@@ -50,8 +50,7 @@ namespace XingCloud
             void    setReportPolicy(short reportPolice);
             void    setChannelID(const char *value);
             void    setAppID(const char *value);
-            bool    getReportPolicy()const{return servicesEnable.crashReportEnable;}
-            bool    getHeartbeat()const{return servicesEnable.heartbeatEnable;}
+            
             void    handleHeartbeatTimer();
             void    handleEventTimer();
             static  cJSON* getSignedParamsJsonObject();

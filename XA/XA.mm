@@ -105,7 +105,7 @@ static NSTimer*   eventTimer;
 {
     //发送update,view,error事件
     ((XingCloud::XA::XADataManager*)([XA sharedXA]->__internal))->applicationLaunch();
-    if(((XingCloud::XA::XADataManager*)([XA sharedXA]->__internal))->getReportPolicy()==DEFAULT)
+    if(((XingCloud::XA::XADataManager*)([XA sharedXA]->__internal))->reportPolice==DEFAULT)
     {
        
             eventTimer = [NSTimer scheduledTimerWithTimeInterval: 10  

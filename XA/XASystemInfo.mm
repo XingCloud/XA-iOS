@@ -34,7 +34,7 @@ void    XAPRINT(const char *fmt,...)
     
 }
 static void setHeartbeatTimer();
-cJSON* XingCloud::XA::SystemInfo::getSystemInfo(unsigned int timestamp)
+cJSON* XingCloud::XA::SystemInfo::getSystemInfo()
 {
     char temp[64]={0};
     
