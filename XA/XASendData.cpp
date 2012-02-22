@@ -20,8 +20,7 @@ namespace XingCloud
         //std::map<int,std::string>  XASendData::cache;//发送失败的缓存
         static size_t postWriteData(void *recvBuffer,size_t size,size_t nmemb,void *userParam);
         size_t Getcontentlengthfunc(void *ptr, size_t size, size_t nmemb, void *stream) ;
-        void handleSendSucess();
-        void handleSendFailed();
+        
         unsigned int  postPerform(void *param);
         Mutex   XASendData::postMutex;
         std::map<int,CURL*> indexCURL;
@@ -100,11 +99,11 @@ namespace XingCloud
             {//发送成功则删除缓存
                 //std::map<int,std::string>::iterator iter=XASendData::cache.find(index);
                // XASendData::cache.erase(index);
-                handleSendSucess();
+                XADataProxy::handleSendSucess();
             }
             else
             {//
-                handleSendFailed();
+                XADataProxy::handleSendFailed();
             }
             curl_easy_cleanup(indexCURL[index]);
             delete temp;
@@ -135,50 +134,6 @@ namespace XingCloud
             }
             return size * nmemb;
         }
-        void handleSendSucess()
-        {
-            if(XADataManager::reportPolice==0)
-            {//realtime
-                XADataProxy::eventCache.clear();
-            }
-            else if(XADataManager::reportPolice==1)
-            {//启动时候发送
-            }
-            else if(XADataManager::reportPolice==3)
-            {
-                if(XADataProxy::lastEventSize != XADataProxy::currentEventSize)
-                {
-                    int size = XADataProxy::currentFilePosition- XADataProxy::lastFilePosition;
-                    char *unKnowData = new char[size];
-                    memset(unKnowData,-1,XADataProxy::currentFilePosition-XADataProxy::lastFilePosition);
-                    XADataProxy::localCache = fopen(XADataProxy::docfilePath,"ab+");
-                    fseek(XADataProxy::localCache,0L,XADataProxy::lastFilePosition);
-                    fwrite(unKnowData,size,1,XADataProxy::localCache);
-                    fclose(XADataProxy::localCache);
-                }
-                std::map<int,localcacheEvent*>::iterator iterBegin =XADataProxy::eventCache.find(XADataProxy::lastEventSize);
-                std::map<int,localcacheEvent*>::iterator iterEnd =XADataProxy::eventCache.find(XADataProxy::currentEventSize);
-                XADataProxy::eventCache.erase(iterBegin,iterEnd);
-                
-                if(XADataProxy::eventCache.size() == XADataProxy::currentEventSize)
-                {   
-                    XADataProxy::eventCache.clear();
-                }
-            }
-        }
-        void handleSendFailed()
-        {
-            if(XADataManager::reportPolice==0)
-            {//
-                XADataProxy::writeCacheToFile();
-            }
-            else if(XADataManager::reportPolice==1)
-            {
-            }
-            else if(XADataManager::reportPolice==3)
-            {//DEFAULT
-                XADataProxy::writeCacheToFile();
-            }
-        }
+        
     }
 }

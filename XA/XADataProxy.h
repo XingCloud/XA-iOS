@@ -23,8 +23,9 @@ namespace XingCloud
             char *appID;
             char *userID;
             bool isInternal;
+            bool isWriteTofile;
             cJSON *jsonEvent;
-            localcacheEvent(){appID = userID = NULL;}
+            localcacheEvent(){appID = userID = NULL;isWriteTofile=false;}
             ~localcacheEvent(){if(appID!=NULL)delete appID;if(userID!=NULL)delete userID;/*cJSON_Delete(jsonEvent);*/}
         };
         
@@ -61,8 +62,10 @@ namespace XingCloud
             static void     writeCacheToFile();
             static cJSON*   quitEventData();
             
-            static Mutex    internalMutex;
-            static Mutex    generalMutex;
+            static void handleSendSucess();
+            static void handleSendFailed();
+        
+            static Mutex    eventCacheMutex;
             static Mutex    fileMutex;
           
             static int      currentFilePosition;

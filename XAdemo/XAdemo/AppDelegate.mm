@@ -33,8 +33,9 @@
 //    [XA trackUserUpdate:tris];
 //    [XA trackUserIncrement:@"maoxianInc"];
     
+    
+    [XA trackMilestone:@"MILE STONE"];
 //    [XA trackCount:@"abc" level1:@"level1" level2:@"level2" level3: @"level3" level4:@"level4" level5:@"level5" count: 10];
-//    [XA trackMilestone:@"MILE STONE"];
 //    [XA trackBuyService:@"currency" payType:@"PAYTYPE" level1:@"level1" level2:@"level2" level3: @"level3" level4:@"level4" level5:@"level5" amount:11 number:12];
 //    [XA trackPayService:@"transID" channel:@"appStore" gross:@"100" gcurrency:@"USD" vamount:@"10" vcurrentcy:@"ni"];
 //    [XA trackTutorialService:@"3"  name:@"go" tutorial:@"to"];
