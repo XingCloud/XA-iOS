@@ -71,6 +71,10 @@ namespace XingCloud
             
             return   tv.tv_sec*(long int)1000+tv.tv_usec/(long int)1000;
         }
+        void    XADataManager::setAdsChannel(const char *value)
+        {
+            
+        }
         void    XADataManager::setLogEnabled(bool value)
         {
             servicesEnable.logPrintEnable = value;

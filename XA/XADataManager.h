@@ -50,7 +50,7 @@ namespace XingCloud
             void    setReportPolicy(short reportPolice);
             void    setChannelID(const char *value);
             void    setAppID(const char *value);
-            
+            void    setAdsChannel(const char *value);
             void    handleHeartbeatTimer();
             void    handleEventTimer();
             static  cJSON* getSignedParamsJsonObject();

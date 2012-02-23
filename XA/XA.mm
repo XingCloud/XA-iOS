@@ -74,7 +74,7 @@ static NSTimer*   eventTimer;
 }
 + (NSString *)getUserId
 {
-    return @"";
+    return  [NSString stringWithFormat:@"%s",XingCloud::XA::XADataProxy::uid];
 }
 
 + (void)setCrashReportEnabled:(BOOL)value
@@ -83,7 +83,7 @@ static NSTimer*   eventTimer;
 }
 + (void)setAdsChannel:(NSString*)adsChannel
 {
-    
+    ((XingCloud::XA::XADataManager*)([XA sharedXA]->__internal))->setAdsChannel([adsChannel cStringUsingEncoding:NSUTF8StringEncoding]);
 }
 + (void)setLogEnabled:(BOOL)value
 {
@@ -108,26 +108,30 @@ static NSTimer*   eventTimer;
     if(((XingCloud::XA::XADataManager*)([XA sharedXA]->__internal))->reportPolice==DEFAULT)
     {
        
-            eventTimer = [NSTimer scheduledTimerWithTimeInterval: 10  
+            eventTimer = [NSTimer scheduledTimerWithTimeInterval: 60  
                                                           target: self  
                                                         selector: @selector(handleEventTimer)  
                                                         userInfo: nil  
                                                          repeats: YES];
     }
-//    if(((XingCloud::XA::XADataManager*)([XA sharedXA]->__internal))->getHeartbeat())
-//    {
-//        heartbeatTimer = [NSTimer scheduledTimerWithTimeInterval: 45  
-//                                                          target: self 
-//                                                        selector: @selector(handleHeartbeatTimer)  
-//                                                        userInfo: nil  
-//                                                         repeats: YES];
-//    }
+    if(((XingCloud::XA::XADataManager*)([XA sharedXA]->__internal))->heartbeat)
+    {
+        heartbeatTimer = [NSTimer scheduledTimerWithTimeInterval: 60*5  
+                                                          target: self 
+                                                        selector: @selector(handleHeartbeatTimer)  
+                                                        userInfo: nil  
+                                                         repeats: YES];
+    }
     //always open ,also for cache event
-    heartbeatTimer = [NSTimer scheduledTimerWithTimeInterval: 45  
-                                                      target: self 
-                                                    selector: @selector(handleHeartbeatTimer)  
-                                                    userInfo: nil  
-                                                     repeats: YES];
+//    heartbeatTimer = [NSTimer scheduledTimerWithTimeInterval: 45  
+//                                                      target: self 
+//                                                    selector: @selector(handleHeartbeatTimer)  
+//                                                    userInfo: nil  
+//                                                     repeats: YES];
+    
+}
++ (void)trackLogin:(NSString*)login
+{
     
 }
 + (void)trackUserUpdate:(NSMutableDictionary*)userInfo

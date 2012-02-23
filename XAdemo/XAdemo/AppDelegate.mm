@@ -25,6 +25,7 @@
     self.window.backgroundColor = [UIColor whiteColor];
         
     [self.window makeKeyAndVisible];
+    
     [self.window addSubview:[[AppView alloc] initWithFrame:[self.window bounds]]]; 
     
     [XA setDelegate:self];
@@ -32,24 +33,7 @@
     [XA setHeartbeatEnabled:YES];
     [XA setReportPolicy:REALTIME];//REALTIME,DEFAULT,BATCH 
     [XA applicationDidLaunched];
-//    NSMutableDictionary *tris = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"value1",@"key1",@"value2",@"key2",@"value3",nil];//要指定一个nil
-//    [XA trackUserUpdate:tris];
-//    [XA trackUserIncrement:@"maoxianInc"];
-    
-    
-    [XA trackMilestone:@"MILE STONE"];
-//    [XA trackCount:@"abc" level1:@"level1" level2:@"level2" level3: @"level3" level4:@"level4" level5:@"level5" count: 10];
-//    [XA trackBuyService:@"currency" payType:@"PAYTYPE" level1:@"level1" level2:@"level2" level3: @"level3" level4:@"level4" level5:@"level5" amount:11 number:12];
-//    [XA trackPayService:@"transID" channel:@"appStore" gross:@"100" gcurrency:@"USD" vamount:@"10" vcurrentcy:@"ni"];
-//    [XA trackTutorialService:@"3"  name:@"go" tutorial:@"to"];
-//    for(int i=0;i<2;i++)
-//    {
-//        NSString *userid=[NSString  stringWithFormat:@"gaomao=%d",i];
-//        [XA event:USER_LOGIN appId:@"chucktest@337_ar_xatest" userId:userid timestamp:222222222 params:@"null"];
-//    }
-    
-    
-    
+
     return YES;
 }
 

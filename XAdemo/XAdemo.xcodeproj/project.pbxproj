@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		2D9A73C014F5D56D00A333AB /* libXA.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 90EE130314F1F66B006B4FD5 /* libXA.a */; };
-		2D9A73C514F5D70B00A333AB /* AppView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D9A73C414F5D70B00A333AB /* AppView.m */; };
+		908E2FA414F65FB200403EF8 /* AppView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 908E2FA314F65FB200403EF8 /* AppView.mm */; };
 		90EE12CA14F1F4CD006B4FD5 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 90EE12C914F1F4CD006B4FD5 /* UIKit.framework */; };
 		90EE12CC14F1F4CD006B4FD5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 90EE12CB14F1F4CD006B4FD5 /* Foundation.framework */; };
 		90EE12CE14F1F4CD006B4FD5 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 90EE12CD14F1F4CD006B4FD5 /* CoreGraphics.framework */; };
@@ -40,7 +40,7 @@
 
 /* Begin PBXFileReference section */
 		2D9A73C314F5D70B00A333AB /* AppView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppView.h; path = XAdemo/AppView.h; sourceTree = SOURCE_ROOT; };
-		2D9A73C414F5D70B00A333AB /* AppView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppView.m; path = XAdemo/AppView.m; sourceTree = SOURCE_ROOT; };
+		908E2FA314F65FB200403EF8 /* AppView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AppView.mm; sourceTree = "<group>"; };
 		90EE12C514F1F4CD006B4FD5 /* XADemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = XADemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		90EE12C914F1F4CD006B4FD5 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		90EE12CB14F1F4CD006B4FD5 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -115,7 +115,7 @@
 				90EE12F914F1F573006B4FD5 /* AppDelegate.mm */,
 				90EE12D814F1F4CD006B4FD5 /* AppDelegate.h */,
 				2D9A73C314F5D70B00A333AB /* AppView.h */,
-				2D9A73C414F5D70B00A333AB /* AppView.m */,
+				908E2FA314F65FB200403EF8 /* AppView.mm */,
 				90EE12D014F1F4CD006B4FD5 /* Supporting Files */,
 			);
 			path = XADemo;
@@ -169,7 +169,7 @@
 			attributes = {
 				LastUpgradeCheck = 0420;
 			};
-			buildConfigurationList = 90EE12BF14F1F4CD006B4FD5 /* Build configuration list for PBXProject "XAdemo" */;
+			buildConfigurationList = 90EE12BF14F1F4CD006B4FD5 /* Build configuration list for PBXProject "XADemo" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -220,7 +220,7 @@
 			files = (
 				90EE12D614F1F4CD006B4FD5 /* main.m in Sources */,
 				90EE12FA14F1F573006B4FD5 /* AppDelegate.mm in Sources */,
-				2D9A73C514F5D70B00A333AB /* AppView.m in Sources */,
+				908E2FA414F65FB200403EF8 /* AppView.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -326,7 +326,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		90EE12BF14F1F4CD006B4FD5 /* Build configuration list for PBXProject "XAdemo" */ = {
+		90EE12BF14F1F4CD006B4FD5 /* Build configuration list for PBXProject "XADemo" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				90EE12DB14F1F4CD006B4FD5 /* Debug */,

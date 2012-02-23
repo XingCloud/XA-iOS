@@ -18,7 +18,11 @@ namespace XingCloud
     namespace XA
     {
         //typedef void CURL;
-        
+        typedef struct postdata
+        {
+            char *data;
+            int  sendEventNumber;
+        }postData;
         class XASendData
         {
         public:
@@ -26,7 +30,8 @@ namespace XingCloud
             XASendData();
             ~XASendData();
             static bool    getMethodSend(const char *buffer);
-            static bool    postMethodSend(const char *buffer);
+            static bool    postMethodSend(const char *buffer,int dataNumber);
+            
             //static std::vector<std::string> cache;
             //static std::map<int,std::string> cache;
             static Mutex   postMutex;

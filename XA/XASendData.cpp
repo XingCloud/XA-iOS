@@ -56,20 +56,23 @@ namespace XingCloud
             return code==CURLE_OK;
         }
         
-        bool    XASendData::postMethodSend(const char *buffer)
+        bool    XASendData::postMethodSend(const char *buffer,int dataNumber)
         {
             if(buffer==0)
                 return false;
             
             XAPRINT(buffer);
             
-            XingCloud::XAThreadPool::ExecuteTask::addTask(new XingCloud::XAThreadPool::XATask(postPerform,const_cast<char*>(buffer),&taskGroup));
+            postData  *p = new postData[sizeof(postData)];
+            p->data =const_cast<char*>(buffer);
+            p->sendEventNumber =dataNumber;
+            XingCloud::XAThreadPool::ExecuteTask::addTask(new XingCloud::XAThreadPool::XATask(postPerform,p,&taskGroup));
             
             return true;
         }
-        
         unsigned int  postPerform(void *param)
         {
+            postData  *p =(postData*)param;
             
             Lock lock(XASendData::postMutex);
             bool receiveOK=false;
@@ -77,7 +80,7 @@ namespace XingCloud
             static int index=0;
             CURL* easy_handle = curl_easy_init();
             indexCURL[index++]=easy_handle;
-            char *encodedURL = curl_easy_escape(easy_handle,(char*)param, strlen((char*)param));
+            char *encodedURL = curl_easy_escape(easy_handle,p->data, strlen(p->data));
             curl_easy_setopt(easy_handle,CURLOPT_URL,"http://analytic.xingcloud.com/index.php?");
             curl_easy_setopt(easy_handle, CURLOPT_HEADERFUNCTION, Getcontentlengthfunc);
             curl_easy_setopt(easy_handle, CURLOPT_HEADERDATA,&receiveOK);
@@ -88,7 +91,7 @@ namespace XingCloud
             curl_easy_setopt(easy_handle,CURLOPT_WRITEDATA,dataSendSuccess);
             curl_easy_setopt(easy_handle,CURLOPT_WRITEDATA,easy_handle);
             curl_easy_setopt(easy_handle,CURLOPT_POST,1);
-            curl_easy_setopt(easy_handle,CURLOPT_VERBOSE,1); /* open comment when debug mode.*/
+            //curl_easy_setopt(easy_handle,CURLOPT_VERBOSE,1); /* open comment when debug mode.*/
         
             //XASendData::cache[index] = (char*)param;//
             
@@ -97,14 +100,14 @@ namespace XingCloud
             
             if((code==CURLE_OK && receiveOK && dataSendSuccess))
             {//发送成功则删除缓存
-                //std::map<int,std::string>::iterator iter=XASendData::cache.find(index);
-               // XASendData::cache.erase(index);
-                XADataProxy::handleSendSucess();
+            
+                XADataProxy::handleSendSucess(p->sendEventNumber);
             }
             else
             {//
-                XADataProxy::handleSendFailed();
+                XADataProxy::handleSendFailed(p->sendEventNumber);
             }
+            delete p;
             curl_easy_cleanup(indexCURL[index]);
             delete temp;
             return code==CURLE_OK;

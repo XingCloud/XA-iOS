@@ -122,6 +122,8 @@ typedef enum {
  */
 + (void)trackMilestone:(NSString*)milestoneName;
 
++ (void)trackLogin:(NSString*)login;
+
 + (void)trackUserUpdate:(NSMutableDictionary*)userInfo;
 
 + (void)trackUserIncrement:(NSMutableDictionary*)userInfo;
