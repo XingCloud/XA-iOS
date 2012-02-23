@@ -8,8 +8,8 @@
 
 #import <UIKit/UIKit.h>
 #import "XA.h"
+#import "AppView.h"
 @interface AppDelegate : UIResponder <UIApplicationDelegate,XADelegate>
-
 
 @property (strong, nonatomic) UIWindow *window;
 

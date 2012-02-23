@@ -7,13 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2D9A73C014F5D56D00A333AB /* libXA.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 90EE130314F1F66B006B4FD5 /* libXA.a */; };
+		2D9A73C514F5D70B00A333AB /* AppView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D9A73C414F5D70B00A333AB /* AppView.m */; };
 		90EE12CA14F1F4CD006B4FD5 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 90EE12C914F1F4CD006B4FD5 /* UIKit.framework */; };
 		90EE12CC14F1F4CD006B4FD5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 90EE12CB14F1F4CD006B4FD5 /* Foundation.framework */; };
 		90EE12CE14F1F4CD006B4FD5 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 90EE12CD14F1F4CD006B4FD5 /* CoreGraphics.framework */; };
 		90EE12D414F1F4CD006B4FD5 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 90EE12D214F1F4CD006B4FD5 /* InfoPlist.strings */; };
 		90EE12D614F1F4CD006B4FD5 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 90EE12D514F1F4CD006B4FD5 /* main.m */; };
 		90EE12FA14F1F573006B4FD5 /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 90EE12F914F1F573006B4FD5 /* AppDelegate.mm */; };
-		90EE130614F1F68A006B4FD5 /* libXA.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 90EE130314F1F66B006B4FD5 /* libXA.a */; };
 		90EE130914F1F6BA006B4FD5 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 90EE130814F1F6BA006B4FD5 /* CoreTelephony.framework */; };
 		90EE130B14F1F6C3006B4FD5 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 90EE130A14F1F6C3006B4FD5 /* SystemConfiguration.framework */; };
 		90EE130E14F1F6D6006B4FD5 /* libcurl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 90EE130C14F1F6D6006B4FD5 /* libcurl.a */; };
@@ -21,6 +22,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		2D9A73BE14F5D56700A333AB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 90EE12FB14F1F66B006B4FD5 /* XA.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 909675C014EE326300356F4E;
+			remoteInfo = XA;
+		};
 		90EE130214F1F66B006B4FD5 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 90EE12FB14F1F66B006B4FD5 /* XA.xcodeproj */;
@@ -28,16 +36,11 @@
 			remoteGlobalIDString = 909675C114EE326300356F4E;
 			remoteInfo = XA;
 		};
-		90EE130414F1F685006B4FD5 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 90EE12FB14F1F66B006B4FD5 /* XA.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 909675C014EE326300356F4E;
-			remoteInfo = XA;
-		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		2D9A73C314F5D70B00A333AB /* AppView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppView.h; path = XAdemo/AppView.h; sourceTree = SOURCE_ROOT; };
+		2D9A73C414F5D70B00A333AB /* AppView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppView.m; path = XAdemo/AppView.m; sourceTree = SOURCE_ROOT; };
 		90EE12C514F1F4CD006B4FD5 /* XADemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = XADemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		90EE12C914F1F4CD006B4FD5 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		90EE12CB14F1F4CD006B4FD5 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -60,11 +63,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2D9A73C014F5D56D00A333AB /* libXA.a in Frameworks */,
 				90EE130E14F1F6D6006B4FD5 /* libcurl.a in Frameworks */,
 				90EE130F14F1F6D6006B4FD5 /* libzlib.a in Frameworks */,
 				90EE130B14F1F6C3006B4FD5 /* SystemConfiguration.framework in Frameworks */,
 				90EE130914F1F6BA006B4FD5 /* CoreTelephony.framework in Frameworks */,
-				90EE130614F1F68A006B4FD5 /* libXA.a in Frameworks */,
 				90EE12CA14F1F4CD006B4FD5 /* UIKit.framework in Frameworks */,
 				90EE12CC14F1F4CD006B4FD5 /* Foundation.framework in Frameworks */,
 				90EE12CE14F1F4CD006B4FD5 /* CoreGraphics.framework in Frameworks */,
@@ -111,6 +114,8 @@
 			children = (
 				90EE12F914F1F573006B4FD5 /* AppDelegate.mm */,
 				90EE12D814F1F4CD006B4FD5 /* AppDelegate.h */,
+				2D9A73C314F5D70B00A333AB /* AppView.h */,
+				2D9A73C414F5D70B00A333AB /* AppView.m */,
 				90EE12D014F1F4CD006B4FD5 /* Supporting Files */,
 			);
 			path = XADemo;
@@ -149,7 +154,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				90EE130514F1F685006B4FD5 /* PBXTargetDependency */,
+				2D9A73BF14F5D56700A333AB /* PBXTargetDependency */,
 			);
 			name = XADemo;
 			productName = XADemo;
@@ -164,7 +169,7 @@
 			attributes = {
 				LastUpgradeCheck = 0420;
 			};
-			buildConfigurationList = 90EE12BF14F1F4CD006B4FD5 /* Build configuration list for PBXProject "XADemo" */;
+			buildConfigurationList = 90EE12BF14F1F4CD006B4FD5 /* Build configuration list for PBXProject "XAdemo" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -215,16 +220,17 @@
 			files = (
 				90EE12D614F1F4CD006B4FD5 /* main.m in Sources */,
 				90EE12FA14F1F573006B4FD5 /* AppDelegate.mm in Sources */,
+				2D9A73C514F5D70B00A333AB /* AppView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		90EE130514F1F685006B4FD5 /* PBXTargetDependency */ = {
+		2D9A73BF14F5D56700A333AB /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = XA;
-			targetProxy = 90EE130414F1F685006B4FD5 /* PBXContainerItemProxy */;
+			targetProxy = 2D9A73BE14F5D56700A333AB /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -296,7 +302,7 @@
 					"\"$(SRCROOT)/../XA\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				"USER_HEADER_SEARCH_PATHS[arch=*]" = /Users/xingcloudmini/zsh_workspace/XA/XA;
+				"USER_HEADER_SEARCH_PATHS[arch=*]" = ../XA;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -312,7 +318,7 @@
 					"\"$(SRCROOT)/../XA\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				"USER_HEADER_SEARCH_PATHS[arch=*]" = /Users/xingcloudmini/zsh_workspace/XA/XA;
+				"USER_HEADER_SEARCH_PATHS[arch=*]" = ../XA;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -320,7 +326,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		90EE12BF14F1F4CD006B4FD5 /* Build configuration list for PBXProject "XADemo" */ = {
+		90EE12BF14F1F4CD006B4FD5 /* Build configuration list for PBXProject "XAdemo" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				90EE12DB14F1F4CD006B4FD5 /* Debug */,
