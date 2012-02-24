@@ -353,6 +353,10 @@ namespace  XingCloud
                 }
                 fwrite(&curValidPosition,sizeof(unsigned int),1,localCache);//存下当前指fp位置
                 fclose(localCache);
+                if(internalNumber>0)
+                {
+                    sendInternalEventData(internalStatArray,internalNumber);
+                }
             }
                 
             handleGeneralEvent(2,NULL,NULL,XADataManager::getTimestamp(),visitEvent,true);
@@ -551,6 +555,7 @@ namespace  XingCloud
                 fwrite(&curValidPosition,sizeof(unsigned int),1,localCache);//存下当前指fp位置
                 fseek(localCache,curValidPosition,SEEK_CUR);
                 fclose(localCache);
+                eventMemoryCache.erase(eventMemoryCache.begin(),eventMemoryCache.begin()+sendDataNumber);//删除前sendDataNumber个元素
                
             }
             else
