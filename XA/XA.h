@@ -31,10 +31,8 @@ typedef enum {
 } XAEventType;
 
 @protocol XADelegate;
-
 @interface XA : NSObject {
-    void* __internal;
-
+    id __internal;
 }
 #pragma mark XA basics
 /**
@@ -56,6 +54,8 @@ typedef enum {
  */
 + (void)setCrashReportEnabled:(BOOL)value;
 /**
+ 设置应用来源的广告平台
+ @param adsChannel 应用广告平台
  */
 + (void)setAdsChannel:(NSString*)adsChannel;
 /**
@@ -121,11 +121,22 @@ typedef enum {
  @param milestoneName 
  */
 + (void)trackMilestone:(NSString*)milestoneName;
+/**
+ 记录用户加载游戏的时间
+ @param loginInfo 用户登陆信息
+ */
++ (void)trackLogin:(NSString*)loginInfo;
 
-+ (void)trackLogin:(NSString*)login;
-
+/**
+ 用户信息更新，需要以json格式的字符串放入dictionary中,key是物品名称，value物品数值
+ @param userInfo 存储key,value,用户更新信息内容
+ */
 + (void)trackUserUpdate:(NSMutableDictionary*)userInfo;
 
+/**
+ 用于对用户属性的值做累加计算，key是物品名称，value物品数值
+ @param userInfo 存储key,value 用户更新信息内容
+ */
 + (void)trackUserIncrement:(NSMutableDictionary*)userInfo;
 /**
  游戏中的用户付费情况
@@ -138,7 +149,7 @@ typedef enum {
  */
 + (void)trackPayService:(NSString*)trans_id channel:(NSString*)channel gross:(NSString*)gross gcurrency:(NSString*)gcurrency vamount:(NSString*)vamount vcurrentcy:(NSString*)vcurrentcy;
 
-+ (void)trackPageview;//TODO add api params&comment
++ (void)trackPageview;//TODO add api params&comment 暂未支持
 /**
  记录新手引导步骤中，每步完成的数量，从而查看新手引导过程中的用户流失率
  @param event       事件的名称，XAEventType::TUTORIAL
@@ -171,7 +182,6 @@ typedef enum {
 + (void)event:(XAEventType)eventType appId:(NSString*)appId userId:(NSString*)uid timestamp:(NSInteger)timestamp params:(NSString*)params;
 
 @end
-
 
 @protocol XADelegate <NSObject>
 @required

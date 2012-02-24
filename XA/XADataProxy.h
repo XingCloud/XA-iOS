@@ -43,6 +43,7 @@ namespace XingCloud
             void    handleApplicationPause();
             void    handleApplicationResume();
             
+            void    handleTrackLogin(cJSON  *login);
             void    handleTrackUserIncrement(cJSON *userInfo);
             void    handleTrackUserUpdate(cJSON *userInfo);
             void    handleTrackCount(cJSON *countEvent);
@@ -52,7 +53,7 @@ namespace XingCloud
             void    handleTrackBuyService(cJSON *buyEvent);       
             void    handleGeneralEvent(int event,const char *appId,const char *userId,unsigned int timestamp,cJSON *params,bool isInternal=false);
             void    handleEvent(int event,unsigned int timestamp,cJSON *params,int eventIndex);
-        
+            
             void    eventString(int event,char *source);
             cJSON*  encapsulateEvent(int event,cJSON *params);
             

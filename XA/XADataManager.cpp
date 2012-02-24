@@ -22,7 +22,8 @@ namespace XingCloud
         unsigned int  XADataManager::startTimer=0;
         XADataManager::XADataManager()
         {
-            XingCloud::XAThreadPool::ExecuteTask::initThreadPool(2);
+            XingCloud::XAThreadPool::ExecuteTask::initThreadPool(3);
+            adsChannel=NULL;
         }
         XADataManager::~XADataManager()
         {
@@ -31,6 +32,10 @@ namespace XingCloud
                 delete channelID;
             if(appID!=NULL)
                 delete appID;
+            if(adsChannel!=NULL)
+            {
+                delete adsChannel;
+            }
         }
         void    XADataManager::handleHeartbeatTimer()
         {
@@ -43,12 +48,15 @@ namespace XingCloud
         cJSON* XADataManager::getSignedParamsJsonObject()
         {
             cJSON * signedParamsObject=cJSON_CreateObject();
+            if(appID==NULL ||XADataProxy::uid == NULL)
+            {
+                return signedParamsObject;
+            }
             cJSON_AddItemToObject(signedParamsObject,"appid",cJSON_CreateString(appID));
             cJSON_AddItemToObject(signedParamsObject,"uid",cJSON_CreateString(XADataProxy::uid));
             char  temp[64]={0};
             sprintf(temp,"%u",getTimestamp());
             cJSON_AddItemToObject(signedParamsObject,"timestamp",cJSON_CreateString(temp));
-            
             return signedParamsObject;
         }
         int     XADataManager::getTimer()//return second
@@ -73,7 +81,9 @@ namespace XingCloud
         }
         void    XADataManager::setAdsChannel(const char *value)
         {
-            
+            adsChannel=new char[strlen(value)+1];
+            memset(adsChannel,0,strlen(value)+1);
+            strcpy(adsChannel,value);
         }
         void    XADataManager::setLogEnabled(bool value)
         {
@@ -110,8 +120,18 @@ namespace XingCloud
            
             cJSON * visitParams=cJSON_CreateObject();
             cJSON_AddItemToObject(visitParams,"is_mobile",cJSON_CreateString("true"));
+            
+            //1. 应用来自广告平台：ref=xafrom=cn;snsnations@XXXX;admob;txt_1。“ @XXXX;”中间的”XXXX“需要我们更换成用户设置的reference
+            //2. 应用非来自广告：ref=nonads=xxxx 。 xxxx为用户设置的reference
             char temp[32]={0};
-            sprintf(temp,"nonads=%s",XingCloud::XA::XADataManager::channelID);
+            if(adsChannel ==NULL)
+            {
+                 sprintf(temp,"xafrom=%s",XingCloud::XA::XADataManager::channelID);
+            }
+            else
+            {
+                sprintf(temp,"nonads=%s",XingCloud::XA::XADataManager::channelID);
+            }
             cJSON_AddItemToObject(visitParams,"ref",cJSON_CreateString(temp));
             xaDataProxy.handleApplicationLaunch(visitParams,NULL,NULL);
             
@@ -163,10 +183,19 @@ namespace XingCloud
         {
             
             cJSON * milestoneParams=cJSON_CreateObject();
+            cJSON_AddItemToObject(milestoneParams,"is_mobile",cJSON_CreateString("true"));
             cJSON_AddItemToObject(milestoneParams,"milestone_name",cJSON_CreateString(milestoneName));
             
             xaDataProxy.handleTrackMilestone(milestoneParams);
             
+        }
+        void    XADataManager::trackLogin(const char *login)
+        {
+            cJSON * loginParams=cJSON_CreateObject();
+            cJSON_AddItemToObject(loginParams,"is_mobile",cJSON_CreateString("true"));
+            cJSON_AddItemToObject(loginParams,"user.login",cJSON_CreateString(login));
+            
+            xaDataProxy.handleTrackLogin(loginParams);
         }
         void    XADataManager::trackTransaction(const char *trans_id,const char *channel,const char*gross,const char *gcurrency,const char *vamount,const char *vcurrentcy)
         {
@@ -220,7 +249,7 @@ namespace XingCloud
         void    XADataManager::generalEvent(int event,const char *appId,const char *userId,int timestamp,const char *params)
         {
                         
-            xaDataProxy.handleGeneralEvent(event,appId,userId,timestamp,cJSON_CreateString(params));
+            //xaDataProxy.handleGeneralEvent(event,appId,userId,timestamp,cJSON_CreateString(params));
         }
         
     }

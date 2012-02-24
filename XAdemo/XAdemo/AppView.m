@@ -67,24 +67,21 @@
 }
 
 
-
-
-
 -(void)updateButtonClick
 {
-    NSMutableDictionary *tris = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"value1",@"key1",@"value2",@"key2",@"value3",nil];//要指定一个nil
+    NSMutableDictionary *tris = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"value1",@"key1",@"value2",@"key2",nil];//要指定一个nil
     [XA trackUserUpdate:tris];
 }
 -(void)incrementButtonClick
 {
-    NSMutableDictionary *tris = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"value1",@"key1",@"value2",@"key2",@"value3",nil];//要指定一个nil
+    NSMutableDictionary *tris = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"value1",@"key1",@"value2",@"key2",nil];//要指定一个nil
     [XA trackUserIncrement:tris];
 }
 -(void)loginButtonClick
 {
     
     NSString *userid=[NSString  stringWithFormat:@"gaomao=%d",1];
-    [XA event:USER_LOGIN appId:@"chucktest@337_ar_xatest" userId:userid timestamp:222222222 params:@"null"];
+    [XA event:USER_LOGIN appId:@"chucktest@337_ar_xatest" userId:userid timestamp:222222222 params:@"{}"];
     
 }
 -(void)paycompleteButtonClick

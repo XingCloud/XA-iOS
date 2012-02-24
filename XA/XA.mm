@@ -8,8 +8,20 @@
 
 #import "XA.h"
 #include "XADataManager.h"
-#include "cJSON.h"
+@interface XA ()
+@property (nonatomic, readwrite, assign) id internal;
+@end
+
 @implementation XA
+@synthesize internal=__internal;
+
+struct XAWrapOpaque
+{
+public:
+	XAWrapOpaque(){wrap=new XingCloud::XA::XADataManager();};
+    ~XAWrapOpaque(){delete wrap;wrap=NULL;};
+	XingCloud::XA::XADataManager* wrap;
+};
 
 #pragma mark internal
 static XA* sharedXA;
@@ -47,25 +59,25 @@ static NSTimer*   eventTimer;
 {
     self = [super init];
     if (self) {
-        __internal = new XingCloud::XA::XADataManager();
+        self.internal = (id)(new XAWrapOpaque());
     }
     return self;
 }
 
 - (void)dealloc
 {
-    delete (XingCloud::XA::XADataManager*)__internal;
+    delete (XAWrapOpaque*)__internal;
+    __internal=NULL;
     [super dealloc];
 }
 #pragma mark XA Timer
 + (void)handleEventTimer
 {
-   
-    ((XingCloud::XA::XADataManager*)([XA sharedXA]->__internal))->handleEventTimer();
+    ((XAWrapOpaque*)([XA sharedXA]->__internal))->wrap->handleEventTimer();
 }
 + (void)handleHeartbeatTimer
 {
-    ((XingCloud::XA::XADataManager*)([XA sharedXA]->__internal))->handleHeartbeatTimer();
+    ((XAWrapOpaque*)([XA sharedXA]->__internal))->wrap->handleHeartbeatTimer();
 }
 #pragma mark XA basics
 + (NSString *)getVersion
@@ -79,24 +91,24 @@ static NSTimer*   eventTimer;
 
 + (void)setCrashReportEnabled:(BOOL)value
 {
-    ((XingCloud::XA::XADataManager*)([XA sharedXA]->__internal))->setCrashReportEnabled(value);
+    ((XAWrapOpaque*)([XA sharedXA]->__internal))->wrap->setCrashReportEnabled(value);
 }
 + (void)setAdsChannel:(NSString*)adsChannel
 {
-    ((XingCloud::XA::XADataManager*)([XA sharedXA]->__internal))->setAdsChannel([adsChannel cStringUsingEncoding:NSUTF8StringEncoding]);
+   ((XAWrapOpaque*)([XA sharedXA]->__internal))->wrap->setAdsChannel([adsChannel cStringUsingEncoding:NSUTF8StringEncoding]);
 }
 + (void)setLogEnabled:(BOOL)value
 {
-    ((XingCloud::XA::XADataManager*)([XA sharedXA]->__internal))->setLogEnabled(value);
+    ((XAWrapOpaque*)([XA sharedXA]->__internal))->wrap->setLogEnabled(value);
 }
 + (void)setDelegate:(id <XADelegate>)delegate
 {
-    ((XingCloud::XA::XADataManager*)([XA sharedXA]->__internal))->setAppID([[delegate appId] cStringUsingEncoding:NSUTF8StringEncoding]);
-    ((XingCloud::XA::XADataManager*)([XA sharedXA]->__internal))->setChannelID([[delegate channelId] cStringUsingEncoding:NSUTF8StringEncoding]);
+    ((XAWrapOpaque*)([XA sharedXA]->__internal))->wrap->setAppID([[delegate appId] cStringUsingEncoding:NSUTF8StringEncoding]);
+    ((XAWrapOpaque*)([XA sharedXA]->__internal))->wrap->setChannelID([[delegate channelId] cStringUsingEncoding:NSUTF8StringEncoding]);
 }
 + (void)setReportPolicy:(XAReportPolicy)rp
 {
-    ((XingCloud::XA::XADataManager*)([XA sharedXA]->__internal))->setReportPolicy(rp);
+    ((XAWrapOpaque*)([XA sharedXA]->__internal))->wrap->setReportPolicy(rp);
     
 }
 
@@ -104,8 +116,8 @@ static NSTimer*   eventTimer;
 + (void)applicationDidLaunched
 {
     //发送update,view,error事件
-    ((XingCloud::XA::XADataManager*)([XA sharedXA]->__internal))->applicationLaunch();
-    if(((XingCloud::XA::XADataManager*)([XA sharedXA]->__internal))->reportPolice==DEFAULT)
+    ((XAWrapOpaque*)([XA sharedXA]->__internal))->wrap->applicationLaunch();
+    if(((XAWrapOpaque*)([XA sharedXA]->__internal))->wrap->reportPolice==DEFAULT)
     {
        
             eventTimer = [NSTimer scheduledTimerWithTimeInterval: 60  
@@ -114,7 +126,7 @@ static NSTimer*   eventTimer;
                                                         userInfo: nil  
                                                          repeats: YES];
     }
-    if(((XingCloud::XA::XADataManager*)([XA sharedXA]->__internal))->heartbeat)
+    if(((XAWrapOpaque*)([XA sharedXA]->__internal))->wrap->heartbeat)
     {
         heartbeatTimer = [NSTimer scheduledTimerWithTimeInterval: 60*5  
                                                           target: self 
@@ -132,7 +144,7 @@ static NSTimer*   eventTimer;
 }
 + (void)trackLogin:(NSString*)login
 {
-    
+    ((XingCloud::XA::XADataManager*)([XA sharedXA]->__internal))->trackLogin([login cStringUsingEncoding:NSUTF8StringEncoding]);
 }
 + (void)trackUserUpdate:(NSMutableDictionary*)userInfo
 {
@@ -150,7 +162,7 @@ static NSTimer*   eventTimer;
             cJSON_AddItemToObject(userUpdateParams,tempKey,cJSON_CreateString(tempValue));
         }
     }
-     ((XingCloud::XA::XADataManager*)([XA sharedXA]->__internal))->trackUserUpdate(userUpdateParams);
+     ((XAWrapOpaque*)([XA sharedXA]->__internal))->wrap->trackUserUpdate(userUpdateParams);
 }
 + (void)trackUserIncrement:(NSMutableDictionary*)userInfo;
 {
@@ -169,39 +181,39 @@ static NSTimer*   eventTimer;
         }
     }
     
-    ((XingCloud::XA::XADataManager*)([XA sharedXA]->__internal))->trackUserIncrement(userIncParams);
+    ((XAWrapOpaque*)([XA sharedXA]->__internal))->wrap->trackUserIncrement(userIncParams);
 }
 + (void)applicationWillTerminate
 {
     //发送quit事件
-    ((XingCloud::XA::XADataManager*)([XA sharedXA]->__internal))->applicationTerminate();
+    ((XAWrapOpaque*)([XA sharedXA]->__internal))->wrap->applicationTerminate();
 }
 + (void)setHeartbeatEnabled:(BOOL)value
 {
     //定时发送事件
-    ((XingCloud::XA::XADataManager*)([XA sharedXA]->__internal))->setHeartbeatEnabled(value);
+    ((XAWrapOpaque*)([XA sharedXA]->__internal))->wrap->setHeartbeatEnabled(value);
 }
 + (void)applicationWillEnterForeground
 {
     //重启定时器
-    ((XingCloud::XA::XADataManager*)([XA sharedXA]->__internal))->applicationResume();
+    ((XAWrapOpaque*)([XA sharedXA]->__internal))->wrap->applicationResume();
 }
 + (void)applicationDidEnterBackground
 {
     //暂停定时器
-    ((XingCloud::XA::XADataManager*)([XA sharedXA]->__internal))->applicationPause();
+    ((XAWrapOpaque*)([XA sharedXA]->__internal))->wrap->applicationPause();
 }
 #pragma mark XA events
 + (void)event:(XAEventType)eventType appId:(NSString*)appId userId:(NSString*)uid timestamp:(NSInteger)timestamp params:(NSString*)params;
 {
-    ((XingCloud::XA::XADataManager*)([XA sharedXA]->__internal))->generalEvent(eventType, 
+    ((XAWrapOpaque*)([XA sharedXA]->__internal))->wrap->generalEvent(eventType, 
                                                                                [appId cStringUsingEncoding:NSUTF8StringEncoding],
                                                                                [uid cStringUsingEncoding:NSUTF8StringEncoding],timestamp,
                                                                                [params cStringUsingEncoding:NSUTF8StringEncoding] );
 }
 + (void)trackCount:(NSString*)action level1:(NSString*)level1 level2:(NSString*)level2 level3:(NSString*)level3 level4:(NSString*)level4 level5:(NSString*)level5 count:(NSInteger)count
 {
-    ((XingCloud::XA::XADataManager*)([XA sharedXA]->__internal))->trackCount([action cStringUsingEncoding:NSUTF8StringEncoding], 
+    ((XAWrapOpaque*)([XA sharedXA]->__internal))->wrap->trackCount([action cStringUsingEncoding:NSUTF8StringEncoding], 
                                                                              [level1 cStringUsingEncoding:NSUTF8StringEncoding], 
                                                                              [level2 cStringUsingEncoding:NSUTF8StringEncoding],
                                                                              [level3 cStringUsingEncoding:NSUTF8StringEncoding], 
@@ -210,7 +222,7 @@ static NSTimer*   eventTimer;
 }
 + (void)trackPayService:(NSString*)trans_id channel:(NSString*)channel gross:(NSString*)gross gcurrency:(NSString*)gcurrency vamount:(NSString*)vamount vcurrentcy:(NSString*)vcurrentcy
 {
-    ((XingCloud::XA::XADataManager*)([XA sharedXA]->__internal))->trackTransaction([trans_id cStringUsingEncoding:NSUTF8StringEncoding],
+    ((XAWrapOpaque*)([XA sharedXA]->__internal))->wrap->trackTransaction([trans_id cStringUsingEncoding:NSUTF8StringEncoding],
                                                                                    [channel cStringUsingEncoding:NSUTF8StringEncoding], 
                                                                                    [gross cStringUsingEncoding:NSUTF8StringEncoding], 
                                                                                    [gcurrency cStringUsingEncoding:NSUTF8StringEncoding],
@@ -219,22 +231,22 @@ static NSTimer*   eventTimer;
 }
 + (void)trackMilestone:(NSString*)milestoneName
 {
-    ((XingCloud::XA::XADataManager*)([XA sharedXA]->__internal))->trackMilestone(  [milestoneName cStringUsingEncoding:NSUTF8StringEncoding]);
+    ((XAWrapOpaque*)([XA sharedXA]->__internal))->wrap->trackMilestone(  [milestoneName cStringUsingEncoding:NSUTF8StringEncoding]);
 }
 + (void)trackPageview
 {
-    //((XingCloud::XA::XADataManager*)([XA sharedXA]->__internal))
+    //((XAWrapOpaque*)([XA sharedXA]->__internal))->wrap
 }
 + (void)trackTutorialService:(NSString*)index name:(NSString*)name tutorial:(NSString*)tutorial
 {
-    ((XingCloud::XA::XADataManager*)([XA sharedXA]->__internal))->trackTutorialService([index cStringUsingEncoding:NSUTF8StringEncoding],
+    ((XAWrapOpaque*)([XA sharedXA]->__internal))->wrap->trackTutorialService([index cStringUsingEncoding:NSUTF8StringEncoding],
                                                                                        [name cStringUsingEncoding:NSUTF8StringEncoding],
                                                                                        [tutorial cStringUsingEncoding:NSUTF8StringEncoding]);
 }
 //@param event       XAEventType::BUY_ITEM
 + (void)trackBuyService:(NSString*)currency payType:(NSString*)payType level1:(NSString*)level1 level2:(NSString*)level2 level3:(NSString*)level3 level4:(NSString*)level4 level5:(NSString*)level5 amount:(int)amount number:(int)number
 {
-    ((XingCloud::XA::XADataManager*)([XA sharedXA]->__internal))->trackBuyService([currency cStringUsingEncoding:NSUTF8StringEncoding], 
+    ((XAWrapOpaque*)([XA sharedXA]->__internal))->wrap->trackBuyService([currency cStringUsingEncoding:NSUTF8StringEncoding], 
                                                                                   [payType cStringUsingEncoding:NSUTF8StringEncoding],
                                                                                   [level1 cStringUsingEncoding:NSUTF8StringEncoding],
                                                                                   [level2 cStringUsingEncoding:NSUTF8StringEncoding],

@@ -61,7 +61,7 @@ namespace XingCloud
             if(buffer==0)
                 return false;
             
-            XAPRINT(buffer);
+            //XAPRINT(buffer);
             
             postData  *p = new postData[sizeof(postData)];
             p->data =const_cast<char*>(buffer);
@@ -72,9 +72,9 @@ namespace XingCloud
         }
         unsigned int  postPerform(void *param)
         {
-            postData  *p =(postData*)param;
             
             Lock lock(XASendData::postMutex);
+            postData  *p =(postData*)param;
             bool receiveOK=false;
             bool *dataSendSuccess=&receiveOK;
             static int index=0;
@@ -95,7 +95,7 @@ namespace XingCloud
         
             //XASendData::cache[index] = (char*)param;//
             
-            CURLcode code=curl_easy_perform(easy_handle);
+            CURLcode code=curl_easy_perform(/*easy_handle*/indexCURL[index++]);
             
             
             if((code==CURLE_OK && receiveOK && dataSendSuccess))
