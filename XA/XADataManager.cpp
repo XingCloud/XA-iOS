@@ -18,7 +18,7 @@ namespace XingCloud
         char *XADataManager::appID=NULL;
         bool  XADataManager::heartbeat;
         short XADataManager::reportPolice=3;
-        
+        bool  XADataManager::logEnable=false;
         unsigned int  XADataManager::startTimer=0;
         XADataManager::XADataManager()
         {
@@ -88,6 +88,7 @@ namespace XingCloud
         void    XADataManager::setLogEnabled(bool value)
         {
             servicesEnable.logPrintEnable = value;
+            logEnable=value;
         }
         void    XADataManager::setCrashReportEnabled(bool value)
         {
@@ -124,7 +125,7 @@ namespace XingCloud
             //1. 应用来自广告平台：ref=xafrom=cn;snsnations@XXXX;admob;txt_1。“ @XXXX;”中间的”XXXX“需要我们更换成用户设置的reference
             //2. 应用非来自广告：ref=nonads=xxxx 。 xxxx为用户设置的reference
             char temp[32]={0};
-            if(adsChannel ==NULL)
+            if(adsChannel !=NULL)
             {
                  sprintf(temp,"xafrom=%s",XingCloud::XA::XADataManager::channelID);
             }
@@ -133,6 +134,7 @@ namespace XingCloud
                 sprintf(temp,"nonads=%s",XingCloud::XA::XADataManager::channelID);
             }
             cJSON_AddItemToObject(visitParams,"ref",cJSON_CreateString(temp));
+            XAPRINT(cJSON_PrintUnformatted(visitParams));
             xaDataProxy.handleApplicationLaunch(visitParams,NULL,NULL);
             
 //          if(servicesEnable.crashReportEnable)

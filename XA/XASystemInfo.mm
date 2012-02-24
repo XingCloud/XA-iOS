@@ -19,6 +19,10 @@ int XingCloud::XA::SystemInfo::phoneType=0;
 
 void    XAPRINT(const char *fmt,...)
 {
+    if(XingCloud::XA::XADataManager::logEnable==false)
+    {
+        return ;
+    }
     char sprint_buf[2048];
     
     va_list args;

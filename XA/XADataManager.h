@@ -62,6 +62,7 @@ namespace XingCloud
            
             static short reportPolice;
             static bool  heartbeat;
+            static bool  logEnable;
         private:
             ServicesEnable servicesEnable;
             static unsigned int  startTimer;

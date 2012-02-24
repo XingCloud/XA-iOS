@@ -29,7 +29,7 @@ namespace XingCloud
             unsigned int   fileposition;
             cJSON *jsonEvent;
             localCacheEvent(){appID = userID = NULL;isWriteTofile=false;eventSize=0; fileposition=0;}
-            ~localCacheEvent(){if(appID!=NULL)delete appID;if(userID!=NULL)delete userID;/*cJSON_Delete(jsonEvent);*/}
+            ~localCacheEvent(){if(appID!=NULL)delete appID;if(userID!=NULL)delete userID;}
         };
         
         

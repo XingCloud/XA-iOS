@@ -162,12 +162,12 @@ namespace  XingCloud
             localCache = fopen(docfilePath,"rb+");
             if(localCache==NULL)
             {
-                XAPRINT("error  loacl Cache can not open "); 
+                //XAPRINT("error  loacl Cache can not open "); 
                 return ;
             }
             if(0!=fseek(localCache,curValidPosition,SEEK_SET))
             {
-                XAPRINT("error  loacl Cache can not fseek "); 
+                //XAPRINT("error  loacl Cache can not fseek "); 
                 return ;
             }
             int i=0;
@@ -220,7 +220,7 @@ namespace  XingCloud
             curValidPosition=ftell(localCache);
             if(0!=fseek(localCache,63,SEEK_SET))
             {
-                XAPRINT("error  loacl Cache can not fseek "); 
+                //XAPRINT("error  loacl Cache can not fseek "); 
                 return ;
             }
             fwrite(&curValidPosition,sizeof(unsigned int),1,localCache);//存下当前指fp位置
@@ -237,7 +237,7 @@ namespace  XingCloud
             localCache = fopen(docfilePath,"ab+");
             if(localCache==NULL)
             {
-                XAPRINT("error  loacl Cache can not open "); 
+                //XAPRINT("error  loacl Cache can not open "); 
                 return ;
             }
             fseek(XADataProxy::localCache,0,SEEK_SET);
@@ -275,7 +275,7 @@ namespace  XingCloud
                     unsigned short tempLength=0;
                     
                     if(fseek(localCache,-1,SEEK_CUR)!=0)
-                        XAPRINT("set failed");
+                        break;// XAPRINT("set failed");
                     bool b=false;//
                     fread(&b,1,1,localCache);
                     
@@ -361,7 +361,7 @@ namespace  XingCloud
                 }//while
                 if(0!=fseek(localCache,63,SEEK_SET))
                 {
-                    XAPRINT("error  loacl Cache can not fseek "); 
+                    //XAPRINT("error  loacl Cache can not fseek "); 
                     return ;
                 }
                 fwrite(&curValidPosition,sizeof(unsigned int),1,localCache);//存下当前指fp位置
@@ -418,7 +418,7 @@ namespace  XingCloud
             curValidPosition = ftell(localCache);
             if(0!=fseek(localCache,63,SEEK_SET))
             {
-                XAPRINT("error  loacl Cache can not fseek "); 
+                //XAPRINT("error  loacl Cache can not fseek "); 
                 return ;
             }
             fwrite(&curValidPosition,sizeof(unsigned int),1,localCache);//存下当前指fp位置
