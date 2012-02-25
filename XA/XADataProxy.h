@@ -62,7 +62,7 @@ namespace XingCloud
             
             static cJSON*   getGenSignedParamsObject(const char *appId,const char *userId,int timestamp);
             
-            static void     readyForSendInternalData();
+            static void     readyForSendData();
             static void     sendInternalEventData(cJSON *internalStatArray,int eventNumber);
             static void     sendGeneralEventData(const char *appID,const char *userID,cJSON *generalStatArray,int eventNumber);
             static void     handleEventData();
@@ -76,12 +76,9 @@ namespace XingCloud
             static Mutex    filePointMutex;
             static Mutex    eventCacheMutex;
             
-            static int      currentFilePosition;
-            static int      lastFilePosition;
-            static int      lastEventSize;
-            static int      currentEventSize;
-            static bool     isDeviceCache;
-            static FILE    *localCache;
+           
+            
+            static FILE    *localfilePoint;
             static char    *docfilePath;
             static char    *uid;
             

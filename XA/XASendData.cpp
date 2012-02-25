@@ -84,7 +84,7 @@ namespace XingCloud
             curl_easy_setopt(easy_handle,CURLOPT_URL,"http://analytic.xingcloud.com/index.php?");
             curl_easy_setopt(easy_handle, CURLOPT_HEADERFUNCTION, Getcontentlengthfunc);
             curl_easy_setopt(easy_handle, CURLOPT_HEADERDATA,&receiveOK);
-            char *temp= new char[strlen(encodedURL)+5];
+            char *temp= new char[strlen(encodedURL)+6];
             sprintf(temp,"json=%s",encodedURL);
             curl_easy_setopt(easy_handle,CURLOPT_POSTFIELDS,temp);
             curl_easy_setopt(easy_handle,CURLOPT_WRITEFUNCTION,postWriteData);//receive callback function
@@ -95,7 +95,7 @@ namespace XingCloud
         
             //XASendData::cache[index] = (char*)param;//
             
-            CURLcode code=curl_easy_perform(/*easy_handle*/indexCURL[index++]);
+            CURLcode code=curl_easy_perform(easy_handle);
             
             
             if((code==CURLE_OK && receiveOK && dataSendSuccess))
