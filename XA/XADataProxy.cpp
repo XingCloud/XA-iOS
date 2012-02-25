@@ -475,7 +475,7 @@ namespace  XingCloud
         }
         void    XADataProxy::handleGeneralEvent(int event,const char *appId,const char *userId,unsigned int timestamp,cJSON *params,bool isInternal)
         {
-            //
+            Lock lock(eventCacheMutex);
             cJSON *encapEvent = encapsulateEvent(event,params);
             XAPRINT(cJSON_PrintUnformatted(encapEvent));
             //make cache 
@@ -498,7 +498,8 @@ namespace  XingCloud
             }
             
             lce.isInternal = isInternal;
-            Lock lock(eventCacheMutex);
+            
+            
             eventMemoryCache.push_back(lce);
             
             handleEvent(event,timestamp,encapEvent,0);
@@ -556,10 +557,9 @@ namespace  XingCloud
                 int i=0;
                 for(;i<sendDataNumber && iter!= eventMemoryCache.end();i++)
                 {
-                    eventMemoryCache.erase(iter++);
+                    iter = eventMemoryCache.erase(iter);
                 }
             }
-            
         }
         void XADataProxy::handleSendFailed(int sendDataNumber)
         {
@@ -577,17 +577,7 @@ namespace  XingCloud
             cJSON_AddItemToObject(eventJson,"timestamp",cJSON_CreateString(temp));
             return eventJson;
         }
-        void    XADataProxy::MoveFilePositon()
-        {
-            curValidPosition = eventMemoryCache[sendEventNumber-1].fileposition;
-            //            if(0!=fseek(localCache,63,SEEK_SET))
-            //            {
-            //                XAPRINT("error  loacl Cache can not fseek "); 
-            //                return ;
-            //            }
-            //            fwrite(&curValidPosition,sizeof(unsigned int),1,localCache);//存下当前指fp位置
-            //            fseek(localCache,curValidPosition,SEEK_CUR);
-        }
+      
         cJSON *XADataProxy::getGenSignedParamsObject(const char *appId,const char *userId,int timestamp)
         {//get general SignedParams
             

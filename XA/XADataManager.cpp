@@ -250,9 +250,27 @@ namespace XingCloud
         }
         void    XADataManager::generalEvent(int event,const char *appId,const char *userId,int timestamp,const char *params)
         {
-                        
-            //xaDataProxy.handleGeneralEvent(event,appId,userId,timestamp,cJSON_CreateString(params));
+            switch(event)
+            {
+                case 8:
+                case 9:
+                case 10:
+                case 11:
+                    xaDataProxy.handleGeneralEvent(event,appId,userId,timestamp,cJSON_Parse(params));
+                    break;
+                default:
+                {
+                    if(appId!=NULL && userId!=NULL)
+                    {
+                        if(strcmp(appId,appID)==0&&strcmp(userId,XADataProxy::uid)==0)
+                        {
+                            xaDataProxy.handleGeneralEvent(event,appId,userId,timestamp,cJSON_Parse(params),true);
+                        }
+                    }
+                    xaDataProxy.handleGeneralEvent(event,appId,userId,timestamp,cJSON_Parse(params));
+                    
+                }
+            }
         }
-        
-    }
-}
+    }/*namespace XA*/
+}/*namespace XingCloud*/

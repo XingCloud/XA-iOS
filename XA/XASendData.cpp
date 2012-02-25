@@ -91,7 +91,7 @@ namespace XingCloud
             curl_easy_setopt(easy_handle,CURLOPT_WRITEDATA,dataSendSuccess);
             curl_easy_setopt(easy_handle,CURLOPT_WRITEDATA,easy_handle);
             curl_easy_setopt(easy_handle,CURLOPT_POST,1);
-            curl_easy_setopt(easy_handle,CURLOPT_VERBOSE,1); /* open comment when debug mode.*/
+            //curl_easy_setopt(easy_handle,CURLOPT_VERBOSE,1); /* open comment when debug mode.*/
         
             //XASendData::cache[index] = (char*)param;//
             
@@ -100,7 +100,6 @@ namespace XingCloud
             
             if((code==CURLE_OK && receiveOK && dataSendSuccess))
             {//发送成功则删除缓存
-            
                 XADataProxy::handleSendSucess(p->sendEventNumber);
             }
             else

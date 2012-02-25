@@ -24,12 +24,87 @@ namespace XingCloud
             char *userID;
             bool isInternal;
             bool isWriteTofile;
-            //bool isSend;
             unsigned short eventSize;
             unsigned int   fileposition;
             cJSON *jsonEvent;
+            localCacheEvent(const localCacheEvent &rhs)
+            {
+                if(rhs.appID !=NULL)
+                {
+                    int sizeAppID = strlen(rhs.appID)+1;
+                    if(appID !=NULL)
+                    {
+                        delete appID;
+                    }
+                    this->appID= new char[sizeAppID];
+                    strcpy(this->appID,rhs.appID);
+                }
+                else
+                {
+                    this->appID = NULL;
+                }
+                if(rhs.userID!=NULL)
+                {
+                    int sizeUserID = strlen(rhs.userID)+1;
+                    if(userID !=NULL)
+                    {
+                        delete userID;
+                    }
+                    this->userID = new char[sizeUserID];
+                    strcpy(this->userID,rhs.userID);
+                }
+                else
+                {
+                    this->userID =NULL;
+                }
+                this->isInternal = rhs.isInternal;
+                this->isWriteTofile =rhs.isWriteTofile;
+                this->eventSize =rhs.eventSize;
+                this->fileposition = rhs.fileposition;
+                this->jsonEvent = rhs.jsonEvent;
+            }
+            localCacheEvent& operator=(const localCacheEvent &rhs)
+            {
+                if(this != &rhs)
+                {
+                    if(rhs.appID !=NULL)
+                    {
+                        int sizeAppID = strlen(rhs.appID)+1;
+                        if(appID !=NULL)
+                        {
+                            delete appID;
+                        }
+                        this->appID= new char[sizeAppID];
+                        strcpy(this->appID,rhs.appID);
+                    }
+                    else
+                    {
+                        this->appID = NULL;
+                    }
+                    if(rhs.userID!=NULL)
+                    {
+                        int sizeUserID = strlen(rhs.userID)+1;
+                        if(userID !=NULL)
+                        {
+                            delete userID;
+                        }
+                        this->userID = new char[sizeUserID];
+                        strcpy(this->userID,rhs.userID);
+                    }
+                    else
+                    {
+                        this->userID =NULL;
+                    }
+                    this->isInternal = rhs.isInternal;
+                    this->isWriteTofile =rhs.isWriteTofile;
+                    this->eventSize =rhs.eventSize;
+                    this->fileposition = rhs.fileposition;
+                    this->jsonEvent = rhs.jsonEvent;
+                }
+                return  *this;
+            }
             localCacheEvent(){appID = userID = NULL;isWriteTofile=false;eventSize=0; fileposition=0;}
-            ~localCacheEvent(){if(appID!=NULL)delete appID;if(userID!=NULL)delete userID;}
+            ~localCacheEvent(){if(appID!=NULL){delete appID;appID=NULL;}if(userID!=NULL){delete userID;userID=NULL;}}
         };
         
         
@@ -58,7 +133,6 @@ namespace XingCloud
             cJSON*  encapsulateEvent(int event,cJSON *params);
             
             static  void    WriteMemoryDataToFile(int dataNumber);
-            static  void    MoveFilePositon();
             
             static cJSON*   getGenSignedParamsObject(const char *appId,const char *userId,int timestamp);
             
