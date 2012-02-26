@@ -271,7 +271,7 @@ namespace  XingCloud
                 
                 unsigned int internalNumber=0;
                 cJSON *internalStatArray=cJSON_CreateArray();
-                
+                cJSON *eventJson;
                 while(curValidPosition!=(63+sizeof(unsigned int)))
                 {
                     fseek(localfilePoint,curValidPosition,SEEK_SET);
@@ -303,7 +303,7 @@ namespace  XingCloud
                         {
                             break;
                         }
-                        cJSON *eventJson = cJSON_Parse(temp);
+                        eventJson = cJSON_Parse(temp);
                         lce.isWriteTofile = true;
                         lce.isInternal = true;
                         lce.jsonEvent =eventJson;
@@ -323,7 +323,7 @@ namespace  XingCloud
                         internalNumber=0;
                         internalStatArray=cJSON_CreateArray();
                         
-                        localCacheEvent lce;
+                        localCacheEvent lce; 
                         bool isWriteTofile=false;
                         fread(&isWriteTofile,1,1,localfilePoint);
                         
@@ -349,7 +349,7 @@ namespace  XingCloud
                         {
                             break;
                         }
-                        cJSON *eventJson = cJSON_Parse(temp);
+                        eventJson = cJSON_Parse(temp);
                         
                         lce.isWriteTofile=true;
                         lce.isInternal =false;

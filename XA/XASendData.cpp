@@ -100,10 +100,12 @@ namespace XingCloud
             
             if((code==CURLE_OK && receiveOK && dataSendSuccess))
             {//发送成功则删除缓存
+                XAPRINT("send event success!");
                 XADataProxy::handleSendSucess(p->sendEventNumber);
             }
             else
             {//
+                XAPRINT("send event failed!");
                 XADataProxy::handleSendFailed(p->sendEventNumber);
             }
             delete p;
@@ -122,9 +124,8 @@ namespace XingCloud
             if(temp!=NULL && strstr((char*)recvBuffer,"*/")!=NULL)
             {
                 *(bool*)userParam=true;
-                XAPRINT("send event success!");
-                
             }
+           
             return size*nmemb;
         }
         size_t Getcontentlengthfunc(void *ptr, size_t size, size_t nmemb, void *stream) 
