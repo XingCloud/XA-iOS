@@ -38,7 +38,7 @@
     
     [XA setLogEnabled:YES];
     [XA setHeartbeatEnabled:NO];
-    [XA setReportPolicy:REALTIME];//REALTIME,DEFAULT,BATCH 
+    [XA setReportPolicy:DEFAULT];//REALTIME,DEFAULT,BATCH 
     
     
     [XA applicationDidLaunched];

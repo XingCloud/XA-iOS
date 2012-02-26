@@ -136,7 +136,7 @@ namespace  XingCloud
             if(XADataManager::reportPolice==0)
                 return ;
             if(XADataManager::reportPolice==3)
-            {
+            {//default 
                 if(eventMemoryCache.size()>=10)
                 {
                     readyForSendData();
@@ -149,11 +149,18 @@ namespace  XingCloud
                     timebomb=0;
                     
                     if(eventMemoryCache.size()!=0)
+                    {
                         readyForSendData();
+                        return;
+                    }
+                      
                 }
                 
             }
-            WriteMemoryDataToFile(eventMemoryCache.size());
+            else
+            {//batch
+                WriteMemoryDataToFile(eventMemoryCache.size());
+            }
         }
         void XADataProxy::WriteMemoryDataToFile(int dataNumber)
         {
@@ -365,14 +372,17 @@ namespace  XingCloud
                 }//while
                 if(0!=fseek(localfilePoint,63,SEEK_SET))
                 {
-                    //XAPRINT("error  loacl Cache can not fseek "); 
-                    return ;
+                    XAPRINT("error  loacl Cache can not fseek "); 
+                    fclose(localfilePoint);
                 }
-                fwrite(&curValidPosition,sizeof(unsigned int),1,localfilePoint);//存下当前指fp位置
-                fclose(localfilePoint);
-                if(internalNumber>0)
+                else
                 {
-                    sendInternalEventData(internalStatArray,internalNumber);
+                    fwrite(&curValidPosition,sizeof(unsigned int),1,localfilePoint);//存下当前指fp位置
+                    fclose(localfilePoint);
+                    if(internalNumber>0)
+                    {
+                        sendInternalEventData(internalStatArray,internalNumber);
+                    }
                 }
             }
             
