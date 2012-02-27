@@ -121,17 +121,14 @@ namespace XingCloud
            
             cJSON * visitParams=cJSON_CreateObject();
             cJSON_AddItemToObject(visitParams,"is_mobile",cJSON_CreateString("true"));
-            
-            //1. 应用来自广告平台：ref=xafrom=cn;snsnations@XXXX;admob;txt_1。“ @XXXX;”中间的”XXXX“需要我们更换成用户设置的reference
-            //2. 应用非来自广告：ref=nonads=xxxx 。 xxxx为用户设置的reference
             char temp[32]={0};
             if(adsChannel !=NULL)
             {
-                 sprintf(temp,"xafrom=%s",XingCloud::XA::XADataManager::channelID);
+                 sprintf(temp,"xafrom=%s",adsChannel);
             }
             else
             {
-                sprintf(temp,"nonads=%s",XingCloud::XA::XADataManager::channelID);
+                sprintf(temp,"nonads=%s",channelID);
             }
             cJSON_AddItemToObject(visitParams,"ref",cJSON_CreateString(temp));
             XAPRINT(cJSON_PrintUnformatted(visitParams));
