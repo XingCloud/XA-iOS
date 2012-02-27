@@ -2,7 +2,6 @@
 //  XASystemInfo.h
 //  XA
 //
-//  Created by mini xingcloud on 12-2-13.
 //  Copyright (c) 2012 XingCloud.com All rights reserved.
 //
 //

@@ -2,7 +2,6 @@
 //  XADataManager.h
 //  XA
 //
-//  Created by mini xingcloud on 12-2-13.
 //  Copyright (c) 2012 XingCloud.com All rights reserved.
 //
 
@@ -21,7 +20,7 @@ namespace XingCloud
             bool logPrintEnable;
             bool heartbeatEnable;
         }ServicesEnable;
-               class XADataManager
+        class XADataManager
         {
         public:
             XADataManager();
@@ -45,6 +44,8 @@ namespace XingCloud
             void    generalEvent(int event,const char *appId,const char *userId,int timestamp,const char *params);
             
             //set arguments
+            void    setDefaultCount(int defaultCount);
+            void    setDefaultTimerCache(int defaultTimer);
             void    setLogEnabled(bool value);
             void    setCrashReportEnabled(bool value);
             void    setHeartbeatEnabled(bool value);
@@ -63,6 +64,9 @@ namespace XingCloud
             static short reportPolice;
             static bool  heartbeat;
             static bool  logEnable;
+            
+            static int defaultCount;
+            static int defaultTimer;
         private:
             ServicesEnable servicesEnable;
             static unsigned int  startTimer;

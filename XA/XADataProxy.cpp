@@ -19,12 +19,16 @@ namespace  XingCloud
         FILE   *XADataProxy::localfilePoint;
         
         Mutex   XADataProxy::filePointMutex;
-        Mutex   XADataProxy::eventCacheMutex;;
+        Mutex   XADataProxy::eventCacheMutex;
+        Mutex  XADataProxy::timerMutex;
         char* XADataProxy::docfilePath=NULL;
         char *XADataProxy::uid=NULL;
         unsigned int XADataProxy::idle_time = 0;       
         int  XADataProxy::sendEventNumber=0;
         unsigned int XADataProxy::curValidPosition;
+        
+        int XADataProxy::lastReadyEventNumber=0;
+        
         std::vector<localCacheEvent>  XADataProxy::eventMemoryCache;
         XADataProxy::XADataProxy()
         {
@@ -89,20 +93,20 @@ namespace  XingCloud
             
             XASendData::postMethodSend(cJSON_PrintUnformatted(root),eventNumber);
         }
-        void  XADataProxy::readyForSendData()
+        void  XADataProxy::readyForSendData(int lastReadyEventNumber)
         {
             Lock lock(eventCacheMutex);
             
             cJSON *internalStatArray=cJSON_CreateArray();
             
             int internalEventNumber=0;
-            for(std::vector<localCacheEvent>::iterator iter = eventMemoryCache.begin(); iter!= eventMemoryCache.end();iter++)
+            for(std::vector<localCacheEvent>::iterator iter=eventMemoryCache.begin()+lastReadyEventNumber; iter!= eventMemoryCache.end() ;iter++)
             {
                 
                 //发送的个数
                 if(((*iter).appID==NULL ||(*iter).userID== NULL)||(!strcmp(XADataManager::appID,(*iter).appID) && !strcmp(uid,(*iter).userID)))
                 {
-                    XAPRINT(cJSON_PrintUnformatted((*iter).jsonEvent));
+                    //XAPRINT(cJSON_PrintUnformatted((*iter).jsonEvent));
                     cJSON_AddItemToArray(internalStatArray,(*iter).jsonEvent);
                     if(++internalEventNumber >50)
                     {
@@ -127,20 +131,29 @@ namespace  XingCloud
             if(internalEventNumber!=0)
             {
                 sendInternalEventData(internalStatArray,internalEventNumber);
-                
             }
         }
         
         void  XADataProxy::handleEventData()
         {//timer
+           
             if(XADataManager::reportPolice==0)
                 return ;
             if(XADataManager::reportPolice==3)
             {//default 
                 if(eventMemoryCache.size()>=10)
                 {
-                    readyForSendData();
-                    return;
+                    if(lastReadyEventNumber<=0)
+                    {
+                        lastReadyEventNumber=eventMemoryCache.size();
+                        readyForSendData(0);
+                        return ;
+                    }
+                    else if(lastReadyEventNumber>=eventMemoryCache.size())
+                    {
+                        readyForSendData(lastReadyEventNumber);
+                        return ;
+                    }
                 }
                 static int timebomb=0;
                 timebomb+=20;
@@ -150,8 +163,18 @@ namespace  XingCloud
                     
                     if(eventMemoryCache.size()!=0)
                     {
-                        readyForSendData();
-                        return;
+                        if(lastReadyEventNumber<=0)
+                        {
+                            lastReadyEventNumber=eventMemoryCache.size();
+                            readyForSendData(0);
+                            return ;
+                        }
+                        else if(lastReadyEventNumber>=eventMemoryCache.size())
+                        {
+                            readyForSendData(lastReadyEventNumber);
+                            return ;
+                        }
+
                     }
                       
                 }
@@ -226,6 +249,7 @@ namespace  XingCloud
                 {
                     ++iter;
                 }
+                lastReadyEventNumber--;
                 
             }
             curValidPosition=ftell(localfilePoint);
@@ -386,6 +410,9 @@ namespace  XingCloud
                 }
             }
             
+            cJSON * initParams=cJSON_CreateObject();
+            handleGeneralEvent(13,NULL,NULL,XADataManager::getTimestamp(),initParams,true);
+            
             handleGeneralEvent(2,NULL,NULL,XADataManager::getTimestamp(),visitEvent,true);
             if(errorEvent!=NULL)
                 handleGeneralEvent(5,NULL,NULL,XADataManager::getTimestamp(),errorEvent,true);
@@ -440,7 +467,7 @@ namespace  XingCloud
             fclose(localfilePoint);
             
             WriteMemoryDataToFile(eventMemoryCache.size());
-            
+            lastReadyEventNumber = 0;
             pause_time = XADataManager::getTimer();
         }
         void    XADataProxy::handleApplicationTerminate()
@@ -559,7 +586,10 @@ namespace  XingCloud
                 fseek(localfilePoint,curValidPosition,SEEK_CUR);
                 fclose(localfilePoint);
                 eventMemoryCache.erase(eventMemoryCache.begin(),eventMemoryCache.begin()+sendDataNumber);//删除前sendDataNumber个元素
-                
+                if(lastReadyEventNumber>=sendDataNumber)
+                {
+                     lastReadyEventNumber -= sendDataNumber;
+                }
             }
             else
             {
@@ -568,6 +598,7 @@ namespace  XingCloud
                 for(;i<sendDataNumber && iter!= eventMemoryCache.end();i++)
                 {
                     iter = eventMemoryCache.erase(iter);
+                    lastReadyEventNumber--;
                 }
             }
         }
@@ -642,7 +673,11 @@ namespace  XingCloud
                     strcpy(source,"tutorial");
                     break;
                 case 12:
-                    strcpy(source,"page.view");//not support 
+                    strcpy(source,"page.view");//not support
+                    break;
+                case 13:
+                    strcpy(source,"xa.init");
+                    break;
                 default:
                     break;
             }

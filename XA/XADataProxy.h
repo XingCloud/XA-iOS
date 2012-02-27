@@ -2,8 +2,7 @@
 //  XALifeCicle.h
 //  XA
 //
-//  Created by mini xingcloud on 12-2-16.
-//  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
+//  Copyright (c) 2012 XingCloud.com All rights reserved.
 //
 
 #ifndef XA_XALifeCicle_h
@@ -126,7 +125,7 @@ namespace XingCloud
             
             static cJSON*   getGenSignedParamsObject(const char *appId,const char *userId,int timestamp);
             
-            static void     readyForSendData();
+            static void     readyForSendData(int lastReadyEventNumber);
             static void     sendInternalEventData(cJSON *internalStatArray,int eventNumber);
             static void     sendGeneralEventData(const char *appID,const char *userID,cJSON *generalStatArray,int eventNumber);
             static void     handleEventData();
@@ -139,7 +138,7 @@ namespace XingCloud
         
             static Mutex    filePointMutex;
             static Mutex    eventCacheMutex;
-            
+            static Mutex    timerMutex;
            
             
             static FILE    *localfilePoint;
@@ -150,7 +149,8 @@ namespace XingCloud
             static std::vector<localCacheEvent> eventMemoryCache;
             
             static unsigned int curValidPosition;
-
+            
+            static int lastReadyEventNumber;
             
         private:
             unsigned int pause_time;

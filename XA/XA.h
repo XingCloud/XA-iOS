@@ -63,7 +63,16 @@ typedef enum {
  @param value 默认值为NO。设置为YES，行云数据分析SDK将会输出数据统计请求
  */
 + (void)setLogEnabled:(BOOL)value;
-
+/**
+ 设置为default策略时候使用，设置默认发送事件数量的上限
+ @param defaultCount 事件数量的上线
+ */
++ (void)setDefaultCount:(int)defaultCount;
+/**
+ 设置default策略时使用，设置默认发送事件时间间隔
+ @param defaultTimer 事件发送时间间隔
+ */
++ (void)setDefaultTimerCache:(int)defaultTimer;
 /**
  设置XA代理
  @param delegate 实现了XADelegate协议的实例

@@ -1,5 +1,5 @@
-#ifndef FRT_APP_ThreadPool_h
-#define FRT_APP_ThreadPool_h
+#ifndef XA_ThreadPool_h
+#define XA_ThreadPool_h
 
 //-----------------------------------------------------------------------------
 //

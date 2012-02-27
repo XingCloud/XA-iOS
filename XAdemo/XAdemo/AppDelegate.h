@@ -2,8 +2,7 @@
 //  AppDelegate.h
 //  XADemo
 //
-//  Created by mini xingcloud on 12-2-20.
-//  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
+//  Copyright (c) 2012 XingCloud.com All rights reserved.
 //
 
 #import <UIKit/UIKit.h>

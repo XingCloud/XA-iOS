@@ -2,8 +2,7 @@
 //  AppDelegate.m
 //  XADemo
 //
-//  Created by mini xingcloud on 12-2-20.
-//  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
+//  Copyright (c) 2012 XingCloud.com All rights reserved.
 //
 
 #import "AppDelegate.h"
@@ -38,7 +37,7 @@
     
     [XA setLogEnabled:YES];
     [XA setHeartbeatEnabled:NO];
-    [XA setReportPolicy:DEFAULT];//REALTIME,DEFAULT,BATCH 
+    [XA setReportPolicy:REALTIME];//REALTIME,DEFAULT,BATCH 
     
     
     [XA applicationDidLaunched];

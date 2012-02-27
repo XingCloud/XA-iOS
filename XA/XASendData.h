@@ -2,8 +2,7 @@
 //  XASendData.h
 //  XA
 //
-//  Created by mini xingcloud on 12-2-15.
-//  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
+//  Copyright (c) 2012 XingCloud.com All rights reserved.
 //
 
 #ifndef XA_XASendData_h

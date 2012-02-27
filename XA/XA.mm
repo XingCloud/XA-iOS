@@ -88,7 +88,14 @@ static NSTimer*   eventTimer;
 {
     return  [NSString stringWithFormat:@"%s",XingCloud::XA::XADataProxy::uid];
 }
-
++ (void)setDefaultCount:(int)defaultCount
+{
+    ((XAWrapOpaque*)([XA sharedXA]->__internal))->wrap->setDefaultCount(defaultCount);
+}
++ (void)setDefaultTimerCache:(int)defaultTimer
+{
+    ((XAWrapOpaque*)([XA sharedXA]->__internal))->wrap->setDefaultTimerCache(defaultTimer);
+}
 + (void)setCrashReportEnabled:(BOOL)value
 {
     ((XAWrapOpaque*)([XA sharedXA]->__internal))->wrap->setCrashReportEnabled(value);
@@ -119,7 +126,7 @@ static NSTimer*   eventTimer;
     ((XAWrapOpaque*)([XA sharedXA]->__internal))->wrap->applicationLaunch();
     if(((XAWrapOpaque*)([XA sharedXA]->__internal))->wrap->reportPolice!=REALTIME)
     {
-       
+        //int dt=((XAWrapOpaque*)([XA sharedXA]->__internal))->wrap->defaultTimer;
             eventTimer = [NSTimer scheduledTimerWithTimeInterval: 20  
                                                           target: self  
                                                         selector: @selector(handleEventTimer)  

@@ -20,6 +20,8 @@ namespace XingCloud
         short XADataManager::reportPolice=3;
         bool  XADataManager::logEnable=false;
         unsigned int  XADataManager::startTimer=0;
+        int XADataManager::defaultCount=10;
+        int XADataManager::defaultTimer=20;
         XADataManager::XADataManager()
         {
             XingCloud::XAThreadPool::ExecuteTask::initThreadPool(3);
@@ -112,7 +114,15 @@ namespace XingCloud
         {
             appID = new char[strlen(value)+1];
             strcpy(appID,value);
-        } 
+        }
+        void    XADataManager::setDefaultCount(int defaultCount)
+        {
+            this->defaultCount = defaultCount;
+        }
+        void   XADataManager::setDefaultTimerCache(int defaultTimer)
+        {
+            this->defaultTimer =defaultTimer;
+        }
         //life cicle
         void    XADataManager::applicationLaunch()
         {
@@ -131,13 +141,11 @@ namespace XingCloud
                 sprintf(temp,"nonads=%s",channelID);
             }
             cJSON_AddItemToObject(visitParams,"ref",cJSON_CreateString(temp));
-            XAPRINT(cJSON_PrintUnformatted(visitParams));
-            xaDataProxy.handleApplicationLaunch(visitParams,NULL,NULL);
             
-//          if(servicesEnable.crashReportEnable)
-//          {
-//              //cJSON * visitJson=cJSON_CreateObject();
-//          }
+            
+            
+            
+            xaDataProxy.handleApplicationLaunch(visitParams,NULL,NULL);
             
         }
         void    XADataManager::applicationTerminate()

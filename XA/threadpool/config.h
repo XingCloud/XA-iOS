@@ -1,6 +1,6 @@
 
-#ifndef FRT_APP_config_h
-#define FRT_APP_config_h
+#ifndef XA_config_h
+#define XA_config_h
 
 #ifdef WIN32
 #define HAVE_PTHREAD 0

@@ -1,6 +1,6 @@
 
-#ifndef FRT_APP_Mutex_h
-#define FRT_APP_Mutex_h
+#ifndef XA_Mutex_h
+#define XA_Mutex_h
 
 //-----------------------------------------------------------------------------
 //

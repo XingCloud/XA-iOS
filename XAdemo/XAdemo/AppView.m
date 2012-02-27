@@ -2,8 +2,7 @@
 //  AppView.m
 //  XAdemo
 //
-//  Created by Zhang Chuck on 2/23/12.
-//  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
+//  Copyright (c) 2012 XingCloud.com All rights reserved.
 //
 
 #import "AppView.h"
@@ -69,12 +68,12 @@
 
 -(void)updateButtonClick
 {
-    NSMutableDictionary *tris = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"value1",@"key1",@"value2",@"key2",nil];//要指定一个nil
+    NSMutableDictionary *tris = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"value1",@"key1",@"value2",@"key2",nil];
     [XA trackUserUpdate:tris];
 }
 -(void)incrementButtonClick
 {
-    NSMutableDictionary *tris = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"value1",@"key1",@"value2",@"key2",nil];//要指定一个nil
+    NSMutableDictionary *tris = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"value1",@"key1",@"value2",@"key2",nil];
     [XA trackUserIncrement:tris];
 }
 -(void)loginButtonClick
