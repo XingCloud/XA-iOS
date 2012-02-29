@@ -134,7 +134,7 @@ typedef enum {
  记录用户加载游戏的时间
  @param loginInfo 用户登陆信息
  */
-+ (void)trackLogin:(NSString*)loginInfo;
++ (void)trackLogin:(NSMutableDictionary*)loginInfo;
 
 /**
  用户信息更新，需要以json格式的字符串放入dictionary中,key是物品名称，value物品数值

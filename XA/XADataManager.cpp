@@ -196,13 +196,9 @@ namespace XingCloud
             xaDataProxy.handleTrackMilestone(milestoneParams);
             
         }
-        void    XADataManager::trackLogin(const char *login)
+        void    XADataManager::trackLogin(cJSON *login)
         {
-            cJSON * loginParams=cJSON_CreateObject();
-            cJSON_AddItemToObject(loginParams,"is_mobile",cJSON_CreateString("true"));
-            cJSON_AddItemToObject(loginParams,"user.login",cJSON_CreateString(login));
-            
-            xaDataProxy.handleTrackLogin(loginParams);
+            xaDataProxy.handleTrackLogin(login);
         }
         void    XADataManager::trackTransaction(const char *trans_id,const char *channel,const char*gross,const char *gcurrency,const char *vamount,const char *vcurrentcy)
         {

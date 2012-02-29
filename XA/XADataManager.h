@@ -35,7 +35,7 @@ namespace XingCloud
             //XA events
             void    trackCount(const char *action,const char *level1,const char *level2,const char *level3,const char *level4,const char *level5,int count);
             void    trackMilestone(const char *milestoneName);
-            void    trackLogin(const char *login);
+            void    trackLogin(cJSON *login);
             void    trackUserIncrement(cJSON *userInfo);
             void    trackUserUpdate(cJSON *userInfo);
             void    trackTransaction(const char *trans_id,const char *channel,const char*gross,const char *gcurrency,const char *vamount,const char *vcurrentcy);

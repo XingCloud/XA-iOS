@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		2D9A73C014F5D56D00A333AB /* libXA.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 90EE130314F1F66B006B4FD5 /* libXA.a */; };
+		902BBB4D14FDB729006FE18C /* libXA.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 902BBB4C14FDB729006FE18C /* libXA.a */; };
 		904AD2E114F76ADC001A23F2 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 904AD2DE14F76ADC001A23F2 /* AppDelegate.m */; };
 		904AD2E214F76ADC001A23F2 /* AppView.m in Sources */ = {isa = PBXBuildFile; fileRef = 904AD2E014F76ADC001A23F2 /* AppView.m */; };
 		90EE12CA14F1F4CD006B4FD5 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 90EE12C914F1F4CD006B4FD5 /* UIKit.framework */; };
@@ -17,28 +17,10 @@
 		90EE12D614F1F4CD006B4FD5 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 90EE12D514F1F4CD006B4FD5 /* main.m */; };
 		90EE130914F1F6BA006B4FD5 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 90EE130814F1F6BA006B4FD5 /* CoreTelephony.framework */; };
 		90EE130B14F1F6C3006B4FD5 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 90EE130A14F1F6C3006B4FD5 /* SystemConfiguration.framework */; };
-		90EE130E14F1F6D6006B4FD5 /* libcurl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 90EE130C14F1F6D6006B4FD5 /* libcurl.a */; };
-		90EE130F14F1F6D6006B4FD5 /* libzlib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 90EE130D14F1F6D6006B4FD5 /* libzlib.a */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXContainerItemProxy section */
-		2D9A73BE14F5D56700A333AB /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 90EE12FB14F1F66B006B4FD5 /* XA.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 909675C014EE326300356F4E;
-			remoteInfo = XA;
-		};
-		90EE130214F1F66B006B4FD5 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 90EE12FB14F1F66B006B4FD5 /* XA.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 909675C114EE326300356F4E;
-			remoteInfo = XA;
-		};
-/* End PBXContainerItemProxy section */
-
 /* Begin PBXFileReference section */
+		902BBB4C14FDB729006FE18C /* libXA.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libXA.a; path = "../../第三方库/Release-iphonesimulator/libXA.a"; sourceTree = "<group>"; };
 		904AD2DD14F76ADC001A23F2 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		904AD2DE14F76ADC001A23F2 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		904AD2DF14F76ADC001A23F2 /* AppView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppView.h; sourceTree = "<group>"; };
@@ -51,7 +33,6 @@
 		90EE12D314F1F4CD006B4FD5 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		90EE12D514F1F4CD006B4FD5 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		90EE12D714F1F4CD006B4FD5 /* XADemo-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "XADemo-Prefix.pch"; sourceTree = "<group>"; };
-		90EE12FB14F1F66B006B4FD5 /* XA.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = XA.xcodeproj; path = ../XA.xcodeproj; sourceTree = "<group>"; };
 		90EE130814F1F6BA006B4FD5 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		90EE130A14F1F6C3006B4FD5 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		90EE130C14F1F6D6006B4FD5 /* libcurl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcurl.a; path = ../XA/libcurl.a; sourceTree = "<group>"; };
@@ -63,9 +44,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2D9A73C014F5D56D00A333AB /* libXA.a in Frameworks */,
-				90EE130E14F1F6D6006B4FD5 /* libcurl.a in Frameworks */,
-				90EE130F14F1F6D6006B4FD5 /* libzlib.a in Frameworks */,
+				902BBB4D14FDB729006FE18C /* libXA.a in Frameworks */,
 				90EE130B14F1F6C3006B4FD5 /* SystemConfiguration.framework in Frameworks */,
 				90EE130914F1F6BA006B4FD5 /* CoreTelephony.framework in Frameworks */,
 				90EE12CA14F1F4CD006B4FD5 /* UIKit.framework in Frameworks */,
@@ -80,10 +59,10 @@
 		90EE12BA14F1F4CD006B4FD5 = {
 			isa = PBXGroup;
 			children = (
+				902BBB4C14FDB729006FE18C /* libXA.a */,
 				90EE12CF14F1F4CD006B4FD5 /* XADemo */,
 				90EE12C814F1F4CD006B4FD5 /* Frameworks */,
 				90EE12C614F1F4CD006B4FD5 /* Products */,
-				90EE12FB14F1F66B006B4FD5 /* XA.xcodeproj */,
 			);
 			sourceTree = "<group>";
 		};
@@ -132,14 +111,6 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		90EE12FC14F1F66B006B4FD5 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				90EE130314F1F66B006B4FD5 /* libXA.a */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -154,7 +125,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				2D9A73BF14F5D56700A333AB /* PBXTargetDependency */,
 			);
 			name = XADemo;
 			productName = XADemo;
@@ -179,28 +149,12 @@
 			mainGroup = 90EE12BA14F1F4CD006B4FD5;
 			productRefGroup = 90EE12C614F1F4CD006B4FD5 /* Products */;
 			projectDirPath = "";
-			projectReferences = (
-				{
-					ProductGroup = 90EE12FC14F1F66B006B4FD5 /* Products */;
-					ProjectRef = 90EE12FB14F1F66B006B4FD5 /* XA.xcodeproj */;
-				},
-			);
 			projectRoot = "";
 			targets = (
 				90EE12C414F1F4CD006B4FD5 /* XADemo */,
 			);
 		};
 /* End PBXProject section */
-
-/* Begin PBXReferenceProxy section */
-		90EE130314F1F66B006B4FD5 /* libXA.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libXA.a;
-			remoteRef = 90EE130214F1F66B006B4FD5 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		90EE12C314F1F4CD006B4FD5 /* Resources */ = {
@@ -225,14 +179,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		2D9A73BF14F5D56700A333AB /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = XA;
-			targetProxy = 2D9A73BE14F5D56700A333AB /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		90EE12D214F1F4CD006B4FD5 /* InfoPlist.strings */ = {
@@ -302,6 +248,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/../XA\"",
+					"\"$(SRCROOT)/../../第三方库/Release-iphonesimulator\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				"USER_HEADER_SEARCH_PATHS[arch=*]" = ../XA;
@@ -318,6 +265,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/../XA\"",
+					"\"$(SRCROOT)/../../第三方库/Release-iphonesimulator\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				"USER_HEADER_SEARCH_PATHS[arch=*]" = ../XA;

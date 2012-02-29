@@ -149,9 +149,23 @@ static NSTimer*   eventTimer;
 //                                                     repeats: YES];
     
 }
-+ (void)trackLogin:(NSString*)login
++ (void)trackLogin:(NSMutableDictionary*)loginInfo
 {
-    ((XingCloud::XA::XADataManager*)([XA sharedXA]->__internal))->trackLogin([login cStringUsingEncoding:NSUTF8StringEncoding]);
+    NSEnumerator *enumerator = [loginInfo keyEnumerator];
+    
+    NSString* key;
+    cJSON * userLoginParams=cJSON_CreateObject();
+    cJSON_AddItemToObject(userLoginParams,"is_mobile",cJSON_CreateString("true"));
+    while ((key = [enumerator nextObject])) 
+    {
+        const char *tempKey =  [key cStringUsingEncoding:NSUTF8StringEncoding];
+        const char *tempValue = [[loginInfo  objectForKey:key] cStringUsingEncoding:NSUTF8StringEncoding];
+        if(tempKey !=NULL && tempValue !=NULL)
+        {
+            cJSON_AddItemToObject(userLoginParams,tempKey,cJSON_CreateString(tempValue));
+        }
+    }
+    ((XingCloud::XA::XADataManager*)([XA sharedXA]->__internal))->trackLogin(userLoginParams);
 }
 + (void)trackUserUpdate:(NSMutableDictionary*)userInfo
 {
