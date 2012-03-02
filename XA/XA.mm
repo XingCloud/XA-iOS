@@ -124,7 +124,7 @@ static NSTimer*   eventTimer;
 {
     //发送update,view,error事件
     ((XAWrapOpaque*)([XA sharedXA]->__internal))->wrap->applicationLaunch();
-    if(((XAWrapOpaque*)([XA sharedXA]->__internal))->wrap->reportPolice!=REALTIME)
+    if(((XAWrapOpaque*)([XA sharedXA]->__internal))->wrap->reportPolice!=XA_REALTIME)
     {
         //int dt=((XAWrapOpaque*)([XA sharedXA]->__internal))->wrap->defaultTimer;
             eventTimer = [NSTimer scheduledTimerWithTimeInterval: 20  

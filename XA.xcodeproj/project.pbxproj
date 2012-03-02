@@ -21,8 +21,6 @@
 		9096760214EE32C400356F4E /* stdcheaders.h in Headers */ = {isa = PBXBuildFile; fileRef = 909675DC14EE32C400356F4E /* stdcheaders.h */; };
 		9096760314EE32C400356F4E /* typecheck-gcc.h in Headers */ = {isa = PBXBuildFile; fileRef = 909675DD14EE32C400356F4E /* typecheck-gcc.h */; };
 		9096760414EE32C400356F4E /* types.h in Headers */ = {isa = PBXBuildFile; fileRef = 909675DE14EE32C400356F4E /* types.h */; };
-		9096760514EE32C400356F4E /* Reachability.h in Headers */ = {isa = PBXBuildFile; fileRef = 909675DF14EE32C400356F4E /* Reachability.h */; };
-		9096760614EE32C400356F4E /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 909675E014EE32C400356F4E /* Reachability.m */; };
 		9096760714EE32C400356F4E /* config.h in Headers */ = {isa = PBXBuildFile; fileRef = 909675E214EE32C400356F4E /* config.h */; };
 		9096760814EE32C400356F4E /* Mutex.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 909675E314EE32C400356F4E /* Mutex.cpp */; };
 		9096760914EE32C400356F4E /* Mutex.h in Headers */ = {isa = PBXBuildFile; fileRef = 909675E414EE32C400356F4E /* Mutex.h */; };
@@ -68,8 +66,6 @@
 		909675DC14EE32C400356F4E /* stdcheaders.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stdcheaders.h; sourceTree = "<group>"; };
 		909675DD14EE32C400356F4E /* typecheck-gcc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "typecheck-gcc.h"; sourceTree = "<group>"; };
 		909675DE14EE32C400356F4E /* types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = types.h; sourceTree = "<group>"; };
-		909675DF14EE32C400356F4E /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
-		909675E014EE32C400356F4E /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
 		909675E214EE32C400356F4E /* config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = config.h; sourceTree = "<group>"; };
 		909675E314EE32C400356F4E /* Mutex.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Mutex.cpp; sourceTree = "<group>"; };
 		909675E414EE32C400356F4E /* Mutex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Mutex.h; sourceTree = "<group>"; };
@@ -151,8 +147,6 @@
 				909675D114EE32C400356F4E /* cJSON.c */,
 				909675D214EE32C400356F4E /* cJSON.h */,
 				909675D314EE32C400356F4E /* curl */,
-				909675DF14EE32C400356F4E /* Reachability.h */,
-				909675E014EE32C400356F4E /* Reachability.m */,
 				909675E114EE32C400356F4E /* threadpool */,
 				909675EC14EE32C400356F4E /* XADataManager.cpp */,
 				909675ED14EE32C400356F4E /* XADataManager.h */,
@@ -231,7 +225,6 @@
 				9096760214EE32C400356F4E /* stdcheaders.h in Headers */,
 				9096760314EE32C400356F4E /* typecheck-gcc.h in Headers */,
 				9096760414EE32C400356F4E /* types.h in Headers */,
-				9096760514EE32C400356F4E /* Reachability.h in Headers */,
 				9096760714EE32C400356F4E /* config.h in Headers */,
 				9096760914EE32C400356F4E /* Mutex.h in Headers */,
 				9096760B14EE32C400356F4E /* Semaphore.h in Headers */,
@@ -296,7 +289,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				909675F814EE32C400356F4E /* cJSON.c in Sources */,
-				9096760614EE32C400356F4E /* Reachability.m in Sources */,
 				9096760814EE32C400356F4E /* Mutex.cpp in Sources */,
 				9096760A14EE32C400356F4E /* Semaphore.cpp in Sources */,
 				9096760C14EE32C400356F4E /* Thread.cpp in Sources */,

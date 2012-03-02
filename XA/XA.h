@@ -8,9 +8,9 @@
 #import <Foundation/Foundation.h>
 
 typedef enum {
-    REALTIME = 0,   //实时发送
-    BATCH = 1,      //启动时批量发送
-    DEFAULT = 3     //定时定量发送
+    XA_REALTIME = 0,   //实时发送
+    XA_BATCH = 1,      //启动时批量发送
+    XA_DEFAULT = 3     //定时定量发送
 } XAReportPolicy;
 
 typedef enum {

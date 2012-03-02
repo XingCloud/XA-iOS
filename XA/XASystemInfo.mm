@@ -7,7 +7,7 @@
 //
 
 #import "XASystemInfo.h"
-#import "Reachability.h"
+#import "XAReachability.h"
 
 #import <UIKit/UIKit.h>
 #import <CoreTelephony/CTCarrier.h>
