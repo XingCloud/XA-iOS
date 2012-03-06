@@ -23,7 +23,7 @@ namespace XingCloud
         
         unsigned int  postPerform(void *param);
         Mutex   XASendData::postMutex;
-        std::map<int,CURL*> indexCURL;
+       
         XASendData::XASendData()
         {
             
@@ -77,9 +77,9 @@ namespace XingCloud
             postData  *p =(postData*)param;
             bool receiveOK=false;
             bool *dataSendSuccess=&receiveOK;
-            static int index=0;
+          
             CURL* easy_handle = curl_easy_init();
-            indexCURL[index++]=easy_handle;
+         
             char *encodedURL = curl_easy_escape(easy_handle,p->data, strlen(p->data));
             curl_easy_setopt(easy_handle,CURLOPT_URL,"http://analytic.xingcloud.com/index.php?");
             curl_easy_setopt(easy_handle, CURLOPT_HEADERFUNCTION, Getcontentlengthfunc);
@@ -87,17 +87,16 @@ namespace XingCloud
             char *temp= new char[strlen(encodedURL)+6];
             sprintf(temp,"json=%s",encodedURL);
             curl_easy_setopt(easy_handle,CURLOPT_POSTFIELDS,temp);
+            curl_easy_setopt(easy_handle,CURLOPT_POSTFIELDSIZE,strlen(temp));
             curl_easy_setopt(easy_handle,CURLOPT_WRITEFUNCTION,postWriteData);//receive callback function
             curl_easy_setopt(easy_handle,CURLOPT_WRITEDATA,dataSendSuccess);
-            curl_easy_setopt(easy_handle,CURLOPT_WRITEDATA,easy_handle);
+           
             curl_easy_setopt(easy_handle,CURLOPT_POST,1);
             //curl_easy_setopt(easy_handle,CURLOPT_VERBOSE,1); /* open comment when debug mode.*/
-        
-            //XASendData::cache[index] = (char*)param;//
             
             CURLcode code=curl_easy_perform(easy_handle);
             
-            
+           
             if((code==CURLE_OK && receiveOK && dataSendSuccess))
             {//发送成功则删除缓存
                 XAPRINT("send event success!");
@@ -108,8 +107,11 @@ namespace XingCloud
                 XAPRINT("send event failed!");
                 XADataProxy::handleSendFailed(p->sendEventNumber);
             }
+            curl_free(encodedURL);
+            curl_easy_cleanup(easy_handle);
+            
+            free(p->data);
             delete p;
-            curl_easy_cleanup(indexCURL[index]);
             delete temp;
             return code==CURLE_OK;
         }
@@ -125,7 +127,7 @@ namespace XingCloud
             {
                 *(bool*)userParam=true;
             }
-           
+            
             return size*nmemb;
         }
         size_t Getcontentlengthfunc(void *ptr, size_t size, size_t nmemb, void *stream) 

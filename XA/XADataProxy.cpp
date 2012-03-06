@@ -58,6 +58,7 @@ namespace  XingCloud
                 cJSON_AddItemToArray(statArray,statObject);
                 cJSON_AddItemToObject(root,"stats",statArray);
                 XASendData::getMethodSend(cJSON_PrintUnformatted(root));
+                cJSON_Delete(root);
                 //XASendData::postMethodSend(cJSON_PrintUnformatted(root));
             }
             //            if(SystemInfo::getNetType(NULL)!=0)
@@ -76,6 +77,7 @@ namespace  XingCloud
             cJSON_AddItemToObject(Internalroot,"stats",internalStatArray);
             
             XASendData::postMethodSend(cJSON_PrintUnformatted(Internalroot),eventNumber);
+            cJSON_Delete(Internalroot);
         }
         void  XADataProxy::sendGeneralEventData(const char *appID,const char *userID,cJSON *generalObject,int eventNumber)
         {
@@ -92,6 +94,7 @@ namespace  XingCloud
             cJSON_AddItemToObject(root,"stats",generalStatArray);
             
             XASendData::postMethodSend(cJSON_PrintUnformatted(root),eventNumber);
+            cJSON_Delete(root);
         }
         void  XADataProxy::readyForSendData(int lastReadyEventNumber)
         {
@@ -208,6 +211,7 @@ namespace  XingCloud
             for(std::vector<localCacheEvent>::iterator iter =eventMemoryCache.begin() ;iter !=eventMemoryCache.end() && i<dataNumber;i++)
             {
                 const char *temp = cJSON_PrintUnformatted((*iter).jsonEvent);
+                cJSON_Delete((*iter).jsonEvent);
                 if(temp!=NULL)
                 {
                     unsigned short length = strlen(temp);
@@ -244,6 +248,7 @@ namespace  XingCloud
                         fwrite(&b,1,1,localfilePoint);
                     }
                     iter=eventMemoryCache.erase(iter);
+                    free(const_cast<char*>(temp));
                 }
                 else
                 {
@@ -302,7 +307,7 @@ namespace  XingCloud
                 
                 unsigned int internalNumber=0;
                 cJSON *internalStatArray=cJSON_CreateArray();
-                cJSON *eventJson;
+                //cJSON *eventJson;
                 while(curValidPosition!=(63+sizeof(unsigned int)))
                 {
                     fseek(localfilePoint,curValidPosition,SEEK_SET);
@@ -334,7 +339,7 @@ namespace  XingCloud
                         {
                             break;
                         }
-                        eventJson = cJSON_Parse(temp);
+                        cJSON *eventJson = cJSON_Parse(temp);
                         lce.isWriteTofile = true;
                         lce.isInternal = true;
                         lce.jsonEvent =eventJson;
@@ -380,7 +385,7 @@ namespace  XingCloud
                         {
                             break;
                         }
-                        eventJson = cJSON_Parse(temp);
+                        cJSON *eventJson = cJSON_Parse(temp);
                         
                         lce.isWriteTofile=true;
                         lce.isInternal =false;
@@ -406,6 +411,10 @@ namespace  XingCloud
                     if(internalNumber>0)
                     {
                         sendInternalEventData(internalStatArray,internalNumber);
+                    }
+                    else
+                    {
+                        cJSON_Delete(internalStatArray);
                     }
                 }
             }
@@ -444,7 +453,10 @@ namespace  XingCloud
             
             if(localfilePoint==NULL)
                 return;
-            char *quitData = cJSON_PrintUnformatted(quitEventData());
+            cJSON *quitJson = quitEventData();
+            char *quitData = cJSON_PrintUnformatted(quitJson);
+            cJSON_Delete(quitJson);
+            
             XAPRINT(quitData);
             unsigned int positon =ftell(localfilePoint);
             bool b=true;
@@ -465,7 +477,7 @@ namespace  XingCloud
             fwrite(&curValidPosition,sizeof(unsigned int),1,localfilePoint);//存下当前指fp位置
             
             fclose(localfilePoint);
-            
+            free(quitData);
             WriteMemoryDataToFile(eventMemoryCache.size());
             lastReadyEventNumber = 0;
             pause_time = XADataManager::getTimer();
@@ -513,10 +525,19 @@ namespace  XingCloud
         void    XADataProxy::handleGeneralEvent(int event,const char *appId,const char *userId,unsigned int timestamp,cJSON *params,bool isInternal)
         {
             Lock lock(eventCacheMutex);
-            cJSON *encapEvent = encapsulateEvent(event,params);
-            XAPRINT(cJSON_PrintUnformatted(encapEvent));
+            char temp[64] = {0};
+            eventString(event,temp);
+            cJSON  *encapEvent=cJSON_CreateObject();
+            cJSON_AddItemToObject(encapEvent,"eventName",cJSON_CreateString(temp));
+            cJSON_AddItemToObject(encapEvent,"params",params);
+            memset(temp,0,64);
+            sprintf(temp,"%u",XADataManager::getTimestamp());
+            cJSON_AddItemToObject(encapEvent,"timestamp",cJSON_CreateString(temp));
+            
+            //cJSON *encapEvent = encapsulateEvent(event,params);
+            //XAPRINT(cJSON_PrintUnformatted(encapEvent));
             //make cache 
-            localCacheEvent lce ; 
+            localCacheEvent lce; 
             if(appId !=NULL)
             {
                 int size =strlen(appId)+1;
@@ -538,11 +559,13 @@ namespace  XingCloud
             
             
             eventMemoryCache.push_back(lce);
-            
+            //XAPRINT(cJSON_PrintUnformatted(encapEvent));
             handleEvent(event,timestamp,encapEvent,0);
+            
         }
         void    XADataProxy::handleEvent(int event,unsigned int timestamp,cJSON *encapsulateEvent,int eventIndex)
         {
+            
             //XAPRINT(cJSON_PrintUnformatted(encapsulateEvent));
             
             if(XADataManager::reportPolice==0)
@@ -554,6 +577,7 @@ namespace  XingCloud
                 cJSON_AddItemToObject(root,"stats",statArray);
                 
                 XASendData::postMethodSend(cJSON_PrintUnformatted(root),1);
+                cJSON_Delete(root);
             }
             else if(XADataManager::reportPolice==1)
             {//启动时批量发送
