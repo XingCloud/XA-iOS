@@ -6,7 +6,7 @@
 #import <netdb.h>
 #import <CoreFoundation/CoreFoundation.h>
 
-#import "Reachability.h"
+#import "XAReachability.h"
 
 #define kShouldPrintReachabilityFlags 1
 

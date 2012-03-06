@@ -231,7 +231,7 @@ namespace XingCloud
         {
 
             char temp[64]={0};
-            cJSON *buyParams=cJSON_CreateObject();
+            cJSON *buyParams = cJSON_CreateObject();
             cJSON_AddItemToObject(buyParams,"is_mobile",cJSON_CreateString("true"));
             cJSON_AddItemToObject(buyParams,"resource",cJSON_CreateString(currency));
             cJSON_AddItemToObject(buyParams,"paytype",cJSON_CreateString(payType));

@@ -29,7 +29,7 @@
 #include <float.h>
 #include <limits.h>
 #include <ctype.h>
-#include "cJSON.h"
+#include "XAJSON.h"
 
 static const char *ep;
 

@@ -5,7 +5,7 @@
 //  Copyright (c) 2012 XingCloud.com All rights reserved.
 //
 //
-#include "cJSON.h"
+#include "XAJSON.h"
 extern void    XAPRINT(const char *fmt,...);
 
 namespace XingCloud

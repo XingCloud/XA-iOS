@@ -7,7 +7,7 @@
 
 #ifndef XA_XALifeCicle_h
 #define XA_XALifeCicle_h
-#include "cJSON.h"
+#include "XAJSON.h"
 #include "Mutex.h"
 #include <vector>
 namespace XingCloud
@@ -59,10 +59,7 @@ namespace XingCloud
                     if(rhs.appID !=NULL)
                     {
                         int sizeAppID = strlen(rhs.appID)+1;
-                        if(appID !=NULL)
-                        {
-                            delete appID;
-                        }
+                        
                         this->appID= new char[sizeAppID];
                         strcpy(this->appID,rhs.appID);
                     }
@@ -73,10 +70,7 @@ namespace XingCloud
                     if(rhs.userID!=NULL)
                     {
                         int sizeUserID = strlen(rhs.userID)+1;
-                        if(userID !=NULL)
-                        {
-                            delete userID;
-                        }
+                        
                         this->userID = new char[sizeUserID];
                         strcpy(this->userID,rhs.userID);
                     }
