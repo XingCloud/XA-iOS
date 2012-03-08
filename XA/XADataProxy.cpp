@@ -487,8 +487,134 @@ namespace  XingCloud
             
         }
         void    XADataProxy::handleApplicationResume()
-        {
+        {//senddata
+            
             idle_time +=( XADataManager::getTimer()- pause_time);
+            
+            localfilePoint = fopen(docfilePath,"rb+");
+            if(localfilePoint==NULL)
+            {
+                //XAPRINT("error  loacl Cache can not open "); 
+                return ;
+            }
+            Lock lock(filePointMutex);
+            
+            fseek(localfilePoint,0,SEEK_SET);
+            
+            fread(uid,63,1,localfilePoint);
+            fread(&curValidPosition,sizeof(unsigned int),1,localfilePoint);
+            
+            unsigned int internalNumber=0;
+            cJSON *internalStatArray=cJSON_CreateArray();
+            while(curValidPosition!=(63+sizeof(unsigned int)))
+            {
+                fseek(localfilePoint,curValidPosition,SEEK_SET);
+                char temp[1024]={0};
+                unsigned short tempLength=0;
+                
+                if(fseek(localfilePoint,-1,SEEK_CUR)!=0)
+                    break;// XAPRINT("set failed");
+                bool b=false;//
+                fread(&b,1,1,localfilePoint);
+                
+                fseek(localfilePoint,-sizeof(unsigned int)-1,SEEK_CUR);
+                
+                fread(&curValidPosition,sizeof(unsigned int),1,localfilePoint);
+                
+                fseek(localfilePoint,curValidPosition,SEEK_SET);
+                if(b)
+                {
+                    localCacheEvent lce;
+                    bool isWriteTofile=false;
+                    fread(&isWriteTofile,1,1,localfilePoint);
+                    fread(&tempLength,sizeof(unsigned short),1,localfilePoint);
+                    if(tempLength==0)
+                    {
+                        break;
+                    }
+                    fread(temp,tempLength,1,localfilePoint);
+                    if(strlen(temp)==0)
+                    {
+                        break;
+                    }
+                    cJSON *eventJson = cJSON_Parse(temp);
+                    lce.isWriteTofile = true;
+                    lce.isInternal = true;
+                    lce.jsonEvent =eventJson;
+                    lce.fileposition =curValidPosition;
+                    eventMemoryCache.push_back(lce);
+                    cJSON_AddItemToArray(internalStatArray,eventJson);
+                    if(++internalNumber>=50)
+                    {
+                        sendInternalEventData(internalStatArray,50);
+                        internalStatArray=cJSON_CreateArray();
+                    }
+                }
+                else
+                {
+                    sendInternalEventData(internalStatArray,internalNumber);
+                    internalNumber=0;
+                    internalStatArray=cJSON_CreateArray();
+                    
+                    localCacheEvent lce; 
+                    bool isWriteTofile=false;
+                    fread(&isWriteTofile,1,1,localfilePoint);
+                    
+                    unsigned short appIDlen=0;
+                    fread(&appIDlen,sizeof(unsigned short),1,localfilePoint);
+                    lce.appID = new char[appIDlen+1];
+                    memset(lce.appID,0,appIDlen+1);
+                    fread(lce.appID,appIDlen,1,localfilePoint);
+                    
+                    unsigned short userIDlen=0;
+                    fread(&userIDlen,sizeof(unsigned short),1,localfilePoint);
+                    lce.userID = new char[userIDlen+1];
+                    memset(lce.userID,0,userIDlen+1);
+                    fread(lce.userID,userIDlen,1,localfilePoint);
+                    
+                    fread(&tempLength,sizeof(unsigned short),1,localfilePoint);
+                    if(tempLength==0)
+                    {
+                        break;
+                    }
+                    fread(temp,tempLength,1,localfilePoint);
+                    if(strlen(temp)==0)
+                    {
+                        break;
+                    }
+                    cJSON *eventJson = cJSON_Parse(temp);
+                    
+                    lce.isWriteTofile=true;
+                    lce.isInternal =false;
+                    lce.jsonEvent =eventJson;
+                    lce.fileposition =curValidPosition;
+                    
+                    eventMemoryCache.push_back(lce);
+                    
+                    sendGeneralEventData(lce.appID, lce.userID,eventJson,1);
+                    
+                }
+                
+            }//while
+            if(0!=fseek(localfilePoint,63,SEEK_SET))
+            {
+                XAPRINT("error  loacl Cache can not fseek "); 
+                fclose(localfilePoint);
+            }
+            else
+            {
+                fwrite(&curValidPosition,sizeof(unsigned int),1,localfilePoint);//存下当前指fp位置
+                fclose(localfilePoint);
+                if(internalNumber>0)
+                {
+                    sendInternalEventData(internalStatArray,internalNumber);
+                }
+                else
+                {
+                    cJSON_Delete(internalStatArray);
+                }
+            }
+
         }
         void    XADataProxy::handleTrackLogin(cJSON *login)
         {
@@ -562,12 +688,12 @@ namespace  XingCloud
             //XAPRINT(cJSON_PrintUnformatted(encapEvent));
             handleEvent(event,timestamp,encapEvent,0);
             
+            
         }
         void    XADataProxy::handleEvent(int event,unsigned int timestamp,cJSON *encapsulateEvent,int eventIndex)
         {
             
             //XAPRINT(cJSON_PrintUnformatted(encapsulateEvent));
-            
             if(XADataManager::reportPolice==0)
             {//实时发送
                 cJSON *root = cJSON_CreateObject();
@@ -579,18 +705,19 @@ namespace  XingCloud
                 XASendData::postMethodSend(cJSON_PrintUnformatted(root),1);
                 cJSON_Delete(root);
             }
-            else if(XADataManager::reportPolice==1)
-            {//启动时批量发送
-                
-            }
-            else if(XADataManager::reportPolice==3)
-            {//定时定量发送
-                
-            }
-            else
-            {
-                
-            }
+            
+//            else if(XADataManager::reportPolice== 1 )
+//            {//启动时批量发送
+//                XAPRINT("............%d",XADataManager::reportPolice);
+//            }
+//            else if(XADataManager::reportPolice == 3)
+//            {//定时定量发送
+//                XAPRINT("............%d",XADataManager::reportPolice);
+//            }
+//            else
+//            {
+//                
+//            }
         }
         void XADataProxy::handleSendSucess(int sendDataNumber)
         {
