@@ -16,9 +16,8 @@ namespace XingCloud
     {
         
         TaskGroup   XASendData::taskGroup;
-        //std::vector<std::string> XASendData::cache;//发送失败的缓存
-        //std::map<int,std::string>  XASendData::cache;//发送失败的缓存
-        static size_t postWriteData(void *recvBuffer,size_t size,size_t nmemb,void *userParam);
+       
+        size_t postWriteData(void *recvBuffer,size_t size,size_t nmemb,void *userParam);
         size_t Getcontentlengthfunc(void *ptr, size_t size, size_t nmemb, void *stream) ;
         
         unsigned int  postPerform(void *param);
@@ -100,12 +99,12 @@ namespace XingCloud
             if((code==CURLE_OK && receiveOK && dataSendSuccess))
             {//发送成功则删除缓存
                 XAPRINT("send event success!");
-                XADataProxy::handleSendSucess(p->sendEventNumber);
+                XADataProxy::getInstance()->handleSendSucess(p->sendEventNumber);
             }
             else
             {//
                 XAPRINT("send event failed!");
-                XADataProxy::handleSendFailed(p->sendEventNumber);
+               XADataProxy::getInstance()->handleSendFailed(p->sendEventNumber);
             }
             curl_free(encodedURL);
             curl_easy_cleanup(easy_handle);
@@ -116,7 +115,7 @@ namespace XingCloud
             return code==CURLE_OK;
         }
         
-        static size_t postWriteData(void *recvBuffer,size_t size,size_t nmemb,void *userParam)
+        size_t postWriteData(void *recvBuffer,size_t size,size_t nmemb,void *userParam)
         {
             // /*1.0ms*/
             char *temp = (char*)recvBuffer;

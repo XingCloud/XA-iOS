@@ -86,7 +86,7 @@ static NSTimer*   eventTimer;
 }
 + (NSString *)getUserId
 {
-    return  [NSString stringWithFormat:@"%s",XingCloud::XA::XADataProxy::uid];
+    return  [NSString stringWithFormat:@"%s",XingCloud::XA::XADataProxy::getInstance()->uid];
 }
 + (void)setDefaultCount:(int)defaultCount
 {

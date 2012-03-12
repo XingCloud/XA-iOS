@@ -31,8 +31,7 @@ namespace XingCloud
             static bool    getMethodSend(const char *buffer);
             static bool    postMethodSend(const char *buffer,int dataNumber);
             
-            //static std::vector<std::string> cache;
-            //static std::map<int,std::string> cache;
+            
             static Mutex   postMutex;
         private:
            // CURL *easy_handle;

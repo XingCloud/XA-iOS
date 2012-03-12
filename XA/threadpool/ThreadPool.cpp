@@ -395,7 +395,6 @@ ThreadPool::globalThreadPool ()
     return gThreadPool;
 }
 
-
 void
 ThreadPool::addGlobalTask (Task* task)
 {

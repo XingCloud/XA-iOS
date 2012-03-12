@@ -23,7 +23,11 @@ void    XAPRINT(const char *fmt,...)
     {
         return ;
     }
-    char sprint_buf[2048];
+    if(strlen(fmt)>2048*4-1)
+    {
+        return ;
+    }
+    char sprint_buf[2048*4];
     
     va_list args;
     

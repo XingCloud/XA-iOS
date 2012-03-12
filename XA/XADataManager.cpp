@@ -41,21 +41,21 @@ namespace XingCloud
         }
         void    XADataManager::handleHeartbeatTimer()
         {
-            xaDataProxy.sendHeartbeatEventData();
+            XADataProxy::getInstance()->sendHeartbeatEventData();
         }
         void    XADataManager::handleEventTimer()
         {
-            xaDataProxy.handleEventData();
+            XADataProxy::getInstance()->handleEventTimer();
         }
         cJSON* XADataManager::getSignedParamsJsonObject()
         {
             cJSON * signedParamsObject=cJSON_CreateObject();
-            if(appID==NULL ||XADataProxy::uid == NULL)
+            if(appID==NULL ||XADataProxy::getInstance()->uid == NULL)
             {
                 return signedParamsObject;
             }
             cJSON_AddItemToObject(signedParamsObject,"appid",cJSON_CreateString(appID));
-            cJSON_AddItemToObject(signedParamsObject,"uid",cJSON_CreateString(XADataProxy::uid));
+            cJSON_AddItemToObject(signedParamsObject,"uid",cJSON_CreateString(XADataProxy::getInstance()->uid));
             char  temp[64]={0};
             sprintf(temp,"%u",getTimestamp());
             cJSON_AddItemToObject(signedParamsObject,"timestamp",cJSON_CreateString(temp));
@@ -142,23 +142,19 @@ namespace XingCloud
             }
             cJSON_AddItemToObject(visitParams,"ref",cJSON_CreateString(temp));
             
-            
-            
-            
-            xaDataProxy.handleApplicationLaunch(visitParams,NULL,NULL);
-            
+            XADataProxy::getInstance()->handleApplicationLaunch(visitParams,NULL,NULL);
         }
         void    XADataManager::applicationTerminate()
         {
-            xaDataProxy.handleApplicationTerminate();
+           XADataProxy::getInstance()->handleApplicationTerminate();
         }
         void    XADataManager::applicationPause()
         {
-            xaDataProxy.handleApplicationPause();
+            XADataProxy::getInstance()->handleApplicationPause();
         }
         void    XADataManager::applicationResume()
         {
-            xaDataProxy.handleApplicationResume();
+            XADataProxy::getInstance()->handleApplicationResume();
         }
         //track  events
         void    XADataManager::trackCount(const char *action,const char *level1,const char *level2,const char *level3,const char *level4,const char *level5,int count)
@@ -176,15 +172,15 @@ namespace XingCloud
             sprintf(temp,"%d",count);
             cJSON_AddItemToObject(countParams,"count",cJSON_CreateString(temp));
            
-            xaDataProxy.handleTrackCount(countParams);
+            XADataProxy::getInstance()->handleTrackCount(countParams);
         }
         void    XADataManager::trackUserIncrement(cJSON* userInfo)
         {
-            xaDataProxy.handleTrackUserIncrement(userInfo);
+           XADataProxy::getInstance()->handleTrackUserIncrement(userInfo);
         }
         void    XADataManager::trackUserUpdate(cJSON* userInfo)
         {
-            xaDataProxy.handleTrackUserUpdate(userInfo);
+            XADataProxy::getInstance()->handleTrackUserUpdate(userInfo);
         }
         void    XADataManager::trackMilestone(const char *milestoneName)
         {
@@ -193,12 +189,12 @@ namespace XingCloud
             cJSON_AddItemToObject(milestoneParams,"is_mobile",cJSON_CreateString("true"));
             cJSON_AddItemToObject(milestoneParams,"milestone_name",cJSON_CreateString(milestoneName));
             
-            xaDataProxy.handleTrackMilestone(milestoneParams);
+            XADataProxy::getInstance()->handleTrackMilestone(milestoneParams);
             
         }
         void    XADataManager::trackLogin(cJSON *login)
         {
-            xaDataProxy.handleTrackLogin(login);
+            XADataProxy::getInstance()->handleTrackLogin(login);
         }
         void    XADataManager::trackTransaction(const char *trans_id,const char *channel,const char*gross,const char *gcurrency,const char *vamount,const char *vcurrentcy)
         {
@@ -211,7 +207,7 @@ namespace XingCloud
             cJSON_AddItemToObject(transParams,"vamount",cJSON_CreateString(vamount));
             cJSON_AddItemToObject(transParams,"vcurrentcy",cJSON_CreateString(vcurrentcy));
 
-            xaDataProxy.handleTrackTransaction(transParams);
+            XADataProxy::getInstance()->handleTrackTransaction(transParams);
         }
         void    XADataManager::trackTutorialService(const char *index,const char *name,const char *tutorial)
         {
@@ -223,7 +219,7 @@ namespace XingCloud
             cJSON_AddItemToObject(tutorialParams,"step_name",cJSON_CreateString(name));
             cJSON_AddItemToObject(tutorialParams,"tid",cJSON_CreateString(tutorial));
         
-            xaDataProxy.handleTrackTutorialService(tutorialParams);
+            XADataProxy::getInstance()->handleTrackTutorialService(tutorialParams);
             
 
         }
@@ -247,7 +243,7 @@ namespace XingCloud
             sprintf(temp,"%d",number);
             cJSON_AddItemToObject(buyParams,"number",cJSON_CreateString(temp));
             
-            xaDataProxy.handleTrackBuyService(buyParams);
+            XADataProxy::getInstance()->handleTrackBuyService(buyParams);
         }
         void    XADataManager::generalEvent(int event,const char *appId,const char *userId,int timestamp,const char *params)
         {
@@ -257,18 +253,18 @@ namespace XingCloud
                 case 9:
                 case 10:
                 case 11:
-                    xaDataProxy.handleGeneralEvent(event,appId,userId,timestamp,cJSON_Parse(params));
+                    XADataProxy::getInstance()->handleGeneralEvent(event,appId,userId,timestamp,cJSON_Parse(params));
                     break;
                 default:
                 {
                     if(appId!=NULL && userId!=NULL)
                     {
-                        if(strcmp(appId,appID)==0&&strcmp(userId,XADataProxy::uid)==0)
+                        if(strcmp(appId,appID)==0&&strcmp(userId,XADataProxy::getInstance()->uid)==0)
                         {
-                            xaDataProxy.handleGeneralEvent(event,appId,userId,timestamp,cJSON_Parse(params),true);
+                            XADataProxy::getInstance()->handleGeneralEvent(event,appId,userId,timestamp,cJSON_Parse(params),true);
                         }
                     }
-                    xaDataProxy.handleGeneralEvent(event,appId,userId,timestamp,cJSON_Parse(params));
+                    XADataProxy::getInstance()->handleGeneralEvent(event,appId,userId,timestamp,cJSON_Parse(params));
                     
                 }
             }

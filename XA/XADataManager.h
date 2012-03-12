@@ -70,7 +70,7 @@ namespace XingCloud
         private:
             ServicesEnable servicesEnable;
             static unsigned int  startTimer;
-            XADataProxy   xaDataProxy;
+           
             bool       firstInitApp;
             char *adsChannel;
         };

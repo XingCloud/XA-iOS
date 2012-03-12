@@ -17,85 +17,88 @@ namespace XingCloud
         class localCacheEvent
         {
         public:
-            char *appID;
-            char *userID;
+            char appID[512];
+            char userID[512];
             bool isInternal;//app ID, userID是否与内部相同
             bool isWriteTofile;
             unsigned short eventSize;
             unsigned int   fileposition;
-            cJSON *jsonEvent;
-            localCacheEvent(const localCacheEvent &rhs)
-            {
-                if(rhs.appID !=NULL)
-                {
-                    int sizeAppID = strlen(rhs.appID)+1;
-                    this->appID= new char[sizeAppID];
-                    strcpy(this->appID,rhs.appID);
-                }
-                else
-                {
-                    this->appID = NULL;
-                }
-                if(rhs.userID!=NULL)
-                {
-                    int sizeUserID = strlen(rhs.userID)+1;
-                    this->userID = new char[sizeUserID];
-                    strcpy(this->userID,rhs.userID);
-                }
-                else
-                {
-                    this->userID =NULL;
-                }
-                this->isInternal = rhs.isInternal;
-                this->isWriteTofile =rhs.isWriteTofile;
-                this->eventSize =rhs.eventSize;
-                this->fileposition = rhs.fileposition;
-                this->jsonEvent = rhs.jsonEvent;
-            }
-            localCacheEvent& operator=(const localCacheEvent &rhs)
-            {
-                if(this != &rhs)
-                {
-                    if(rhs.appID !=NULL)
-                    {
-                        int sizeAppID = strlen(rhs.appID)+1;
-                        
-                        this->appID= new char[sizeAppID];
-                        strcpy(this->appID,rhs.appID);
-                    }
-                    else
-                    {
-                        this->appID = NULL;
-                    }
-                    if(rhs.userID!=NULL)
-                    {
-                        int sizeUserID = strlen(rhs.userID)+1;
-                        
-                        this->userID = new char[sizeUserID];
-                        strcpy(this->userID,rhs.userID);
-                    }
-                    else
-                    {
-                        this->userID =NULL;
-                    }
-                    this->isInternal = rhs.isInternal;
-                    this->isWriteTofile =rhs.isWriteTofile;
-                    this->eventSize =rhs.eventSize;
-                    this->fileposition = rhs.fileposition;
-                    this->jsonEvent = rhs.jsonEvent;
-                }
-                return  *this;
-            }
-            localCacheEvent(){appID = userID = NULL;isWriteTofile=false;eventSize=0; fileposition=0;}
-            ~localCacheEvent(){if(appID!=NULL){delete appID;appID=NULL;}if(userID!=NULL){delete userID;userID=NULL;}}
+            char jsonEvent[1024];
+//            cJSON *jsonEvent;
+//            localCacheEvent(const localCacheEvent &rhs)
+//            {
+//                if(rhs.appID !=NULL)
+//                {
+//                    int sizeAppID = strlen(rhs.appID)+1;
+//                    this->appID= new char[sizeAppID];
+//                    strcpy(this->appID,rhs.appID);
+//                }
+//                else
+//                {
+//                    this->appID = NULL;
+//                }
+//                if(rhs.userID!=NULL)
+//                {
+//                    int sizeUserID = strlen(rhs.userID)+1;
+//                    this->userID = new char[sizeUserID];
+//                    strcpy(this->userID,rhs.userID);
+//                }
+//                else
+//                {
+//                    this->userID =NULL;
+//                }
+//                this->isInternal = rhs.isInternal;
+//                this->isWriteTofile =rhs.isWriteTofile;
+//                this->eventSize =rhs.eventSize;
+//                this->fileposition = rhs.fileposition;
+//                this->jsonEvent = rhs.jsonEvent;
+//            }
+//            localCacheEvent& operator=(const localCacheEvent &rhs)
+//            {
+//                if(this != &rhs)
+//                {
+//                    if(rhs.appID !=NULL)
+//                    {
+//                        int sizeAppID = strlen(rhs.appID)+1;
+//                        
+//                        this->appID= new char[sizeAppID];
+//                        strcpy(this->appID,rhs.appID);
+//                    }
+//                    else
+//                    {
+//                        this->appID = NULL;
+//                    }
+//                    if(rhs.userID!=NULL)
+//                    {
+//                        int sizeUserID = strlen(rhs.userID)+1;
+//                        
+//                        this->userID = new char[sizeUserID];
+//                        strcpy(this->userID,rhs.userID);
+//                    }
+//                    else
+//                    {
+//                        this->userID =NULL;
+//                    }
+//                    this->isInternal = rhs.isInternal;
+//                    this->isWriteTofile =rhs.isWriteTofile;
+//                    this->eventSize =rhs.eventSize;
+//                    this->fileposition = rhs.fileposition;
+//                    this->jsonEvent = rhs.jsonEvent;
+//                }
+//                return  *this;
+//            }
+//            localCacheEvent(){appID = userID = NULL;isWriteTofile=false;eventSize=0; fileposition=0;}
+//            ~localCacheEvent(){if(appID!=NULL){delete appID;appID=NULL;}if(userID!=NULL){delete userID;userID=NULL;}}
         };
         
         
         class XADataProxy
         {
         public:
-            XADataProxy();
+            
             ~XADataProxy();
+            static XADataProxy* getInstance(){return m_instance;}
+            
             void    handleApplicationLaunch(cJSON *visitEvent,cJSON *updateEvent,cJSON *errorEvent);
             void    handleApplicationTerminate();
             void    handleApplicationPause();
@@ -115,40 +118,43 @@ namespace XingCloud
             void    eventString(int event,char *source);
             cJSON*  encapsulateEvent(int event,cJSON *params);
             
-            static  void    WriteMemoryDataToFile(int dataNumber);
+            void    WriteMemoryDataToFile(int dataNumber);
             
-            static cJSON*   getGenSignedParamsObject(const char *appId,const char *userId,int timestamp);
+            cJSON*   getGenSignedParamsObject(const char *appId,const char *userId,int timestamp);
             
-            static void     readyForSendData(int lastReadyEventNumber);
-            static void     sendInternalEventData(cJSON *internalStatArray,int eventNumber);
-            static void     sendGeneralEventData(const char *appID,const char *userID,cJSON *generalStatArray,int eventNumber);
-            static void     handleEventData();
-            static void     sendHeartbeatEventData();
+            void     readyForSendData(int lastReadyEventNumber);
+            void     sendInternalEventData(cJSON *internalStatArray,int eventNumber);
+            void     sendGeneralEventData(const char *appID,const char *userID,cJSON *generalStatArray,int eventNumber);
+            void     handleEventTimer();
+             void    sendHeartbeatEventData();
            
-            static cJSON*   quitEventData();
+            cJSON*   quitEventData();
           
-            static void     handleSendSucess(int sendDataNumber);
-            static void     handleSendFailed(int sendDataNumber);
+            void     handleSendSucess(int sendDataNumber);
+            void     handleSendFailed(int sendDataNumber);
         
-            static Mutex    filePointMutex;
-            static Mutex    eventCacheMutex;
-            static Mutex    timerMutex;
+            Mutex    filePointMutex;
+            Mutex    eventCacheMutex;
+            Mutex    timerMutex;
            
             
-            static FILE    *localfilePoint;
-            static char    *docfilePath;
-            static char    *uid;
+            FILE    *localfilePoint;
+            char    *docfilePath;
+            char    *uid;
             
-            static int      sendEventNumber;
-            static std::vector<localCacheEvent> eventMemoryCache;
+            int      sendEventNumber;
             
-            static unsigned int curValidPosition;
+            std::vector<localCacheEvent> eventMemoryCache;
             
-            static int lastReadyEventNumber;
+            unsigned int curValidPosition;
+            
+            int lastReadyEventNumber;
             
         private:
+            XADataProxy();
             unsigned int pause_time;
-            static unsigned int idle_time;
+            unsigned int idle_time;
+            static XADataProxy* m_instance;
         };
     }
 }

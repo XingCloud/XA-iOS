@@ -15,25 +15,19 @@ namespace  XingCloud
     namespace XA
     {
         
+        XADataProxy* XADataProxy::m_instance = new XADataProxy();
+
         
-        FILE   *XADataProxy::localfilePoint;
-        
-        Mutex   XADataProxy::filePointMutex;
-        Mutex   XADataProxy::eventCacheMutex;
-        Mutex  XADataProxy::timerMutex;
-        char* XADataProxy::docfilePath=NULL;
-        char *XADataProxy::uid=NULL;
-        unsigned int XADataProxy::idle_time = 0;       
-        int  XADataProxy::sendEventNumber=0;
-        unsigned int XADataProxy::curValidPosition;
-        
-        int XADataProxy::lastReadyEventNumber=0;
-        
-        std::vector<localCacheEvent>  XADataProxy::eventMemoryCache;
         XADataProxy::XADataProxy()
         {
             idle_time = 0;
             pause_time = 0;
+            idle_time = 0;
+            sendEventNumber=0;
+            lastReadyEventNumber=0;
+            uid=NULL;
+            docfilePath=NULL;
+            m_instance =this;
         }
         XADataProxy::~XADataProxy()
         {
@@ -72,6 +66,10 @@ namespace  XingCloud
         }
         void XADataProxy::sendInternalEventData(cJSON *internalStatArray,int eventNumber)
         {
+            if (eventNumber==0) {
+                cJSON_Delete(internalStatArray);
+                return;
+            }
             cJSON *Internalroot=cJSON_CreateObject();
             cJSON_AddItemToObject(Internalroot,"signedParams",XADataManager::getSignedParamsJsonObject());
             cJSON_AddItemToObject(Internalroot,"stats",internalStatArray);
@@ -85,7 +83,7 @@ namespace  XingCloud
             cJSON *root=cJSON_CreateObject();
             if(appID ==NULL || userID == NULL)
             {
-                delete root;
+                cJSON_Delete(root);
                 return ;
             }
             cJSON_AddItemToObject(root,"signedParams",getGenSignedParamsObject(appID,userID,XADataManager::getTimestamp()));
@@ -103,14 +101,14 @@ namespace  XingCloud
             cJSON *internalStatArray=cJSON_CreateArray();
             
             int internalEventNumber=0;
-            for(std::vector<localCacheEvent>::iterator iter=eventMemoryCache.begin()+lastReadyEventNumber; iter!= eventMemoryCache.end() ;iter++)
+            for(std::vector<localCacheEvent>::iterator iter=getInstance()->eventMemoryCache.begin()+lastReadyEventNumber; iter!= getInstance()->eventMemoryCache.end() ;iter++)
             {
-                
                 //发送的个数
-                if(((*iter).appID==NULL ||(*iter).userID== NULL)||(!strcmp(XADataManager::appID,(*iter).appID) && !strcmp(uid,(*iter).userID)))
+                //if(((*iter).appID==NULL ||(*iter).userID== NULL)||(!strcmp(XADataManager::appID,(*iter).appID) && !strcmp(uid,(*iter).userID)))
+                if((*iter).isInternal)
                 {
                     //XAPRINT(cJSON_PrintUnformatted((*iter).jsonEvent));
-                    cJSON_AddItemToArray(internalStatArray,(*iter).jsonEvent);
+                    cJSON_AddItemToArray(internalStatArray,cJSON_Parse((*iter).jsonEvent));
                     if(++internalEventNumber >50)
                     {
                         sendInternalEventData(internalStatArray,50);
@@ -122,24 +120,29 @@ namespace  XingCloud
                 }
                 else
                 {
-                    sendInternalEventData(internalStatArray,internalEventNumber);
-                    internalEventNumber=0;
-                    internalStatArray=cJSON_CreateArray();
-                    
-                    sendGeneralEventData((*iter).appID,(*iter).userID,(*iter).jsonEvent,1);
+                    if(internalEventNumber!=0)
+                    {
+                        sendInternalEventData(internalStatArray,internalEventNumber);
+                        internalEventNumber=0;
+                        internalStatArray=cJSON_CreateArray();
+                    }
+                    sendGeneralEventData((*iter).appID,(*iter).userID,cJSON_Parse((*iter).jsonEvent),1);
                     
                 }
-                
             }
             if(internalEventNumber!=0)
             {
                 sendInternalEventData(internalStatArray,internalEventNumber);
             }
+            else
+            {
+                cJSON_Delete(internalStatArray);
+            }
+            
         }
         
-        void  XADataProxy::handleEventData()
+        void  XADataProxy::handleEventTimer()
         {//timer
-           
             if(XADataManager::reportPolice==0)
                 return ;
             if(XADataManager::reportPolice==3)
@@ -166,18 +169,8 @@ namespace  XingCloud
                     
                     if(eventMemoryCache.size()!=0)
                     {
-                        if(lastReadyEventNumber<=0)
-                        {
-                            lastReadyEventNumber=eventMemoryCache.size();
-                            readyForSendData(0);
-                            return ;
-                        }
-                        else if(lastReadyEventNumber>=eventMemoryCache.size())
-                        {
-                            readyForSendData(lastReadyEventNumber);
-                            return ;
-                        }
-
+                        lastReadyEventNumber=eventMemoryCache.size();
+                        readyForSendData(0);
                     }
                       
                 }
@@ -185,12 +178,12 @@ namespace  XingCloud
             }
             else
             {//batch
-                WriteMemoryDataToFile(eventMemoryCache.size());
+                WriteMemoryDataToFile(getInstance()->eventMemoryCache.size());
             }
         }
         void XADataProxy::WriteMemoryDataToFile(int dataNumber)
         {
-            if(eventMemoryCache.size()==0)
+            if(getInstance()->eventMemoryCache.size()==0)
             {
                 return;
             }
@@ -208,10 +201,14 @@ namespace  XingCloud
                 return ;
             }
             int i=0;
-            for(std::vector<localCacheEvent>::iterator iter =eventMemoryCache.begin() ;iter !=eventMemoryCache.end() && i<dataNumber;i++)
+            for(std::vector<localCacheEvent>::iterator iter =getInstance()->eventMemoryCache.begin() ;iter !=getInstance()->eventMemoryCache.end() && i<dataNumber;i++)
             {
-                const char *temp = cJSON_PrintUnformatted((*iter).jsonEvent);
-                cJSON_Delete((*iter).jsonEvent);
+                if((*iter).isWriteTofile)
+                {
+                    continue;
+                }
+                const char *temp = (*iter).jsonEvent;
+               
                 if(temp!=NULL)
                 {
                     unsigned short length = strlen(temp);
@@ -247,8 +244,7 @@ namespace  XingCloud
                         bool b= false;
                         fwrite(&b,1,1,localfilePoint);
                     }
-                    iter=eventMemoryCache.erase(iter);
-                    free(const_cast<char*>(temp));
+                    iter=getInstance()->eventMemoryCache.erase(iter);
                 }
                 else
                 {
@@ -256,7 +252,7 @@ namespace  XingCloud
                 }
                 lastReadyEventNumber--;
                 
-            }
+            }//for
             curValidPosition=ftell(localfilePoint);
             if(0!=fseek(localfilePoint,63,SEEK_SET))
             {
@@ -270,7 +266,9 @@ namespace  XingCloud
         {
             char appDir[512]={0};
             SystemInfo::getAppFileDir(appDir);
+            
             docfilePath = new char[521];
+            
             sprintf(docfilePath,"%s/appCache.log",appDir);
             
             
@@ -311,7 +309,7 @@ namespace  XingCloud
                 while(curValidPosition!=(63+sizeof(unsigned int)))
                 {
                     fseek(localfilePoint,curValidPosition,SEEK_SET);
-                    char temp[1024]={0};
+                    char temp[1024*2]={0};
                     unsigned short tempLength=0;
                     
                     if(fseek(localfilePoint,-1,SEEK_CUR)!=0)
@@ -339,40 +337,41 @@ namespace  XingCloud
                         {
                             break;
                         }
-                        cJSON *eventJson = cJSON_Parse(temp);
                         lce.isWriteTofile = true;
                         lce.isInternal = true;
-                        lce.jsonEvent =eventJson;
+                        if(tempLength<1024)
+                            strcpy(lce.jsonEvent,temp);
+                        
                         lce.fileposition =curValidPosition;
                         eventMemoryCache.push_back(lce);
-                        cJSON_AddItemToArray(internalStatArray,eventJson);
+                        cJSON_AddItemToArray(internalStatArray,cJSON_Parse(temp));
                         if(++internalNumber>=50)
                         {
-                            sendInternalEventData(internalStatArray,50);
+                            sendInternalEventData(internalStatArray,internalNumber);
+                            internalNumber = 0;
                             internalStatArray=cJSON_CreateArray();
                         }
                     }
                     else
                     {
-                        
-                        sendInternalEventData(internalStatArray,internalNumber);
-                        internalNumber=0;
-                        internalStatArray=cJSON_CreateArray();
-                        
+                        if(internalNumber!=0)
+                        {
+                            sendInternalEventData(internalStatArray,internalNumber);
+                            internalNumber=0;
+                            internalStatArray=cJSON_CreateArray();
+                        }
                         localCacheEvent lce; 
                         bool isWriteTofile=false;
                         fread(&isWriteTofile,1,1,localfilePoint);
                         
                         unsigned short appIDlen=0;
                         fread(&appIDlen,sizeof(unsigned short),1,localfilePoint);
-                        lce.appID = new char[appIDlen+1];
-                        memset(lce.appID,0,appIDlen+1);
+                        
                         fread(lce.appID,appIDlen,1,localfilePoint);
                         
                         unsigned short userIDlen=0;
                         fread(&userIDlen,sizeof(unsigned short),1,localfilePoint);
-                        lce.userID = new char[userIDlen+1];
-                        memset(lce.userID,0,userIDlen+1);
+                        
                         fread(lce.userID,userIDlen,1,localfilePoint);
                         
                         fread(&tempLength,sizeof(unsigned short),1,localfilePoint);
@@ -389,7 +388,8 @@ namespace  XingCloud
                         
                         lce.isWriteTofile=true;
                         lce.isInternal =false;
-                        lce.jsonEvent =eventJson;
+                        if(tempLength<1024)
+                            strcpy(lce.jsonEvent,temp);
                         lce.fileposition =curValidPosition;
                         
                         eventMemoryCache.push_back(lce);
@@ -397,7 +397,6 @@ namespace  XingCloud
                         sendGeneralEventData(lce.appID, lce.userID,eventJson,1);
                         
                     }
-                    
                 }//while
                 if(0!=fseek(localfilePoint,63,SEEK_SET))
                 {
@@ -408,13 +407,14 @@ namespace  XingCloud
                 {
                     fwrite(&curValidPosition,sizeof(unsigned int),1,localfilePoint);//存下当前指fp位置
                     fclose(localfilePoint);
-                    if(internalNumber>0)
+                    if(internalNumber>0&&internalNumber<100000)
                     {
                         sendInternalEventData(internalStatArray,internalNumber);
                     }
                     else
                     {
-                        cJSON_Delete(internalStatArray);
+                        if(internalNumber==0)
+                            cJSON_Delete(internalStatArray);
                     }
                 }
             }
@@ -458,6 +458,7 @@ namespace  XingCloud
             cJSON_Delete(quitJson);
             
             XAPRINT(quitData);
+            
             unsigned int positon =ftell(localfilePoint);
             bool b=true;
             fwrite(&b, 1, 1, localfilePoint);//isWriteToDevice
@@ -478,6 +479,11 @@ namespace  XingCloud
             
             fclose(localfilePoint);
             free(quitData);
+            
+            for(std::vector<localCacheEvent>::iterator iter = eventMemoryCache.begin() ;iter !=eventMemoryCache.end() ;iter++)
+            {
+                (*iter).isWriteTofile =false;
+            }
             WriteMemoryDataToFile(eventMemoryCache.size());
             lastReadyEventNumber = 0;
             pause_time = XADataManager::getTimer();
@@ -490,22 +496,28 @@ namespace  XingCloud
         {//senddata
             
             idle_time +=( XADataManager::getTimer()- pause_time);
-            
+           
+            Lock lock(filePointMutex);
             localfilePoint = fopen(docfilePath,"rb+");
+            
+            Lock loc(eventCacheMutex);
+            
             if(localfilePoint==NULL)
             {
                 //XAPRINT("error  loacl Cache can not open "); 
                 return ;
             }
-            Lock lock(filePointMutex);
             
             fseek(localfilePoint,0,SEEK_SET);
             
             fread(uid,63,1,localfilePoint);
+            
             fread(&curValidPosition,sizeof(unsigned int),1,localfilePoint);
             
             unsigned int internalNumber=0;
             cJSON *internalStatArray=cJSON_CreateArray();
+            
+            
             while(curValidPosition!=(63+sizeof(unsigned int)))
             {
                 fseek(localfilePoint,curValidPosition,SEEK_SET);
@@ -537,16 +549,17 @@ namespace  XingCloud
                     {
                         break;
                     }
-                    cJSON *eventJson = cJSON_Parse(temp);
                     lce.isWriteTofile = true;
                     lce.isInternal = true;
-                    lce.jsonEvent =eventJson;
+                    if(tempLength<1024)
+                        strcpy(lce.jsonEvent,temp);
                     lce.fileposition =curValidPosition;
                     eventMemoryCache.push_back(lce);
-                    cJSON_AddItemToArray(internalStatArray,eventJson);
+                    cJSON_AddItemToArray(internalStatArray,cJSON_Parse(temp));
                     if(++internalNumber>=50)
                     {
-                        sendInternalEventData(internalStatArray,50);
+                        sendInternalEventData(internalStatArray,internalNumber);
+                        internalNumber=0;
                         internalStatArray=cJSON_CreateArray();
                     }
                 }
@@ -562,14 +575,12 @@ namespace  XingCloud
                     
                     unsigned short appIDlen=0;
                     fread(&appIDlen,sizeof(unsigned short),1,localfilePoint);
-                    lce.appID = new char[appIDlen+1];
-                    memset(lce.appID,0,appIDlen+1);
+                   
                     fread(lce.appID,appIDlen,1,localfilePoint);
                     
                     unsigned short userIDlen=0;
                     fread(&userIDlen,sizeof(unsigned short),1,localfilePoint);
-                    lce.userID = new char[userIDlen+1];
-                    memset(lce.userID,0,userIDlen+1);
+                   
                     fread(lce.userID,userIDlen,1,localfilePoint);
                     
                     fread(&tempLength,sizeof(unsigned short),1,localfilePoint);
@@ -582,16 +593,15 @@ namespace  XingCloud
                     {
                         break;
                     }
-                    cJSON *eventJson = cJSON_Parse(temp);
-                    
                     lce.isWriteTofile=true;
                     lce.isInternal =false;
-                    lce.jsonEvent =eventJson;
+                    if(tempLength<1024)
+                        strcpy(lce.jsonEvent,temp);
                     lce.fileposition =curValidPosition;
                     
                     eventMemoryCache.push_back(lce);
                     
-                    sendGeneralEventData(lce.appID, lce.userID,eventJson,1);
+                    sendGeneralEventData(lce.appID, lce.userID,cJSON_Parse(temp),1);
                     
                 }
                 
@@ -605,13 +615,14 @@ namespace  XingCloud
             {
                 fwrite(&curValidPosition,sizeof(unsigned int),1,localfilePoint);//存下当前指fp位置
                 fclose(localfilePoint);
-                if(internalNumber>0)
+                if(internalNumber>0&&internalNumber<100000)
                 {
                     sendInternalEventData(internalStatArray,internalNumber);
                 }
                 else
                 {
-                    cJSON_Delete(internalStatArray);
+                    if(internalNumber==0)
+                        cJSON_Delete(internalStatArray);
                 }
             }
 
@@ -660,40 +671,42 @@ namespace  XingCloud
             sprintf(temp,"%u",XADataManager::getTimestamp());
             cJSON_AddItemToObject(encapEvent,"timestamp",cJSON_CreateString(temp));
             
-            //cJSON *encapEvent = encapsulateEvent(event,params);
-            //XAPRINT(cJSON_PrintUnformatted(encapEvent));
+           
             //make cache 
             localCacheEvent lce; 
-            if(appId !=NULL)
+            if(appId !=NULL&& strlen(appId)!=0)
             {
-                int size =strlen(appId)+1;
-                lce.appID = new char[size];
-                memset(lce.appID,0,size);
                 strcpy(lce.appID,appId);
             }
+            const char *json = cJSON_PrintUnformatted(encapEvent);
+            int jsonSize = strlen(json);
+            if(jsonSize>0&&jsonSize<1024)
+                strcpy(lce.jsonEvent,json);
             
-            lce.jsonEvent = encapEvent;
-            if(userId!=NULL)
+            free(const_cast<char*>(json));
+            
+            if(userId!=NULL&&strlen(userId)!=0)
             {
-                int size =strlen(userId)+1;
-                lce.userID = new char[size];
-                memset(lce.userID,0,size);
                 strcpy(lce.userID,userId);
             }
             
             lce.isInternal = isInternal;
-            
-            
+            lce.isWriteTofile = false;
+           
             eventMemoryCache.push_back(lce);
+            if(XADataManager::reportPolice!=0)
+            {
+                cJSON_Delete(encapEvent);
+            }
+            else
+            {
+                handleEvent(event,timestamp,encapEvent,0);
+            }
+            
             //XAPRINT(cJSON_PrintUnformatted(encapEvent));
-            handleEvent(event,timestamp,encapEvent,0);
-            
-            
         }
         void    XADataProxy::handleEvent(int event,unsigned int timestamp,cJSON *encapsulateEvent,int eventIndex)
         {
-            
-            //XAPRINT(cJSON_PrintUnformatted(encapsulateEvent));
             if(XADataManager::reportPolice==0)
             {//实时发送
                 cJSON *root = cJSON_CreateObject();
@@ -723,39 +736,45 @@ namespace  XingCloud
         {
             
             Lock loc(eventCacheMutex);
-            if(eventMemoryCache[sendDataNumber-1].isWriteTofile)
+            if(eventMemoryCache.size()>=sendDataNumber)
             {
-                Lock lock(filePointMutex);
-                localfilePoint = fopen(docfilePath,"rb+");
-                curValidPosition = eventMemoryCache[sendDataNumber-1].fileposition;
-                if(0!=fseek(localfilePoint,63,SEEK_SET))
+                if(eventMemoryCache[sendDataNumber-1].isWriteTofile)
                 {
-                    XAPRINT("error  loacl Cache can not fseek "); 
-                    return ;
+                    //                Lock lock(filePointMutex);
+                    //                localfilePoint = fopen(docfilePath,"rb+");
+                    //                curValidPosition = getInstance()->eventMemoryCache[sendDataNumber-1].fileposition;
+                    //                if(0!=fseek(localfilePoint,63,SEEK_SET))
+                    //                {
+                    //                    XAPRINT("error  loacl Cache can not fseek "); 
+                    //                    return ;
+                    //                }
+                    //                fwrite(&curValidPosition,sizeof(unsigned int),1,localfilePoint);//存下当前指fp位置
+                    //                fseek(localfilePoint,curValidPosition,SEEK_CUR);
+                    //                fclose(localfilePoint);
+                    
+                    if(eventMemoryCache.size()>=sendDataNumber)
+                        eventMemoryCache.erase(eventMemoryCache.begin(),eventMemoryCache.begin()+sendDataNumber);//删除前sendDataNumber个元素
+                    if(lastReadyEventNumber>=sendDataNumber)
+                    {
+                        lastReadyEventNumber -= sendDataNumber;
+                    }
                 }
-                fwrite(&curValidPosition,sizeof(unsigned int),1,localfilePoint);//存下当前指fp位置
-                fseek(localfilePoint,curValidPosition,SEEK_CUR);
-                fclose(localfilePoint);
-                eventMemoryCache.erase(eventMemoryCache.begin(),eventMemoryCache.begin()+sendDataNumber);//删除前sendDataNumber个元素
-                if(lastReadyEventNumber>=sendDataNumber)
+                else
                 {
-                     lastReadyEventNumber -= sendDataNumber;
-                }
-            }
-            else
-            {
-                std::vector<localCacheEvent>::iterator iter =eventMemoryCache.begin();
-                int i=0;
-                for(;i<sendDataNumber && iter!= eventMemoryCache.end();i++)
-                {
-                    iter = eventMemoryCache.erase(iter);
-                    lastReadyEventNumber--;
+                    std::vector<localCacheEvent>::iterator iter =eventMemoryCache.begin();
+                    int i=0;
+                    for(;i<sendDataNumber && iter!= getInstance()->eventMemoryCache.end();i++)
+                    {
+                        iter = getInstance()->eventMemoryCache.erase(iter);
+                        lastReadyEventNumber--;
+                    }
                 }
             }
         }
         void XADataProxy::handleSendFailed(int sendDataNumber)
         {
-            WriteMemoryDataToFile(sendDataNumber);
+            if(eventMemoryCache.size()>=sendDataNumber)
+                WriteMemoryDataToFile(sendDataNumber);
         }
         cJSON*    XADataProxy::encapsulateEvent(int event,cJSON *params)
         {
