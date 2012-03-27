@@ -27,7 +27,7 @@ namespace XingCloud
             static void initSystemInfo(char *source);
             static void getXAtagname(char *source);
             static void getDeviceID(char *source);
-            static bool isJailbroken(char *source);
+            static bool isJailbroken();
             static void getAppFileDir(char* result);
             static cJSON *getSystemInfo();
             

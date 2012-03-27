@@ -54,6 +54,15 @@ cJSON* XingCloud::XA::SystemInfo::getSystemInfo()
     cJSON_AddItemToObject(statsParams,"is_mobile",cJSON_CreateString("true"));
     memset(temp,0,64);
     getNetType(temp);
+    bool _isJailbroken = isJailbroken();
+    if(_isJailbroken)
+    {
+        cJSON_AddItemToObject(statsParams,"isJailbroken",cJSON_CreateString("true"));
+    }
+    else
+    {
+        cJSON_AddItemToObject(statsParams,"isJailbroken",cJSON_CreateString("false"));
+    }
     cJSON_AddItemToObject(statsParams,"netType",cJSON_CreateString(temp));
     
     memset(temp,0,64);
@@ -105,7 +114,7 @@ void XingCloud::XA::SystemInfo::getAppFileDir(char* result)
         strcpy(result, destDir);
     }
 }
-bool XingCloud::XA::SystemInfo::isJailbroken(char *source) 
+bool XingCloud::XA::SystemInfo::isJailbroken() 
 {
     BOOL jailbroken = NO;
     NSString *cydiaPath = @"/Applications/Cydia.app";

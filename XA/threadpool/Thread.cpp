@@ -49,6 +49,7 @@ Thread::~Thread ()
     assert (ok);
 #elif HAVE_PTHREAD
     if(int error = ::pthread_join (_thread, 0))
+    //if(int error = ::pthread_cancel(_thread))
         printf("%s (%d)\n", "pthread_join() was not successful",error);
 #else
     printf("%s\n", "Threads not supported on this platform");

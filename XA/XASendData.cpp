@@ -22,7 +22,8 @@ namespace XingCloud
         
         unsigned int  postPerform(void *param);
         Mutex   XASendData::postMutex;
-       
+        
+        CURL *XASendData::easy_handle = NULL;
         XASendData::XASendData()
         {
             
@@ -74,11 +75,12 @@ namespace XingCloud
             
             Lock lock(XASendData::postMutex);
             postData  *p =(postData*)param;
+            
             bool receiveOK=false;
             bool *dataSendSuccess=&receiveOK;
           
             CURL* easy_handle = curl_easy_init();
-         
+            XASendData::easy_handle = easy_handle;
             char *encodedURL = curl_easy_escape(easy_handle,p->data, strlen(p->data));
             curl_easy_setopt(easy_handle,CURLOPT_URL,"http://analytic.xingcloud.com/index.php?");
             curl_easy_setopt(easy_handle, CURLOPT_HEADERFUNCTION, Getcontentlengthfunc);
@@ -95,7 +97,7 @@ namespace XingCloud
             
             CURLcode code=curl_easy_perform(easy_handle);
             
-           
+            XASendData::easy_handle = NULL;
             if((code==CURLE_OK && receiveOK && dataSendSuccess))
             {//发送成功则删除缓存
                 XAPRINT("send event success!");

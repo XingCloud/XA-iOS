@@ -24,7 +24,7 @@ namespace XingCloud
         int XADataManager::defaultTimer=20;
         XADataManager::XADataManager()
         {
-            XingCloud::XAThreadPool::ExecuteTask::initThreadPool(3);
+            XingCloud::XAThreadPool::ExecuteTask::initThreadPool(1);
             adsChannel=NULL;
         }
         XADataManager::~XADataManager()

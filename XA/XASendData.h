@@ -16,7 +16,7 @@ namespace XingCloud
 {
     namespace XA
     {
-        //typedef void CURL;
+        typedef void CURL;
         typedef struct postdata
         {
             char *data;
@@ -33,8 +33,9 @@ namespace XingCloud
             
             
             static Mutex   postMutex;
+            static CURL *easy_handle;
         private:
-           // CURL *easy_handle;
+            //CURL *easy_handle;
             static TaskGroup  taskGroup;
             
         };
