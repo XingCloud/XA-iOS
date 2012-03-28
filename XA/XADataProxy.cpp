@@ -50,9 +50,10 @@ namespace  XingCloud
                 cJSON_AddItemToObject(statObject,"timestamp",cJSON_CreateString(temp));
                 cJSON_AddItemToArray(statArray,statObject);
                 cJSON_AddItemToObject(root,"stats",statArray);
-                XASendData::getMethodSend(cJSON_PrintUnformatted(root));
+                //XASendData::getMethodSend(cJSON_PrintUnformatted(root));
+                
+                XASendData::postMethodSend(cJSON_PrintUnformatted(root),0);
                 cJSON_Delete(root);
-                //XASendData::postMethodSend(cJSON_PrintUnformatted(root));
             }
             //            if(SystemInfo::getNetType(NULL)!=0)
             //            {
@@ -438,8 +439,12 @@ namespace  XingCloud
                             cJSON_Delete(internalStatArray);
                     }
                 }
+               
             }
-            
+            else
+            {
+                fclose(localfilePoint);
+            }
             cJSON * initParams=cJSON_CreateObject();
             handleGeneralEvent(13,NULL,NULL,XADataManager::getTimestamp(),initParams,true);
             
@@ -746,10 +751,11 @@ namespace  XingCloud
                 handleEvent(event,timestamp,encapEvent,0);
             }
             
-            //XAPRINT(cJSON_PrintUnformatted(encapEvent));
+            
         }
         void    XADataProxy::handleEvent(int event,unsigned int timestamp,cJSON *encapsulateEvent,int eventIndex)
         {
+            
             if(XADataManager::reportPolice==0)
             {//实时发送
                 cJSON *root = cJSON_CreateObject();

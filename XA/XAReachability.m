@@ -142,7 +142,7 @@ static void ReachabilityCallback(SCNetworkReachabilityRef target, SCNetworkReach
 
 - (NetworkStatus) localWiFiStatusForFlags: (SCNetworkReachabilityFlags) flags
 {
-	PrintReachabilityFlags(flags, "localWiFiStatusForFlags");
+	//PrintReachabilityFlags(flags, "localWiFiStatusForFlags");
 
 	BOOL retVal = NotReachable;
 	if((flags & kSCNetworkReachabilityFlagsReachable) && (flags & kSCNetworkReachabilityFlagsIsDirect))
