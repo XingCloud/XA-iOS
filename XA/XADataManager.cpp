@@ -8,7 +8,8 @@
 
 #include "XADataManager.h"
 #include "XASystemInfo.h"
-#include "XAThreadPool.h"
+//#include "XAThreadPool.h"
+//#include "XASendData.h"
 #include<sys/time.h>
 namespace XingCloud 
 {
@@ -24,12 +25,12 @@ namespace XingCloud
         int XADataManager::defaultTimer=20;
         XADataManager::XADataManager()
         {
-            XingCloud::XAThreadPool::ExecuteTask::initThreadPool(1);
+            //XingCloud::XAThreadPool::ExecuteTask::initThreadPool(1);
             adsChannel=NULL;
         }
         XADataManager::~XADataManager()
         {
-            XingCloud::XAThreadPool::ExecuteTask::deleteThreadPool();
+            //XingCloud::XAThreadPool::ExecuteTask::deleteThreadPool();
             if(channelID!=NULL)
                 delete channelID;
             if(appID!=NULL)

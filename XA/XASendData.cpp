@@ -15,18 +15,22 @@ namespace XingCloud
     namespace XA
     {
         
-        TaskGroup   XASendData::taskGroup;
+        //TaskGroup   XASendData::taskGroup;
        
         size_t postWriteData(void *recvBuffer,size_t size,size_t nmemb,void *userParam);
         size_t Getcontentlengthfunc(void *ptr, size_t size, size_t nmemb, void *stream) ;
         
-        unsigned int  postPerform(void *param);
+       // unsigned int  postPerform(void *param);
         Mutex   XASendData::postMutex;
+       // Mutex   XASendData::mCacheMutex;
         
-        CURL *XASendData::easy_handle = NULL;
+        //std::list<postData*> XASendData::m_cache;  
+        
+        XASendData *XASendData::m_pSendData= new XASendData();
+        
         XASendData::XASendData()
         {
-            
+            start();
         }
         XASendData::~XASendData()
         {
@@ -55,32 +59,45 @@ namespace XingCloud
             
             return code==CURLE_OK;
         }
-        
+        void    XASendData::run ()
+        {
+            while(1)
+            {
+                usleep(10000);
+                
+                if(m_cache.size()>0)
+                {
+                    //Lock loc(mCacheMutex);
+                    postPerform(m_cache.front());
+                    m_cache.pop_front();
+                }
+               
+            }
+        }
         bool    XASendData::postMethodSend(const char *buffer,int dataNumber)
         {
             if(buffer==0)
                 return false;
-            
             //XAPRINT(buffer);
+            Lock loc(mCacheMutex);
             
             postData  *p = new postData[sizeof(postData)];
             p->data =const_cast<char*>(buffer);
             p->sendEventNumber =dataNumber;
-            XingCloud::XAThreadPool::ExecuteTask::addTask(new XingCloud::XAThreadPool::XATask(postPerform,p,&taskGroup));
-            
+            m_cache.push_back(p);
+           // XingCloud::XAThreadPool::ExecuteTask::addTask(new XingCloud::XAThreadPool::XATask(postPerform,p,&taskGroup));
             return true;
         }
-        unsigned int  postPerform(void *param)
+        unsigned int  XASendData::postPerform(void *param)
         {
-            
-            Lock lock(XASendData::postMutex);
+           // Lock lock(XASendData::postMutex);
             postData  *p =(postData*)param;
             
             bool receiveOK=false;
             bool *dataSendSuccess=&receiveOK;
           
             CURL* easy_handle = curl_easy_init();
-            XASendData::easy_handle = easy_handle;
+          
             char *encodedURL = curl_easy_escape(easy_handle,p->data, strlen(p->data));
             curl_easy_setopt(easy_handle,CURLOPT_URL,"http://analytic.xingcloud.com/index.php?");
             curl_easy_setopt(easy_handle, CURLOPT_HEADERFUNCTION, Getcontentlengthfunc);
@@ -97,7 +114,6 @@ namespace XingCloud
             
             CURLcode code=curl_easy_perform(easy_handle);
             
-            XASendData::easy_handle = NULL;
             if((code==CURLE_OK && receiveOK && dataSendSuccess))
             {//发送成功则删除缓存
                 XAPRINT("send event success!");

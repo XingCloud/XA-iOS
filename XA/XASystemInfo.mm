@@ -148,7 +148,7 @@ int XingCloud::XA::SystemInfo::getNetType(char *source)
                     strcpy(source,"GPRS");
                 break;
             default:
-                if(!source)
+                if(source!=NULL)
                     strcpy(source,"3G");
                 break;
         }

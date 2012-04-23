@@ -7,10 +7,11 @@
 
 #ifndef XA_XASendData_h
 #define XA_XASendData_h
-#include "XAThreadPool.h"
+//#include "XAThreadPool.h"
+#include "Thread.h"
 #include "Mutex.h"
 #include <string>
-#include <vector>
+#include <list>
 #include <map>
 namespace XingCloud
 {
@@ -22,22 +23,26 @@ namespace XingCloud
             char *data;
             int  sendEventNumber;
         }postData;
-        class XASendData
+        class XASendData :Thread
         {
         public:
             //send data
-            XASendData();
             ~XASendData();
             static bool    getMethodSend(const char *buffer);
-            static bool    postMethodSend(const char *buffer,int dataNumber);
+            bool    postMethodSend(const char *buffer,int dataNumber);
             
-            
+            unsigned int  postPerform(void *param);
             static Mutex   postMutex;
-            static CURL *easy_handle;
-        private:
-            //CURL *easy_handle;
-            static TaskGroup  taskGroup;
+          
+            Mutex   mCacheMutex;
+            void	run () ;
             
+            static XASendData *instance(){return m_pSendData;}
+            
+        private:
+            std::list<postData*> m_cache;   
+            XASendData();
+            static XASendData *m_pSendData;
         };
     }
 }

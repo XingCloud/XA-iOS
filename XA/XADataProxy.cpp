@@ -52,7 +52,7 @@ namespace  XingCloud
                 cJSON_AddItemToObject(root,"stats",statArray);
                 //XASendData::getMethodSend(cJSON_PrintUnformatted(root));
                 
-                XASendData::postMethodSend(cJSON_PrintUnformatted(root),0);
+                XASendData::instance()->postMethodSend(cJSON_PrintUnformatted(root),0);
                 cJSON_Delete(root);
             }
             //            if(SystemInfo::getNetType(NULL)!=0)
@@ -83,7 +83,7 @@ namespace  XingCloud
             cJSON_AddItemToObject(Internalroot,"signedParams",XADataManager::getSignedParamsJsonObject());
             cJSON_AddItemToObject(Internalroot,"stats",internalStatArray);
             
-            XASendData::postMethodSend(cJSON_PrintUnformatted(Internalroot),eventNumber);
+            XASendData::instance()->postMethodSend(cJSON_PrintUnformatted(Internalroot),eventNumber);
             cJSON_Delete(Internalroot);
         }
         void  XADataProxy::sendGeneralEventData(const char *appID,const char *userID,cJSON *generalObject,int eventNumber)
@@ -108,7 +108,7 @@ namespace  XingCloud
             cJSON_AddItemToArray(generalStatArray,generalObject);
             cJSON_AddItemToObject(root,"stats",generalStatArray);
             
-            XASendData::postMethodSend(cJSON_PrintUnformatted(root),eventNumber);
+            XASendData::instance()->postMethodSend(cJSON_PrintUnformatted(root),eventNumber);
             cJSON_Delete(root);
         }
         void  XADataProxy::readyForSendData(int lastReadyEventNumber)
@@ -445,6 +445,7 @@ namespace  XingCloud
             {
                 fclose(localfilePoint);
             }
+           
             cJSON * initParams=cJSON_CreateObject();
             handleGeneralEvent(13,NULL,NULL,XADataManager::getTimestamp(),initParams,true);
             
@@ -764,7 +765,7 @@ namespace  XingCloud
                 cJSON_AddItemToArray(statArray,encapsulateEvent);
                 cJSON_AddItemToObject(root,"stats",statArray);
                 
-                XASendData::postMethodSend(cJSON_PrintUnformatted(root),1);
+                XASendData::instance()->postMethodSend(cJSON_PrintUnformatted(root),1);
                 cJSON_Delete(root);
             }
             
