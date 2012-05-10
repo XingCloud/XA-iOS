@@ -105,12 +105,18 @@ cJSON* XingCloud::XA::SystemInfo::getSystemInfo()
     return statsParams;
 }
 void XingCloud::XA::SystemInfo::getAppFileDir(char* result)
-{
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = [paths objectAtIndex:0];
-    if(documentsDirectory!=nil)
+{//document
+//    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+//    NSString *documentsDirectory = [paths objectAtIndex:0];
+//    if(documentsDirectory!=nil)
+//    {
+//        const char* destDir = [documentsDirectory UTF8String];
+//        strcpy(result, destDir);
+//    }
+    NSString *tempPath = NSTemporaryDirectory();
+    if(tempPath!=nil)
     {
-        const char* destDir = [documentsDirectory UTF8String];
+        const char* destDir = [tempPath UTF8String];
         strcpy(result, destDir);
     }
 }

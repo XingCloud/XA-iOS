@@ -191,7 +191,6 @@ namespace XingCloud
             cJSON_AddItemToObject(milestoneParams,"milestone_name",cJSON_CreateString(milestoneName));
             
             XADataProxy::getInstance()->handleTrackMilestone(milestoneParams);
-            
         }
         void    XADataManager::trackLogin(cJSON *login)
         {

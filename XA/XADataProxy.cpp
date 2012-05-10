@@ -311,7 +311,6 @@ namespace  XingCloud
             }
             else  if(SystemInfo::getNetType(NULL)!=0)
             {//本地文件存在，不发送update事件
-                
                 Lock lock(filePointMutex);
                 
                 fseek(localfilePoint,0,SEEK_SET);
@@ -450,6 +449,7 @@ namespace  XingCloud
             handleGeneralEvent(13,NULL,NULL,XADataManager::getTimestamp(),initParams,true);
             
             handleGeneralEvent(2,NULL,NULL,XADataManager::getTimestamp(),visitEvent,true);
+            
             if(errorEvent!=NULL)
                 handleGeneralEvent(5,NULL,NULL,XADataManager::getTimestamp(),errorEvent,true);
         }
